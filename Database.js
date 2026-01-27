@@ -1,70 +1,47 @@
+const sqlite3 = require("sqlite3").verbose();
+const path = require("path");
 
-const express = require('express')
-const sqlite3 = require('sqlite3').verbose();
-const app = express()
-const port = 3000
+const dbPath = path.join(__dirname, "users.db");
+const db = new sqlite3.Database(dbPath);
 
+db.serialize(() => {
+  db.run(`
+    CREATE TABLE IF NOT EXISTS users (
+      user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      pass TEXT NOT NULL
+    );
+  `);
+});
 
-app.use(express.urlencoded({ extended: true })); // needed to parse requests, replaces body-parser
-
-// Review the db.run, db.get, db.all
-//https://github.com/TryGhost/node-sqlite3/wiki/API
-
-app.set('view engine', 'ejs')
-
-// 1 - some prelim 
-
-let db = new sqlite3.Database('users.db', createTable) //set the sqlite file, and callback function
-
-//addUser('bob',"password") //manually create some data
-
-function createTable(){ //create the table
-    db.run(`CREATE TABLE IF NOT EXISTS users (user_id INTEGER PRIMARY KEY, name TEXT NOT NULL, pass TEXT NOT NULL);`)
+function getAllUsers(cb) {
+  db.all("SELECT * FROM users ORDER BY user_id DESC;", [], cb);
 }
 
-function addUser(name, pass){ //add some data
-    db.run(`INSERT INTO users (name, pass) VALUES (?,?)`, 
-    [name,pass])
+function getUserById(user_id, cb) {
+  db.get("SELECT * FROM users WHERE user_id = ?;", [user_id], cb);
 }
 
-// 2 - Templating with data base 
+function createUser(name, pass, cb) {
+  db.run("INSERT INTO users (name, pass) VALUES (?, ?);", [name, pass], cb);
+}
 
-app.get('/viewUsersDB', (req,res) => {
-  //db.all - 
-    db.all(`SELECT * FROM users;`, [], (error,row) => {
-           res.render('viewUsers',{users: row});
-    })
+function updateUser(user_id, name, pass, cb) {
+  db.run(
+    "UPDATE users SET name = ?, pass = ? WHERE user_id = ?;",
+    [name, pass, user_id],
+    cb
+  );
+}
 
-})
+function deleteUser(user_id, cb) {
+  db.run("DELETE FROM users WHERE user_id = ?;", [user_id], cb);
+}
 
-
-// 3 - Create an edit users form
-
-// 3.1 - First Create an editUsers.ejs template file containing a form
-
-app.get('/editUsers', (req,res) => { // Get the form data
-   db.all(`SELECT * FROM users;`, [], (error,row) => { //retrive the data
-           res.render('editUsers',{users: row});    //populate the form
-    })
-})
-
-
-app.post('/editUsers', (req,res) => { // Post the form data
-   const { name, pass, user_id} = req.body  // Get the posted data
-    var sql=`UPDATE users SET name = "${name}"........;` //update a single row
-     db.run(sql, (error,row) => { //note the db.run()
-    console.log(`Inserted ${sql}`) 
-    })
-     res.redirect('/editUsers') //redirect to the GET /editUsers
-})
-
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
-
-
-
-
-
-
+module.exports = {
+  getAllUsers,
+  getUserById,
+  createUser,
+  updateUser,
+  deleteUser,
+};

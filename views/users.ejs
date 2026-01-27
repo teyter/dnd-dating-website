@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Users (Database)</title>
+</head>
+<body>
+  <h2>Users from SQLite</h2>
+
+  <% if (users.length === 0) { %>
+    <p>No users in database yet.</p>
+  <% } else { %>
+    <table border="1" cellpadding="6">
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Password</th>
+      </tr>
+
+      <% users.forEach(u => { %>
+        <tr>
+          <td><%= u.user_id %></td>
+          <td><%= u.name %></td>
+          <td><%= u.pass %></td>
+        </tr>
+      <% }) %>
+    </table>
+  <% } %>
+</body>
+</html>
