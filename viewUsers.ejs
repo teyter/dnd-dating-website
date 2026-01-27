@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Users</title>
+<body>
+
+<h2>User List</h2>
+
+<table>
+<tr><th>User</th><th>Password</th></tr>
+ <tr>
+         <% users.forEach(function(user) { %>
+            <td><%- user.name %></td>
+            <td><%- user.pass %></td>
+</tr>
+    <% }); %>
+</table>
+</body>
+</html>
+
