@@ -6,6 +6,15 @@
 <body>
   <h2>Users from SQLite</h2>
 
+  <h3>Add user</h3>
+  <form method="POST" action="/users">
+    <input name="name" placeholder="name" required />
+    <input name="pass" placeholder="pass" required />
+    <button type="submit">Add</button>
+  </form>
+
+  <hr />
+
   <% if (users.length === 0) { %>
     <p>No users in database yet.</p>
   <% } else { %>
@@ -14,6 +23,7 @@
         <th>ID</th>
         <th>Name</th>
         <th>Password</th>
+        <th>Actions</th>
       </tr>
 
       <% users.forEach(u => { %>
@@ -21,6 +31,12 @@
           <td><%= u.user_id %></td>
           <td><%= u.name %></td>
           <td><%= u.pass %></td>
+          <td>
+            <a href="/users/<%= u.user_id %>/edit">Edit</a>
+            <form method="POST" action="/users/<%= u.user_id %>/delete" style="display:inline">
+              <button type="submit" onclick="return confirm('Delete this user?')">Delete</button>
+            </form>
+          </td>
         </tr>
       <% }) %>
     </table>

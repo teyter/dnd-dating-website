@@ -4,7 +4,11 @@
   "description": "",
   "main": "1-FrontEnd.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node FrontEnd.js",
+    "dev": "nodemon FrontEnd.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier . --write",
+    "format:check": "prettier . --check"
   },
   "repository": {
     "type": "git",
@@ -23,5 +27,10 @@
     "ejs": "^4.0.1",
     "express": "^5.2.1",
     "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "browser-sync": "^3.0.4",
+    "nodemon": "^3.1.11",
+    "prettier": "^3.8.1"
   }
 }

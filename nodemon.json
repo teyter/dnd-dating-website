@@ -1,0 +1,4 @@
+{
+  "watch": ["FrontEnd.js", "Database.js", "views"],
+  "ext": "js,ejs"
+}

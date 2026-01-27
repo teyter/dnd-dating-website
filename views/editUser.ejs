@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Edit User</title>
+</head>
+<body>
+  <h2>Edit user</h2>
+
+  <form method="POST" action="/users/<%= user.user_id %>">
+    <label>
+      Name:
+      <input name="name" value="<%= user.name %>" required />
+    </label>
+    <br /><br />
+    <label>
+      Password:
+      <input name="pass" value="<%= user.pass %>" required />
+    </label>
+    <br /><br />
+    <button type="submit">Save</button>
+  </form>
+
+  <p><a href="/users">Back to users</a></p>
+</body>
+</html>
