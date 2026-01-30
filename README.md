@@ -19,3 +19,11 @@ npm start / npm run dev
 
 - The SQLite database (`users.db`) is created automatically on first run.
 - Database files are ignored by git.
+
+## Admin Access
+
+The admin monitoring page is available at `/admin`.
+
+Credentials:
+- Username: `admin`
+- Password: `admin`

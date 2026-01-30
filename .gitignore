@@ -12,6 +12,7 @@ pnpm-debug.log*
 # Logs
 logs/
 *.log
+app.log
 
 # Runtime data
 pids/

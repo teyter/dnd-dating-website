@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Admin Monitoring</title>
+</head>
+<body>
+  <h2>Admin Monitoring</h2>
+
+  <p><a href="/">Home</a> | <a href="/users">Users</a></p>
+
+  <h3>System uptime (shell: uptime)</h3>
+  <pre><%= uptimeOut %></pre>
+
+  <h3>App & server stats</h3>
+  <ul>
+    <li>App uptime: <%= Math.round(appUptimeSeconds) %> seconds</li>
+    <li>System uptime: <%= Math.round(systemUptimeSeconds) %> seconds</li>
+    <li>Memory (rss): <%= Math.round(memory.rss / 1024 / 1024) %> MB</li>
+    <li>Memory (heapUsed): <%= Math.round(memory.heapUsed / 1024 / 1024) %> MB</li>
+  </ul>
+
+  <h3>Write a log entry</h3>
+  <form method="POST" action="/admin/log">
+    <input name="message" placeholder="log message" style="width: 360px" />
+    <button type="submit">Write</button>
+  </form>
+
+  <h3>Recent log (tail)</h3>
+  <pre style="border:1px solid #ccc; padding:10px; white-space: pre-wrap;"><%= logTail %></pre>
+</body>
+</html>

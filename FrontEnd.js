@@ -1,6 +1,10 @@
 const express = require('express');
 const app = express();
 const port = 3000;
+const os = require("os");
+const fs = require("fs");
+const { execFile } = require("child_process");
+const { log, logPath } = require("./logger");
 
 const db = require('./Database');
 
@@ -34,7 +38,7 @@ app.get('/viewUsersTemplate', (req, res) => {
   res.render('viewUsers', { users });
 });
 
-// ✅ Step 2: View users from SQLite
+// View users from SQLite
 app.get('/users', (req, res) => {
   db.getAllUsers((err, users) => {
     if (err) return res.status(500).send(err.message);
@@ -78,6 +82,71 @@ app.post("/users/:id", (req, res) => {
     res.redirect("/users");
   });
 });
+
+app.use('/admin', (req, res, next) => {
+  const auth = req.headers.authorization || '';
+  const [type, encoded] = auth.split(' ');
+
+  if (type !== 'Basic' || !encoded) {
+    res.setHeader('WWW-Authenticate', 'Basic realm="Admin"');
+    return res.status(401).send('Authentication required');
+  }
+
+  const decoded = Buffer.from(encoded, 'base64').toString('utf8');
+  const [user, pass] = decoded.split(':');
+
+  // change these
+  if (user === 'admin' && pass === 'admin') return next();
+
+  res.setHeader('WWW-Authenticate', 'Basic realm="Admin"');
+  return res.status(401).send('Invalid credentials');
+});
+
+// read the last N lines of a file
+function readLastLines(filePath, maxLines = 200) {
+  try {
+    if (!fs.existsSync(filePath)) return "";
+    const text = fs.readFileSync(filePath, "utf8");
+    const lines = text.split("\n");
+    return lines.slice(-maxLines).join("\n");
+  } catch (e) {
+    return `Error reading log: ${e.message}`;
+  }
+}
+
+// Admin page
+app.get("/admin", (req, res) => {
+  // Log view (read)
+  const logTail = readLastLines(logPath, 200);
+
+  // App/server stats (no shell)
+  const appUptimeSeconds = process.uptime();
+  const systemUptimeSeconds = os.uptime();
+  const memory = process.memoryUsage();
+
+  // Shell command (dynamic query) — safe: execFile with fixed command + args
+  execFile("uptime", [], { timeout: 1500 }, (err, stdout, stderr) => {
+    const uptimeOut = err
+      ? `Error running uptime: ${err.message}`
+      : (stdout || stderr || "").trim();
+
+    res.render("admin", {
+      uptimeOut,
+      appUptimeSeconds,
+      systemUptimeSeconds,
+      memory,
+      logTail,
+    });
+  });
+});
+
+// Write to log file (dynamic action)
+app.post("/admin/log", (req, res) => {
+  const msg = (req.body.message || "").trim();
+  if (msg.length > 0) log(`ADMIN_NOTE: ${msg}`);
+  res.redirect("/admin");
+});
+
 
 app.listen(port, () => {
   console.log(`Example app listening on http://localhost:${port}`);
