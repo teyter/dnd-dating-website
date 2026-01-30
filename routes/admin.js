@@ -1,0 +1,73 @@
+var express = require('express');
+var router = express.Router();
+
+const os = require("os");
+const { execFile } = require("child_process");
+const { log, logPath } = require("../logger");
+
+// Basic auth middleware for admin routes
+router.use('/', (req, res, next) => {
+  const auth = req.headers.authorization || '';
+  const [type, encoded] = auth.split(' ');
+
+  if (type !== 'Basic' || !encoded) {
+    res.setHeader('WWW-Authenticate', 'Basic realm="Admin"');
+    return res.status(401).send('Authentication required');
+  }
+
+  const decoded = Buffer.from(encoded, 'base64').toString('utf8');
+  const [user, pass] = decoded.split(':');
+
+  // change these
+  if (user === 'admin' && pass === 'admin') return next();
+
+  res.setHeader('WWW-Authenticate', 'Basic realm="Admin"');
+  return res.status(401).send('Invalid credentials');
+});
+
+// read the last N lines of a file
+function readLastLines(filePath, maxLines = 200) {
+  try {
+    if (!fs.existsSync(filePath)) return "";
+    const text = require("fs").readFileSync(filePath, "utf8");
+    const lines = text.split("\n");
+    return lines.slice(-maxLines).join("\n");
+  } catch (e) {
+    return `Error reading log: ${e.message}`;
+  }
+}
+
+// Admin page
+router.get("/", (req, res) => {
+  // Log view (read)
+  const logTail = readLastLines(logPath, 200);
+
+  // App/server stats (no shell)
+  const appUptimeSeconds = process.uptime();
+  const systemUptimeSeconds = os.uptime();
+  const memory = process.memoryUsage();
+
+  // Shell command (dynamic query) — safe: execFile with fixed command + args
+  execFile("uptime", [], { timeout: 1500 }, (err, stdout, stderr) => {
+    const uptimeOut = err
+      ? `Error running uptime: ${err.message}`
+      : (stdout || stderr || "").trim();
+
+    res.render("admin", {
+      uptimeOut,
+      appUptimeSeconds,
+      systemUptimeSeconds,
+      memory,
+      logTail,
+    });
+  });
+});
+
+// Write to log file
+router.post("/log", (req, res) => {
+  const msg = (req.body.message || "").trim();
+  if (msg.length > 0) log(`ADMIN_NOTE: ${msg}`);
+  res.redirect("/admin");
+});
+
+module.exports = router;

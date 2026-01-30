@@ -1,0 +1,58 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table, th, td {
+  border: 1px solid #ccc;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+}
+
+form {
+  margin: 20px 0;
+}
+
+label {
+  display: block;
+  margin: 5px 0;
+}
+
+input, select, textarea {
+  padding: 8px;
+  margin: 5px 0;
+  width: 100%;
+  max-width: 300px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #00B7FF;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #009ACD;
+}
+
+.nav {
+  margin-bottom: 20px;
+}
+
+.nav a {
+  margin-right: 15px;
+}

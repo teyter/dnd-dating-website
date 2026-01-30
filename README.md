@@ -1,3 +1,12 @@
+# D&DG Dating Website
+
+In this project we implement a Dungeons & Dragons themed dating website featuring character-based profiles, admin passport verification.
+
+## Authors
+Teitur Guðmundarson
+Silja Rós Svansdóttir Þormar
+Iftejar Miah Viki
+
 ## Setup
 ```
 

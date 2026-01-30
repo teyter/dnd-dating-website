@@ -2,10 +2,10 @@
   "name": "dnd-dating-website",
   "version": "1.0.0",
   "description": "",
-  "main": "1-FrontEnd.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node FrontEnd.js",
-    "dev": "nodemon FrontEnd.js",
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www",
     "test": "echo \"Error: no test specified\" && exit 1",
     "format": "prettier . --write",
     "format:check": "prettier . --check"
@@ -24,12 +24,15 @@
   "homepage": "https://github.com/teyter/dnd-dating-website#readme",
   "dependencies": {
     "better-sqlite3": "^12.6.2",
+    "cookie-parser": "^1.4.7",
     "ejs": "^4.0.1",
     "express": "^5.2.1",
+    "morgan": "^1.10.1",
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "browser-sync": "^3.0.4",
+    "express-generator": "^4.16.1",
     "nodemon": "^3.1.11",
     "prettier": "^3.8.1"
   }
