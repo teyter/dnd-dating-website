@@ -8,10 +8,40 @@ const { log, logPath } = require("./logger");
 
 const db = require('./Database');
 
+const DND_CLASSES = [
+  "Barbarian",
+  "Bard",
+  "Cleric",
+  "Druid",
+  "Fighter",
+  "Monk",
+  "Paladin",
+  "Ranger",
+  "Rogue",
+  "Sorcerer",
+  "Warlock",
+  "Wizard",
+];
+
+const DND_RACES = [
+  "Dragonborn",
+  "Dwarf",
+  "Elf",
+  "Gnome",
+  "Half-Elf",
+  "Half-Orc",
+  "Halfling",
+  "Human",
+  "Tiefling",
+];
+
+app.locals.classes = DND_CLASSES;
+app.locals.races = DND_RACES;
+
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 
-// 2 - Manually formatting (demo)
+// Manually formatting
 app.get('/viewUsers', (req, res) => {
   const user = { name: 'Bob', pass: 'password123' };
   const htmlOut = `<html><body><h2>Users</h2>
@@ -23,13 +53,13 @@ app.get('/viewUsers', (req, res) => {
   res.send(htmlOut);
 });
 
-// 3 - Templating and passing variables using ejs (demo)
+// Templating and passing variables using ejs
 app.get('/', (req, res) => {
   const websiteName = "D&D Dating!";
   res.render('index', { websiteName });
 });
 
-// 4 - Templates and control flow (demo)
+// Templates and control flow
 app.get('/viewUsersTemplate', (req, res) => {
   const users = [
     { name: 'bob', pass: 'password123' },
@@ -140,13 +170,63 @@ app.get("/admin", (req, res) => {
   });
 });
 
-// Write to log file (dynamic action)
+// Write to log file
 app.post("/admin/log", (req, res) => {
   const msg = (req.body.message || "").trim();
   if (msg.length > 0) log(`ADMIN_NOTE: ${msg}`);
   res.redirect("/admin");
 });
 
+// View profiles
+app.get("/profiles", (req, res) => {
+  db.getAllProfiles((err, profiles) => {
+    if (err) return res.status(500).send(err.message);
+    res.render("profiles", {
+      profiles,
+      classes: DND_CLASSES,
+    });
+  });
+});
+
+// Create profile
+app.post("/profiles", (req, res) => {
+  const { name, race, class: clazz, level, bio } = req.body;
+
+  db.createProfile(name, race, clazz, Number(level), bio, (err) => {
+    if (err) return res.status(500).send(err.message);
+    res.redirect("/profiles");
+  });
+});
+
+// Edit profile form
+app.get("/profiles/:id/edit", (req, res) => {
+  db.getProfileById(req.params.id, (err, profile) => {
+    if (err) return res.status(500).send(err.message);
+    if (!profile) return res.status(404).send("Profile not found");
+    res.render("editProfile", {
+      profile,
+      classes: DND_CLASSES,
+    });
+  });
+});
+
+// Update profile
+app.post("/profiles/:id", (req, res) => {
+  const { name, race, class: clazz, level, bio } = req.body;
+
+  db.updateProfile(req.params.id, name, race, clazz, Number(level), bio, (err) => {
+    if (err) return res.status(500).send(err.message);
+    res.redirect("/profiles");
+  });
+});
+
+// Delete profile
+app.post("/profiles/:id/delete", (req, res) => {
+  db.deleteProfile(req.params.id, (err) => {
+    if (err) return res.status(500).send(err.message);
+    res.redirect("/profiles");
+  });
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on http://localhost:${port}`);

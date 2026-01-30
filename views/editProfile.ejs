@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Edit Profile</title>
+</head>
+<body>
+  <h2>Edit profile #<%= profile.profile_id %></h2>
+
+  <form method="POST" action="/profiles/<%= profile.profile_id %>">
+    <label>
+      Name:
+      <input name="name" value="<%= profile.name %>" required />
+    </label>
+    <br /><br />
+
+    <label>
+      Race:
+      <select name="race" required>
+        <% races.forEach(r => { %>
+          <option value="<%= r %>" <%= r === profile.race ? "selected" : "" %>>
+            <%= r %>
+          </option>
+        <% }) %>
+      </select>
+    </label>
+    <br /><br />
+
+    <label>
+      Class:
+      <select name="class" required>
+        <% classes.forEach(c => { %>
+          <option value="<%= c %>" <%= c === profile.class ? "selected" : "" %>>
+            <%= c %>
+          </option>
+        <% }) %>
+      </select>
+    </label>
+    <br /><br />
+
+    <label>
+      Level:
+      <input name="level" type="number" min="1" max="20" value="<%= profile.level %>" required />
+    </label>
+    <br /><br />
+
+    <label>
+      Bio:
+      <input name="bio" style="width: 360px" value="<%= profile.bio || "" %>" />
+    </label>
+    <br /><br />
+
+    <button type="submit">Save</button>
+  </form>
+
+  <p><a href="/profiles">Back to profiles</a></p>
+</body>
+</html>
