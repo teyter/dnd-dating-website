@@ -4,7 +4,9 @@ In this project we implement a Dungeons & Dragons themed dating website featurin
 
 ## Authors
 Teitur Guðmundarson
+
 Silja Rós Svansdóttir Þormar
+
 Iftejar Miah Viki
 
 ## Setup
