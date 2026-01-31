@@ -26,6 +26,25 @@ const storage = multer.diskStorage({
     cb(null, uploadDir);
   },
   filename: function (req, file, cb) {
+    const uploadDir = path.join(__dirname, '../uploads');
+    
+    const files = fs.readdirSync(uploadDir);
+    
+    for (const existingFile of files) {
+      const existingFilePath = path.join(uploadDir, existingFile);
+      try {
+        const existingBuffer = fs.readFileSync(existingFilePath);
+        const newBuffer = fs.readFileSync(file.path);
+        
+        if (Buffer.compare(existingBuffer, newBuffer) === 0) {
+          fs.unlinkSync(file.path);
+          return cb(null, existingFile);
+        }
+      } catch (err) {
+        continue;
+      }
+    }
+    
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
     cb(null, uniqueSuffix + path.extname(file.originalname));
   }
