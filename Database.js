@@ -17,27 +17,51 @@ db.serialize(() => {
   db.run(`
     CREATE TABLE IF NOT EXISTS profiles (
       profile_id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER DEFAULT 0,
       name TEXT NOT NULL,
       race TEXT NOT NULL,
       class TEXT NOT NULL,
-      level INTEGER NOT NULL,
-      bio TEXT
+      level INTEGER DEFAULT 1,
+      bio TEXT,
+      image_path TEXT,
+      looking_for TEXT,
+      experience_level TEXT,
+      timezone TEXT
     );
   `);
+
+  const migrations = [
+    "ALTER TABLE profiles ADD COLUMN user_id INTEGER DEFAULT 0;",
+    "ALTER TABLE profiles ADD COLUMN image_path TEXT;",
+    "ALTER TABLE profiles ADD COLUMN looking_for TEXT;",
+    "ALTER TABLE profiles ADD COLUMN experience_level TEXT;",
+    "ALTER TABLE profiles ADD COLUMN timezone TEXT;",
+    "ALTER TABLE profiles ADD COLUMN bio TEXT;",
+    "ALTER TABLE profiles ADD COLUMN level INTEGER DEFAULT 1;",
+  ];
+  
+  migrations.forEach(sql => {
+    db.run(sql, (err) => {
+      // Ignore errors - column may already exist
+    });
+  });
 
   // Seed Astarion once
   db.get(`SELECT COUNT(*) AS count FROM profiles;`, [], (err, row) => {
     if (err) return;
     if (row.count === 0) {
       db.run(
-        `INSERT INTO profiles (name, race, class, level, bio)
-         VALUES (?, ?, ?, ?, ?);`,
+        `INSERT INTO profiles (name, race, class, level, bio, looking_for, experience_level, timezone)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?);`,
         [
           "Astarion",
           "Elf",
           "Rogue",
           5,
           "Charming, dangerous, and absolutely not here to bite… probably.",
+          "Romance/RP relationship,Campaign buddies",
+          "Expert",
+          "UTC-5 (Eastern Time)",
         ]
       );
     }
@@ -46,6 +70,16 @@ db.serialize(() => {
 
 function getAllUsers(cb) {
   db.all('SELECT * FROM users ORDER BY user_id DESC;', [], cb);
+}
+
+function getUsersWithProfiles(cb) {
+  db.all(`
+    SELECT DISTINCT u.*, p.name as profile_name, p.race, p.class, p.level, p.image_path
+    FROM users u
+    INNER JOIN profiles p ON u.user_id = p.user_id
+    WHERE p.user_id > 0
+    ORDER BY u.user_id DESC;
+  `, [], cb);
 }
 
 function getUserById(user_id, cb) {
@@ -72,18 +106,22 @@ function getProfileById(profile_id, cb) {
   db.get("SELECT * FROM profiles WHERE profile_id = ?;", [profile_id], cb);
 }
 
-function createProfile(name, race, clazz, level, bio, cb) {
+function getProfileByUserId(user_id, cb) {
+  db.get("SELECT * FROM profiles WHERE user_id = ?;", [user_id], cb);
+}
+
+function createProfile(name, race, clazz, level, bio, imagePath, lookingFor, experienceLevel, timezone, user_id, cb) {
   db.run(
-    "INSERT INTO profiles (name, race, class, level, bio) VALUES (?, ?, ?, ?, ?);",
-    [name, race, clazz, level, bio],
+    "INSERT INTO profiles (name, race, class, level, bio, image_path, looking_for, experience_level, timezone, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
+    [name, race, clazz, level, bio, imagePath, lookingFor, experienceLevel, timezone, user_id],
     cb
   );
 }
 
-function updateProfile(profile_id, name, race, clazz, level, bio, cb) {
+function updateProfile(profile_id, name, race, clazz, level, bio, imagePath, lookingFor, experienceLevel, timezone, cb) {
   db.run(
-    "UPDATE profiles SET name = ?, race = ?, class = ?, level = ?, bio = ? WHERE profile_id = ?;",
-    [name, race, clazz, level, bio, profile_id],
+    "UPDATE profiles SET name = ?, race = ?, class = ?, level = ?, bio = ?, image_path = ?, looking_for = ?, experience_level = ?, timezone = ? WHERE profile_id = ?;",
+    [name, race, clazz, level, bio, imagePath, lookingFor, experienceLevel, timezone, profile_id],
     cb
   );
 }
@@ -94,12 +132,14 @@ function deleteProfile(profile_id, cb) {
 
 module.exports = {
   getAllUsers,
+  getUsersWithProfiles,
   getUserById,
   createUser,
   updateUser,
   deleteUser,
   getAllProfiles,
   getProfileById,
+  getProfileByUserId,
   createProfile,
   updateProfile,
   deleteProfile,

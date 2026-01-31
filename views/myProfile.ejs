@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - D&D Dating</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+<body>
+    <!-- Main Menu Sidebar -->
+    <nav class="main-menu">
+        <div>
+            <div class="nav-text">D&D Dating</div>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/profiles/my">My Profile</a></li>
+                <li><a href="/profiles/all">All Profiles</a></li>
+                <li><a href="/users">Users</a></li>
+                <li><a href="/admin">Admin</a></li>
+            </ul>
+        </div>
+        <div class="logout">
+            <button onclick="location.href='/logout'">Logout</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="content">
+        <% if (hasProfile && profile) { %>
+            <h2>My Profile</h2>
+            
+            <div class="profile-container">
+                <!-- Profile Info -->
+                <div class="profile-info">
+                    <% if (profile.image_path) { %>
+                        <div class="profile-image">
+                            <img src="<%= profile.image_path %>" alt="<%= profile.name %>" />
+                        </div>
+                    <% } else { %>
+                        <div class="profile-image-placeholder" style="font-size: 64px;">🎲</div>
+                    <% } %>
+                    
+                    <h3><%= profile.name %></h3>
+                    <p><strong>Race:</strong> <%= profile.race %></p>
+                    <p><strong>Class:</strong> <%= profile.class %></p>
+                    <p><strong>Level:</strong> <%= profile.level %></p>
+                    <% if (profile.experience_level) { %>
+                        <p><strong>Experience:</strong> <%= profile.experience_level %></p>
+                    <% } %>
+                    <% if (profile.timezone) { %>
+                        <p><strong>Timezone:</strong> <%= profile.timezone %></p>
+                    <% } %>
+                    <% if (profile.bio) { %>
+                        <p class="bio"><%= profile.bio %></p>
+                    <% } %>
+                    <% if (profile.looking_for) { %>
+                        <p class="looking-for"><strong>Looking for:</strong> <%= profile.looking_for %></p>
+                    <% } %>
+                    
+                    <div class="profile-actions" style="justify-content: center; margin-top: 20px;">
+                        <a href="/profiles/<%= profile.profile_id %>/edit">Edit Profile</a>
+                        <form method="POST" action="/profiles/my/delete" style="display:inline">
+                            <button type="submit" onclick="return confirm('Delete your profile?')">Delete Profile</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+        <% } else { %>
+            <h2>Create Your Profile</h2>
+            
+            <div class="profile-container" style="flex-direction: column;">
+                <form method="POST" action="/profiles/my" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label>Character Name:</label>
+                        <input name="name" placeholder="Character Name" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Character Race:</label>
+                        <select name="race" required>
+                            <option value="">Select race</option>
+                            <% races.forEach(r => { %>
+                                <option value="<%= r %>"><%= r %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Character Class:</label>
+                        <select name="class" required>
+                            <option value="">Select class</option>
+                            <% classes.forEach(c => { %>
+                                <option value="<%= c %>"><%= c %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Character Level (1-20+):</label>
+                        <input name="level" type="number" min="1" max="100" placeholder="Level" value="1" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Character Image:</label>
+                        <input type="file" name="image" accept="image/*" />
+                    </div>
+
+                    <div class="form-group">
+                        <label>Short Bio/Backstory:</label>
+                        <textarea name="bio" placeholder="Tell us about your character..." rows="4"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Looking For:</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" name="looking_for" value="Romance/RP relationship" /> Romance/RP relationship</label>
+                            <label><input type="checkbox" name="looking_for" value="Campaign buddies" /> Campaign buddies</label>
+                            <label><input type="checkbox" name="looking_for" value="Friends to chat with" /> Friends to chat with</label>
+                            <label><input type="checkbox" name="looking_for" value="One-shot adventures" /> One-shot adventures</label>
+                            <label><input type="checkbox" name="looking_for" value="Just browsing" /> Just browsing</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Experience Level:</label>
+                        <select name="experience_level">
+                            <option value="">Select experience level</option>
+                            <% experienceLevels.forEach(e => { %>
+                                <option value="<%= e %>"><%= e %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Timezone/Availability:</label>
+                        <select name="timezone">
+                            <option value="">Select timezone</option>
+                            <% timezones.forEach(t => { %>
+                                <option value="<%= t %>"><%= t %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+
+                    <button type="submit">Create Profile</button>
+                </form>
+            </div>
+        <% } %>
+        
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="/profiles/all" class="button">Browse All Profiles</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,57 +1,144 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Edit Profile</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
 </head>
 <body>
-  <h2>Edit profile #<%= profile.profile_id %></h2>
+    <!-- Main Menu Sidebar -->
+    <nav class="main-menu">
+        <div>
+            <div class="nav-text">D&D Dating</div>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/profiles">Profiles</a></li>
+                <li><a href="/users">Users</a></li>
+                <li><a href="/admin">Admin</a></li>
+            </ul>
+        </div>
+        <div class="logout">
+            <button onclick="location.href='/logout'">Logout</button>
+        </div>
+    </nav>
 
-  <form method="POST" action="/profiles/<%= profile.profile_id %>">
-    <label>
-      Name:
-      <input name="name" value="<%= profile.name %>" required />
-    </label>
-    <br /><br />
+    <!-- Main Content -->
+    <div class="content">
+        <h2>Edit Profile: <%= profile.name %></h2>
 
-    <label>
-      Race:
-      <select name="race" required>
-        <% races.forEach(r => { %>
-          <option value="<%= r %>" <%= r === profile.race ? "selected" : "" %>>
-            <%= r %>
-          </option>
-        <% }) %>
-      </select>
-    </label>
-    <br /><br />
+        <a href="/profiles" class="back-link">← Back to profiles</a>
 
-    <label>
-      Class:
-      <select name="class" required>
-        <% classes.forEach(c => { %>
-          <option value="<%= c %>" <%= c === profile.class ? "selected" : "" %>>
-            <%= c %>
-          </option>
-        <% }) %>
-      </select>
-    </label>
-    <br /><br />
+        <div class="profile-container" style="flex-direction: column;">
+            <form method="POST" action="/profiles/<%= profile.profile_id %>" enctype="multipart/form-data">
+                <input type="hidden" name="existing_image" value="<%= profile.image_path || '' %>" />
 
-    <label>
-      Level:
-      <input name="level" type="number" min="1" max="20" value="<%= profile.level %>" required />
-    </label>
-    <br /><br />
+                <div class="form-group">
+                    <label>Character Name:</label>
+                    <input name="name" value="<%= profile.name %>" required />
+                </div>
 
-    <label>
-      Bio:
-      <input name="bio" style="width: 360px" value="<%= profile.bio || "" %>" />
-    </label>
-    <br /><br />
+                <div class="form-group">
+                    <label>Character Race:</label>
+                    <select name="race" required>
+                        <% races.forEach(r => { %>
+                            <option value="<%= r %>" <%= r === profile.race ? "selected" : "" %>>
+                                <%= r %>
+                            </option>
+                        <% }) %>
+                    </select>
+                </div>
 
-    <button type="submit">Save</button>
-  </form>
+                <div class="form-group">
+                    <label>Character Class:</label>
+                    <select name="class" required>
+                        <% classes.forEach(c => { %>
+                            <option value="<%= c %>" <%= c === profile.class ? "selected" : "" %>>
+                                <%= c %>
+                            </option>
+                        <% }) %>
+                    </select>
+                </div>
 
-  <p><a href="/profiles">Back to profiles</a></p>
+                <div class="form-group">
+                    <label>Character Level (1-20+):</label>
+                    <input name="level" type="number" min="1" max="100" value="<%= profile.level || 1 %>" />
+                </div>
+
+                <div class="form-group">
+                    <label>Character Image:</label>
+                    <% if (profile.image_path) { %>
+                        <div class="profile-preview">
+                            <img src="<%= profile.image_path %>" alt="Current image" />
+                        </div>
+                    <% } %>
+                    <input type="file" name="image" accept="image/*" />
+                    <small>Leave empty to keep current image</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Short Bio/Backstory:</label>
+                    <textarea name="bio" rows="4"><%= profile.bio || "" %></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Looking For:</label>
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" name="looking_for" value="Romance/RP relationship"
+                                <%= lookingForArray.includes('Romance/RP relationship') ? 'checked' : '' %> />
+                            Romance/RP relationship
+                        </label>
+                        <label>
+                            <input type="checkbox" name="looking_for" value="Campaign buddies"
+                                <%= lookingForArray.includes('Campaign buddies') ? 'checked' : '' %> />
+                            Campaign buddies
+                        </label>
+                        <label>
+                            <input type="checkbox" name="looking_for" value="Friends to chat with"
+                                <%= lookingForArray.includes('Friends to chat with') ? 'checked' : '' %> />
+                            Friends to chat with
+                        </label>
+                        <label>
+                            <input type="checkbox" name="looking_for" value="One-shot adventures"
+                                <%= lookingForArray.includes('One-shot adventures') ? 'checked' : '' %> />
+                            One-shot adventures
+                        </label>
+                        <label>
+                            <input type="checkbox" name="looking_for" value="Just browsing"
+                                <%= lookingForArray.includes('Just browsing') ? 'checked' : '' %> />
+                            Just browsing
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Experience Level:</label>
+                    <select name="experience_level">
+                        <option value="">Select experience level</option>
+                        <% experienceLevels.forEach(e => { %>
+                            <option value="<%= e %>" <%= e === profile.experience_level ? "selected" : "" %>>
+                                <%= e %>
+                            </option>
+                        <% }) %>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Timezone/Availability:</label>
+                    <select name="timezone">
+                        <option value="">Select timezone</option>
+                        <% timezones.forEach(t => { %>
+                            <option value="<%= t %>" <%= t === profile.timezone ? "selected" : "" %>>
+                                <%= t %>
+                            </option>
+                        <% }) %>
+                    </select>
+                </div>
+
+                <button type="submit">Save Profile</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>

@@ -1,0 +1,94 @@
+/* Home page specific styles */
+.home-bg {
+    background-image: url('https://i.pinimg.com/736x/14/10/c8/1410c89b58aba2e0db515c4f46c51566.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+.home-content {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 40px;
+    border-radius: 15px;
+    max-width: 600px;
+    margin: 0 auto;
+    border: 2px solid #9b59b6;
+    box-shadow: 0 0 30px rgba(155, 89, 182, 0.5);
+}
+
+.home-title {
+    font-size: 3em;
+    color: #2ecc71;
+    text-align: center;
+    text-shadow: 
+        0 0 10px #2ecc71,
+        0 0 20px #2ecc71,
+        0 0 40px #2ecc71,
+        0 0 80px #2ecc71;
+    margin-bottom: 20px;
+    font-family: 'Georgia', serif;
+    letter-spacing: 2px;
+}
+
+.home-subtitle {
+    font-size: 1.5em;
+    color: #2ecc71;
+    text-align: center;
+    text-shadow: 
+        0 0 10px #2ecc71,
+        0 0 20px #2ecc71;
+    margin-bottom: 30px;
+}
+
+.home-description {
+    color: #ecf0f1;
+    font-size: 1.2em;
+    text-align: center;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.home-buttons {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.home-buttons .button {
+    font-size: 1.3em;
+    padding: 15px 30px;
+    margin: 10px 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+    border: 2px solid;
+}
+
+.home-buttons .button-primary {
+    background-color: transparent;
+    color: #9b59b6;
+    border-color: #9b59b6;
+    box-shadow: 0 0 15px rgba(155, 89, 182, 0.5);
+}
+
+.home-buttons .button-primary:hover {
+    background-color: #9b59b6;
+    color: #fff;
+    box-shadow: 0 0 30px rgba(155, 89, 182, 0.8);
+}
+
+.home-buttons .button-secondary {
+    background-color: transparent;
+    color: #e74c3c;
+    border-color: #e74c3c;
+    box-shadow: 0 0 15px rgba(231, 76, 60, 0.5);
+}
+
+.home-buttons .button-secondary:hover {
+    background-color: #e74c3c;
+    color: #fff;
+    box-shadow: 0 0 30px rgba(231, 76, 60, 0.8);
+}
+
+.home-nav {
+    background-color: rgba(51, 51, 51, 0.9) !important;
+}

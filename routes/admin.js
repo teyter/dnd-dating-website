@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 const os = require("os");
+const fs = require("fs");
 const { execFile } = require("child_process");
 const { log, logPath } = require("../logger");
 
@@ -29,7 +30,7 @@ router.use('/', (req, res, next) => {
 function readLastLines(filePath, maxLines = 200) {
   try {
     if (!fs.existsSync(filePath)) return "";
-    const text = require("fs").readFileSync(filePath, "utf8");
+    const text = fs.readFileSync(filePath, "utf8");
     const lines = text.split("\n");
     return lines.slice(-maxLines).join("\n");
   } catch (e) {
@@ -48,10 +49,19 @@ router.get("/", (req, res) => {
   const memory = process.memoryUsage();
 
   // Shell command (dynamic query) — safe: execFile with fixed command + args
-  execFile("uptime", [], { timeout: 1500 }, (err, stdout, stderr) => {
-    const uptimeOut = err
-      ? `Error running uptime: ${err.message}`
-      : (stdout || stderr || "").trim();
+  // Use appropriate command based on OS
+  const isWindows = os.platform() === 'win32';
+  const uptimeCmd = isWindows ? 'net stats SRV' : 'uptime';
+  const uptimeArgs = isWindows ? [] : [];
+  
+  execFile(uptimeCmd, uptimeArgs, { timeout: 1500 }, (err, stdout, stderr) => {
+    let uptimeOut;
+    if (err) {
+      // Fallback to os.uptime() if command fails
+      uptimeOut = `OS Uptime: ${Math.round(os.uptime() / 60)} minutes`;
+    } else {
+      uptimeOut = isWindows ? stdout : (stdout || stderr || "").trim();
+    }
 
     res.render("admin", {
       uptimeOut,
