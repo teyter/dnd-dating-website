@@ -17,7 +17,6 @@ const DND_RACES = [
   "Half-Orc", "Halfling", "Human", "Tiefling",
 ];
 
-// Multer configuration for image uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     const uploadDir = path.join(__dirname, '../uploads');
@@ -65,12 +64,10 @@ const TIMEZONES = [
   "UTC+12 (New Zealand)"
 ];
 
-// Get user_id from session or cookie (simple approach)
 function getUserId(req) {
-  return parseInt(req.cookies.user_id) || 1; // Default to 1 for demo
+  return parseInt(req.cookies.user_id) || 1; 
 }
 
-// View all profiles (browse other users)
 router.get('/all', (req, res) => {
   db.getAllProfiles((err, profiles) => {
     if (err) return res.status(500).send(err.message);
@@ -84,7 +81,6 @@ router.get('/all', (req, res) => {
   });
 });
 
-// View my profile (or create one if doesn't exist)
 router.get('/my', (req, res) => {
   const user_id = getUserId(req);
   
@@ -92,7 +88,6 @@ router.get('/my', (req, res) => {
     if (err) return res.status(500).send(err.message);
     
     if (profile) {
-      // User has a profile, show it with edit/delete options
       const lookingForArray = profile.looking_for ? profile.looking_for.split(',') : [];
       res.render('myProfile', {
         profile,
@@ -104,7 +99,6 @@ router.get('/my', (req, res) => {
         hasProfile: true,
       });
     } else {
-      // No profile yet, show create form
       res.render('myProfile', {
         profile: null,
         classes: DND_CLASSES,
@@ -118,7 +112,6 @@ router.get('/my', (req, res) => {
   });
 });
 
-// Create my profile
 router.post('/my', upload.single('image'), (req, res) => {
   const { name, race, class: clazz, level, bio, looking_for, experience_level, timezone } = req.body;
   const imagePath = req.file ? '/uploads/' + req.file.filename : null;
@@ -131,7 +124,6 @@ router.post('/my', upload.single('image'), (req, res) => {
   });
 });
 
-// Update my profile
 router.post('/my/update', upload.single('image'), (req, res) => {
   const { name, race, class: clazz, level, bio, looking_for, experience_level, timezone, profile_id } = req.body;
   const imagePath = req.file ? '/uploads/' + req.file.filename : req.body.existing_image;
@@ -143,7 +135,6 @@ router.post('/my/update', upload.single('image'), (req, res) => {
   });
 });
 
-// Delete my profile
 router.post('/my/delete', (req, res) => {
   const user_id = getUserId(req);
   
@@ -163,18 +154,16 @@ router.post('/my/delete', (req, res) => {
   });
 });
 
-// View profiles (redirect to my-profile)
 router.get('/', (req, res) => {
   res.redirect('/profiles/my');
 });
 
-// Edit profile form
 router.get('/:id/edit', (req, res) => {
   db.getProfileById(req.params.id, (err, profile) => {
     if (err) return res.status(500).send(err.message);
     if (!profile) return res.status(404).send("Profile not found");
     
-    // Parse looking_for into array for checkboxes
+  
     const lookingForArray = profile.looking_for ? profile.looking_for.split(',') : [];
     
     res.render('editProfile', {
@@ -188,7 +177,6 @@ router.get('/:id/edit', (req, res) => {
   });
 });
 
-// Update profile
 router.post('/:id', upload.single('image'), (req, res) => {
   const { name, race, class: clazz, level, bio, looking_for, experience_level, timezone } = req.body;
   const imagePath = req.file ? '/uploads/' + req.file.filename : req.body.existing_image;
@@ -200,7 +188,6 @@ router.post('/:id', upload.single('image'), (req, res) => {
   });
 });
 
-// Delete profile
 router.post('/:id/delete', (req, res) => {
   db.getProfileById(req.params.id, (err, profile) => {
     if (err) return res.status(500).send(err.message);

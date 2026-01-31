@@ -82,7 +82,6 @@
     padding-top: 3px;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .profiles-grid {
         margin-left: 20px;

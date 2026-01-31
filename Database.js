@@ -13,7 +13,6 @@ db.serialize(() => {
     );
   `);
 
-  // NEW: profiles table
   db.run(`
     CREATE TABLE IF NOT EXISTS profiles (
       profile_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -42,11 +41,9 @@ db.serialize(() => {
   
   migrations.forEach(sql => {
     db.run(sql, (err) => {
-      // Ignore errors - column may already exist
     });
   });
 
-  // Seed Astarion once
   db.get(`SELECT COUNT(*) AS count FROM profiles;`, [], (err, row) => {
     if (err) return;
     if (row.count === 0) {

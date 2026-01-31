@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/editProfile.css' />
 </head>
 <body>
     <!-- Main Menu Sidebar -->
@@ -29,7 +30,7 @@
 
         <a href="/profiles" class="back-link">← Back to profiles</a>
 
-        <div class="profile-container" style="flex-direction: column;">
+        <div class="edit-profile-container">
             <form method="POST" action="/profiles/<%= profile.profile_id %>" enctype="multipart/form-data">
                 <input type="hidden" name="existing_image" value="<%= profile.image_path || '' %>" />
 

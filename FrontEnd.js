@@ -41,7 +41,6 @@ app.locals.races = DND_RACES;
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 
-// Manually formatting
 app.get('/viewUsers', (req, res) => {
   const user = { name: 'Bob', pass: 'password123' };
   const htmlOut = `<html><body><h2>Users</h2>
@@ -53,13 +52,11 @@ app.get('/viewUsers', (req, res) => {
   res.send(htmlOut);
 });
 
-// Templating and passing variables using ejs
 app.get('/', (req, res) => {
   const websiteName = "D&D Dating!";
   res.render('index', { websiteName });
 });
 
-// Templates and control flow
 app.get('/viewUsersTemplate', (req, res) => {
   const users = [
     { name: 'bob', pass: 'password123' },
@@ -68,7 +65,6 @@ app.get('/viewUsersTemplate', (req, res) => {
   res.render('viewUsers', { users });
 });
 
-// View users from SQLite
 app.get('/users', (req, res) => {
   db.getAllUsers((err, users) => {
     if (err) return res.status(500).send(err.message);
@@ -76,7 +72,6 @@ app.get('/users', (req, res) => {
   });
 });
 
-// Create user
 app.post('/users', (req, res) => {
   const { name, pass } = req.body;
 
@@ -86,7 +81,6 @@ app.post('/users', (req, res) => {
   });
 });
 
-// Delete user
 app.post('/users/:id/delete', (req, res) => {
   db.deleteUser(req.params.id, (err) => {
     if (err) return res.status(500).send(err.message);
@@ -94,7 +88,6 @@ app.post('/users/:id/delete', (req, res) => {
   });
 });
 
-// Edit user
 app.get("/users/:id/edit", (req, res) => {
   db.getUserById(req.params.id, (err, user) => {
     if (err) return res.status(500).send(err.message);
@@ -103,7 +96,6 @@ app.get("/users/:id/edit", (req, res) => {
   });
 });
 
-// Update user (save edit form)
 app.post("/users/:id", (req, res) => {
   const { name, pass } = req.body;
 
@@ -125,14 +117,12 @@ app.use('/admin', (req, res, next) => {
   const decoded = Buffer.from(encoded, 'base64').toString('utf8');
   const [user, pass] = decoded.split(':');
 
-  // change these
   if (user === 'admin' && pass === 'admin') return next();
 
   res.setHeader('WWW-Authenticate', 'Basic realm="Admin"');
   return res.status(401).send('Invalid credentials');
 });
 
-// read the last N lines of a file
 function readLastLines(filePath, maxLines = 200) {
   try {
     if (!fs.existsSync(filePath)) return "";
@@ -144,17 +134,13 @@ function readLastLines(filePath, maxLines = 200) {
   }
 }
 
-// Admin page
 app.get("/admin", (req, res) => {
-  // Log view (read)
   const logTail = readLastLines(logPath, 200);
 
-  // App/server stats (no shell)
   const appUptimeSeconds = process.uptime();
   const systemUptimeSeconds = os.uptime();
   const memory = process.memoryUsage();
 
-  // Shell command (dynamic query) — safe: execFile with fixed command + args
   execFile("uptime", [], { timeout: 1500 }, (err, stdout, stderr) => {
     const uptimeOut = err
       ? `Error running uptime: ${err.message}`
@@ -170,14 +156,12 @@ app.get("/admin", (req, res) => {
   });
 });
 
-// Write to log file
 app.post("/admin/log", (req, res) => {
   const msg = (req.body.message || "").trim();
   if (msg.length > 0) log(`ADMIN_NOTE: ${msg}`);
   res.redirect("/admin");
 });
 
-// View profiles
 app.get("/profiles", (req, res) => {
   db.getAllProfiles((err, profiles) => {
     if (err) return res.status(500).send(err.message);
@@ -188,7 +172,6 @@ app.get("/profiles", (req, res) => {
   });
 });
 
-// Create profile
 app.post("/profiles", (req, res) => {
   const { name, race, class: clazz, level, bio } = req.body;
 
@@ -198,7 +181,6 @@ app.post("/profiles", (req, res) => {
   });
 });
 
-// Edit profile form
 app.get("/profiles/:id/edit", (req, res) => {
   db.getProfileById(req.params.id, (err, profile) => {
     if (err) return res.status(500).send(err.message);
@@ -210,7 +192,6 @@ app.get("/profiles/:id/edit", (req, res) => {
   });
 });
 
-// Update profile
 app.post("/profiles/:id", (req, res) => {
   const { name, race, class: clazz, level, bio } = req.body;
 
@@ -220,7 +201,6 @@ app.post("/profiles/:id", (req, res) => {
   });
 });
 
-// Delete profile
 app.post("/profiles/:id/delete", (req, res) => {
   db.deleteProfile(req.params.id, (err) => {
     if (err) return res.status(500).send(err.message);

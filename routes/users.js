@@ -3,7 +3,6 @@ var router = express.Router();
 
 const db = require('../Database');
 
-// View users from SQLite
 router.get('/', (req, res) => {
   db.getAllUsers((err, users) => {
     if (err) return res.status(500).send(err.message);
@@ -11,7 +10,6 @@ router.get('/', (req, res) => {
   });
 });
 
-// Create user
 router.post('/', (req, res) => {
   const { name, pass } = req.body;
 
@@ -21,7 +19,6 @@ router.post('/', (req, res) => {
   });
 });
 
-// Edit user form
 router.get('/:id/edit', (req, res) => {
   db.getUserById(req.params.id, (err, user) => {
     if (err) return res.status(500).send(err.message);
@@ -30,7 +27,6 @@ router.get('/:id/edit', (req, res) => {
   });
 });
 
-// Update user (save edit form)
 router.post('/:id', (req, res) => {
   const { name, pass } = req.body;
 
@@ -40,7 +36,6 @@ router.post('/:id', (req, res) => {
   });
 });
 
-// Delete user
 router.post('/:id/delete', (req, res) => {
   db.deleteUser(req.params.id, (err) => {
     if (err) return res.status(500).send(err.message);
