@@ -1,31 +1,88 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Admin Monitoring</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Monitoring</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/admin.css' />
 </head>
 <body>
-  <h2>Admin Monitoring</h2>
+    <!-- Main Menu Sidebar -->
+    <nav class="main-menu">
+        <div>
+            <div class="nav-text">D&D Dating</div>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/profiles/my">My Profile</a></li>
+                <li><a href="/profiles/all">All Profiles</a></li>
+                <li><a href="/users">Users</a></li>
+                <li><a href="/admin">Admin</a></li>
+            </ul>
+        </div>
+        <div class="logout">
+            <button onclick="location.href='/logout'">Logout</button>
+        </div>
+    </nav>
 
-  <p><a href="/">Home</a> | <a href="/users">Users</a> | <a href="/profiles">Profiles</a></p>
+    <!-- Main Content -->
+    <div class="content">
+        <h2>Admin Dashboard</h2>
 
-  <h3>System uptime (shell: uptime)</h3>
-  <pre><%= uptimeOut %></pre>
+        <a href="/" class="back-link">← Back to Home</a>
 
-  <h3>App & server stats</h3>
-  <ul>
-    <li>App uptime: <%= Math.round(appUptimeSeconds) %> seconds</li>
-    <li>System uptime: <%= Math.round(systemUptimeSeconds) %> seconds</li>
-    <li>Memory (rss): <%= Math.round(memory.rss / 1024 / 1024) %> MB</li>
-    <li>Memory (heapUsed): <%= Math.round(memory.heapUsed / 1024 / 1024) %> MB</li>
-  </ul>
+        <!-- Server Stats Cards -->
+        <div class="admin-stats-grid">
+            <div class="stat-card green">
+                <div class="stat-value"><%= totalUsers %></div>
+                <div class="stat-label">Total Accounts</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value"><%= totalProfiles %></div>
+                <div class="stat-label">Profiles Created</div>
+            </div>
+            <div class="stat-card yellow">
+                <div class="stat-value"><%= Math.round(appUptimeSeconds) %>s</div>
+                <div class="stat-label">App Uptime</div>
+            </div>
+            <div class="stat-card red">
+                <div class="stat-value"><%= Math.round(memory.rss / 1024 / 1024) %> MB</div>
+                <div class="stat-label">Memory Usage</div>
+            </div>
+        </div>
 
-  <h3>Write a log entry</h3>
-  <form method="POST" action="/admin/log">
-    <input name="message" placeholder="log message" style="width: 360px" />
-    <button type="submit">Write</button>
-  </form>
+        <!-- Centered Admin Panels -->
+        <div class="admin-center">
+            <!-- Server Info Panel -->
+            <div class="admin-panel">
+                <h3>Server Info</h3>
+                
+                <h4 style="color: #888; margin-top: 15px; margin-bottom: 10px;">System Details</h4>
+                <div class="server-output">
+                    <div><strong>System Uptime:</strong> <%= Math.round(systemUptimeSeconds / 60) %> minutes</div>
+                    <div><strong>Heap Used:</strong> <%= Math.round(memory.heapUsed / 1024 / 1024) %> MB</div>
+                </div>
+                
+                <h4 style="color: #888; margin-top: 20px; margin-bottom: 10px;">Shell Command Output</h4>
+                <div class="uptime-output">
+                    <%= uptimeOut %>
+                </div>
+                
+                <h3 class="warning" style="margin-top: 20px;">Write Log Entry</h3>
+                <form method="POST" action="/admin/log" class="log-form">
+                    <input name="message" placeholder="Enter log message..." />
+                    <button type="submit">Write</button>
+                </form>
+            </div>
 
-  <h3>Recent log (tail)</h3>
-  <pre style="border:1px solid #ccc; padding:10px; white-space: pre-wrap;"><%= logTail %></pre>
+            <!-- Log Panel -->
+            <div class="admin-panel">
+                <h3 class="info">Recent Log</h3>
+                <div class="log-output">
+                    <%- logTail %>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

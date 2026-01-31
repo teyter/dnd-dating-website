@@ -4,13 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>D&D Dating</title>
-<body>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/homepage.css' />
+</head>
+<body class="home-bg">
+    <!-- Main Menu Sidebar -->
+    <nav class="main-menu home-nav">
+        <div>
+            <div class="nav-text">D&D Dating</div>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/profiles/my">My Profile</a></li>
+                <li><a href="/profiles/all">All Profiles</a></li>
+                <li><a href="/users">Users</a></li>
+                <li><a href="/admin">Admin</a></li>
+            </ul>
+        </div>
+        <div class="logout">
+            <button onclick="location.href='/logout'">Logout</button>
+        </div>
+    </nav>
 
-<h2>Welcome to <%- websiteName %></h2>
-<p><a href="/users">Manage users</a></p>
-<p><a href="/admin">Admin monitoring</a></p>
-<p><a href="/profiles">Dating profiles</a></p>
-
-
+    <!-- Main Content -->
+    <div class="content">
+        <div class="home-content">
+            <h1 class="home-title">Welcome to D&D Dating!</h1>
+            <p class="home-subtitle">Find your perfect adventuring partner</p>
+            <p class="home-description">
+                Whether you're looking for romance, campaign buddies, or just friends to chat with,
+                our community of adventurers is ready to meet you. Create your character profile
+                and start your journey today!
+            </p>
+            <div class="home-buttons">
+                <a href="/profiles/all" class="button button-primary">Browse All Profiles</a>
+                <a href="/profiles/my" class="button button-secondary">My Profile</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

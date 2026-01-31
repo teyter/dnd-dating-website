@@ -2,20 +2,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Users</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
 <body>
+    <!-- Main Menu Sidebar -->
+    <nav class="main-menu">
+        <div>
+            <div class="nav-text">D&D Dating</div>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/profiles/my">My Profile</a></li>
+                <li><a href="/profiles/all">All Profiles</a></li>
+                <li><a href="/users">Users</a></li>
+                <li><a href="/admin">Admin</a></li>
+            </ul>
+        </div>
+        <div class="logout">
+            <button onclick="location.href='/logout'">Logout</button>
+        </div>
+    </nav>
 
-<h2>User List</h2>
+    <!-- Main Content -->
+    <div class="content">
+        <h2>User List</h2>
 
-<table>
-<tr><th>User</th><th>Password</th></tr>
- <tr>
-         <% users.forEach(function(user) { %>
-            <td><%- user.name %></td>
-            <td><%- user.pass %></td>
-</tr>
-    <% }); %>
-</table>
+        <a href="/users" class="back-link">← Back to Users</a>
+
+        <div class="profile-container" style="flex-direction: column;">
+            <table>
+                <tr>
+                    <th>User</th>
+                    <th>Password</th>
+                </tr>
+                <% users.forEach(function(user) { %>
+                    <tr>
+                        <td><%- user.name %></td>
+                        <td><%- user.pass %></td>
+                    </tr>
+                <% }); %>
+            </table>
+        </div>
+    </div>
 </body>
 </html>
-

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Profiles - D&D Dating</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/allProfiles.css' />
+</head>
+<body>
+    <!-- Main Menu Sidebar -->
+    <nav class="main-menu">
+        <div>
+            <div class="nav-text">D&D Dating</div>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/profiles/my">My Profile</a></li>
+                <li><a href="/profiles/all">All Profiles</a></li>
+                <li><a href="/users">Users</a></li>
+                <li><a href="/admin">Admin</a></li>
+            </ul>
+        </div>
+        <div class="logout">
+            <button onclick="location.href='/logout'">Logout</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="content">
+        <h2>All D&D Dating Profiles</h2>
+
+        <a href="/profiles/my" class="back-link">← Back to My Profile</a>
+
+        <% if (profiles.length === 0) { %>
+            <p style="text-align: center; font-size: 1.2em;">No profiles yet. Be the first to create one!</p>
+        <% } else { %>
+            <div class="profiles-grid">
+                <% profiles.forEach(p => { %>
+                    <div class="profile-card">
+                        <% if (p.image_path) { %>
+                            <img src="<%= p.image_path %>" alt="<%= p.name %>" class="profile-image" />
+                        <% } else { %>
+                            <div class="profile-image-placeholder">🎲</div>
+                        <% } %>
+                        <!-- Add this wrapper div -->
+                        <div class="profile-card-content">
+                            <h3><%= p.name %></h3>
+                            <p><strong>Race:</strong> <%= p.race %></p>
+                            <p><strong>Class:</strong> <%= p.class %></p>
+                            <p><strong>Level:</strong> <%= p.level %></p>
+                            <% if (p.experience_level) { %>
+                                <p><strong>Experience:</strong> <%= p.experience_level %></p>
+                            <% } %>
+                            <% if (p.timezone) { %>
+                                <p><strong>Timezone:</strong> <%= p.timezone %></p>
+                            <% } %>
+                            <% if (p.bio) { %>
+                                <p class="bio"><%= p.bio %></p>
+                            <% } %>
+                            <% if (p.looking_for) { %>
+                                <p class="looking-for"><strong>Looking for:</strong> <%= p.looking_for %></p>
+                            <% } %>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } %>
+        
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="/profiles/my" class="button">Go to My Profile</a>
+        </div>
+    </div>
+</body>
+</html>

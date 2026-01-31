@@ -1,47 +1,76 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Users (Database)</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users (Database)</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/users.css' />
 </head>
 <body>
-  <h2>Users from SQLite</h2>
+    <!-- Main Menu Sidebar -->
+    <nav class="main-menu">
+        <div>
+            <div class="nav-text">D&D Dating</div>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/profiles/my">My Profile</a></li>
+                <li><a href="/profiles/all">All Profiles</a></li>
+                <li><a href="/users">Users</a></li>
+                <li><a href="/admin">Admin</a></li>
+            </ul>
+        </div>
+        <div class="logout">
+            <button onclick="location.href='/logout'">Logout</button>
+        </div>
+    </nav>
 
-  <h3>Add user</h3>
+    <!-- Main Content -->
+    <div class="content">
+        <h2>Users from SQLite</h2>
 
-  <p><a href="/">Home</a> | <a href="/admin">Admin</a></p>
-  <form method="POST" action="/users">
-    <input name="name" placeholder="name" required />
-    <input name="pass" placeholder="pass" required />
-    <button type="submit">Add</button>
-  </form>
+        <a href="/" class="back-link">← Back to Home</a>
 
-  <hr />
-
-  <% if (users.length === 0) { %>
-    <p>No users in database yet.</p>
-  <% } else { %>
-    <table border="1" cellpadding="6">
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Password</th>
-        <th>Actions</th>
-      </tr>
-
-      <% users.forEach(u => { %>
-        <tr>
-          <td><%= u.user_id %></td>
-          <td><%= u.name %></td>
-          <td><%= u.pass %></td>
-          <td>
-            <a href="/users/<%= u.user_id %>/edit">Edit</a>
-            <form method="POST" action="/users/<%= u.user_id %>/delete" style="display:inline">
-              <button type="submit" onclick="return confirm('Delete this user?')">Delete</button>
+        <div class="users-container">
+            <h3>Add user</h3>
+            <form method="POST" action="/users">
+                <div class="form-group">
+                    <input name="name" placeholder="Name" required />
+                </div>
+                <div class="form-group">
+                    <input name="pass" placeholder="Password" required />
+                </div>
+                <button type="submit">Add</button>
             </form>
-          </td>
-        </tr>
-      <% }) %>
-    </table>
-  <% } %>
+
+            <hr />
+
+            <% if (users.length === 0) { %>
+                <p class="empty-message">No users in database yet.</p>
+            <% } else { %>
+                <table class="users-table">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Password</th>
+                        <th>Actions</th>
+                    </tr>
+                    <% users.forEach(u => { %>
+                        <tr>
+                            <td><%= u.user_id %></td>
+                            <td><%= u.name %></td>
+                            <td><%= u.pass %></td>
+                            <td class="actions-cell">
+                                <a href="/users/<%= u.user_id %>/edit">Edit</a>
+                                <form method="POST" action="/users/<%= u.user_id %>/delete" style="display:inline">
+                                    <button type="submit" onclick="return confirm('Delete this user?')">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </table>
+            <% } %>
+        </div>
+    </div>
 </body>
 </html>
