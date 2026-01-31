@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Profiles - D&D Dating</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/stylesheets/allProfiles.css' />
 </head>
 <body>
     <!-- Main Menu Sidebar -->
@@ -41,22 +42,25 @@
                         <% } else { %>
                             <div class="profile-image-placeholder">🎲</div>
                         <% } %>
-                        <h3><%= p.name %></h3>
-                        <p><strong>Race:</strong> <%= p.race %></p>
-                        <p><strong>Class:</strong> <%= p.class %></p>
-                        <p><strong>Level:</strong> <%= p.level %></p>
-                        <% if (p.experience_level) { %>
-                            <p><strong>Experience:</strong> <%= p.experience_level %></p>
-                        <% } %>
-                        <% if (p.timezone) { %>
-                            <p><strong>Timezone:</strong> <%= p.timezone %></p>
-                        <% } %>
-                        <% if (p.bio) { %>
-                            <p class="bio"><%= p.bio %></p>
-                        <% } %>
-                        <% if (p.looking_for) { %>
-                            <p class="looking-for"><strong>Looking for:</strong> <%= p.looking_for %></p>
-                        <% } %>
+                        <!-- Add this wrapper div -->
+                        <div class="profile-card-content">
+                            <h3><%= p.name %></h3>
+                            <p><strong>Race:</strong> <%= p.race %></p>
+                            <p><strong>Class:</strong> <%= p.class %></p>
+                            <p><strong>Level:</strong> <%= p.level %></p>
+                            <% if (p.experience_level) { %>
+                                <p><strong>Experience:</strong> <%= p.experience_level %></p>
+                            <% } %>
+                            <% if (p.timezone) { %>
+                                <p><strong>Timezone:</strong> <%= p.timezone %></p>
+                            <% } %>
+                            <% if (p.bio) { %>
+                                <p class="bio"><%= p.bio %></p>
+                            <% } %>
+                            <% if (p.looking_for) { %>
+                                <p class="looking-for"><strong>Looking for:</strong> <%= p.looking_for %></p>
+                            <% } %>
+                        </div>
                     </div>
                 <% }) %>
             </div>

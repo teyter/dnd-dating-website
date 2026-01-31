@@ -5,6 +5,7 @@ const os = require("os");
 const fs = require("fs");
 const { execFile } = require("child_process");
 const { log, logPath } = require("../logger");
+const db = require("../Database");
 
 // Basic auth middleware for admin routes
 router.use('/', (req, res, next) => {
@@ -31,8 +32,10 @@ function readLastLines(filePath, maxLines = 200) {
   try {
     if (!fs.existsSync(filePath)) return "";
     const text = fs.readFileSync(filePath, "utf8");
-    const lines = text.split("\n");
-    return lines.slice(-maxLines).join("\n");
+    const lines = text.split(/\r?\n/);
+    // Get last N lines and remove ALL leading whitespace from each line
+    const cleanedLines = lines.slice(-maxLines).map(line => line.replace(/^\s+/, ''));
+    return cleanedLines.join('\n');
   } catch (e) {
     return `Error reading log: ${e.message}`;
   }
@@ -40,35 +43,48 @@ function readLastLines(filePath, maxLines = 200) {
 
 // Admin page
 router.get("/", (req, res) => {
-  // Log view (read)
-  const logTail = readLastLines(logPath, 200);
+  // Get user and profile counts from database
+  db.getAllUsers((err, users) => {
+    if (err) users = [];
+    db.getAllProfiles((err, profiles) => {
+      if (err) profiles = [];
+      
+      const totalUsers = users.length;
+      const totalProfiles = profiles.length;
+      
+      // Log view (read)
+      const logTail = readLastLines(logPath, 200);
 
-  // App/server stats (no shell)
-  const appUptimeSeconds = process.uptime();
-  const systemUptimeSeconds = os.uptime();
-  const memory = process.memoryUsage();
+      // App/server stats (no shell)
+      const appUptimeSeconds = process.uptime();
+      const systemUptimeSeconds = os.uptime();
+      const memory = process.memoryUsage();
 
-  // Shell command (dynamic query) — safe: execFile with fixed command + args
-  // Use appropriate command based on OS
-  const isWindows = os.platform() === 'win32';
-  const uptimeCmd = isWindows ? 'net stats SRV' : 'uptime';
-  const uptimeArgs = isWindows ? [] : [];
-  
-  execFile(uptimeCmd, uptimeArgs, { timeout: 1500 }, (err, stdout, stderr) => {
-    let uptimeOut;
-    if (err) {
-      // Fallback to os.uptime() if command fails
-      uptimeOut = `OS Uptime: ${Math.round(os.uptime() / 60)} minutes`;
-    } else {
-      uptimeOut = isWindows ? stdout : (stdout || stderr || "").trim();
-    }
+      // Shell command (dynamic query) — safe: execFile with fixed command + args
+      // Use appropriate command based on OS
+      const isWindows = os.platform() === 'win32';
+      const uptimeCmd = isWindows ? 'net stats SRV' : 'uptime';
+      const uptimeArgs = isWindows ? [] : [];
+      
+      execFile(uptimeCmd, uptimeArgs, { timeout: 1500 }, (err, stdout, stderr) => {
+        let uptimeOut;
+        if (err) {
+          // Fallback to os.uptime() if command fails
+          uptimeOut = `OS Uptime: ${Math.round(os.uptime() / 60)} minutes`;
+        } else {
+          uptimeOut = isWindows ? stdout : (stdout || stderr || "").trim();
+        }
 
-    res.render("admin", {
-      uptimeOut,
-      appUptimeSeconds,
-      systemUptimeSeconds,
-      memory,
-      logTail,
+        res.render("admin", {
+          uptimeOut,
+          appUptimeSeconds,
+          systemUptimeSeconds,
+          memory,
+          logTail,
+          totalUsers,
+          totalProfiles,
+        });
+      });
     });
   });
 });
