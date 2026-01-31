@@ -58,7 +58,7 @@
                         <p class="looking-for"><strong>Looking for:</strong> <%= profile.looking_for %></p>
                     <% } %>
                     
-                    <div class="profile-actions" style="justify-content: center; margin-top: 20px;">
+                    <div class="profile-actions">
                         <a href="/profiles/<%= profile.profile_id %>/edit">Edit Profile</a>
                         <form method="POST" action="/profiles/my/delete" style="display:inline">
                             <button type="submit" onclick="return confirm('Delete your profile?')">Delete Profile</button>

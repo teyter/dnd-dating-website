@@ -1,13 +1,12 @@
 .profile-container {
     display: flex;
-    max-width: 900px;
-    margin: 0 auto;
-    margin-left: 240px;
+    flex-direction: column;
+    max-width: 600px;
+    margin: 40px auto;
     background-color: white;
-    padding: 40px;
+    padding: 50px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    gap: 40px;
 }
 
 .profile-info {
@@ -20,12 +19,11 @@
 
 .profile-info > img,
 .profile-info .profile-image {
-    max-width: 60%;
+    max-width: 115%;
     max-height: 465px;
     width: auto;
     height: auto;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     margin: 0 auto;
     display: block;
 }
@@ -71,15 +69,18 @@
 
 .profile-actions {
     display: flex;
-    gap: 10px;
+    gap: 15px;
     margin-top: 30px;
     justify-content: center;
 }
 
 .profile-actions a,
 .profile-actions button {
-    display: inline-block;
-    padding: 10px 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 140px;
+    padding: 12px 20px;
     background-color: #28a745;
     color: white;
     border: none;
@@ -89,6 +90,7 @@
     text-decoration: none;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
+    box-sizing: border-box;
 }
 
 .profile-actions a:hover,
@@ -98,11 +100,11 @@
 }
 
 .profile-actions button {
-    background-color: #dc3545;
+    background-color: #28a745;
 }
 
 .profile-actions button:hover {
-    background-color: #c82333;
+    background-color: #218838;
 }
 
 /* Profile Form Styles */
@@ -161,8 +163,8 @@
 
 .profile-container form button[type="submit"] {
     display: inline-block;
-    padding: 12px 30px;
-    margin-top: 20px;
+    padding: 15px 30px;
+    margin-top: 1px;
     background-color: #28a745;
     color: white;
     border: none;
@@ -177,7 +179,6 @@
     transform: translateY(-2px);
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
     .profile-container {
         flex-direction: column;
