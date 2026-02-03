@@ -87,9 +87,9 @@ function getUserId(req) {
   return parseInt(req.cookies.user_id) || 1; 
 }
 
-router.get('/all', (req, res) => {
-  db.getAllProfiles((err, profiles) => {
-    if (err) return res.status(500).send(err.message);
+router.get('/all', async (req, res) => {
+  try {
+    const profiles = await db.getAllProfiles();
     res.render('allProfiles', {
       profiles,
       classes: DND_CLASSES,
@@ -97,14 +97,16 @@ router.get('/all', (req, res) => {
       experienceLevels: EXPERIENCE_LEVELS,
       timezones: TIMEZONES,
     });
-  });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 });
 
-router.get('/my', (req, res) => {
+router.get('/my', async (req, res) => {
   const user_id = getUserId(req);
   
-  db.getProfileByUserId(user_id, (err, profile) => {
-    if (err) return res.status(500).send(err.message);
+  try {
+    const profile = await db.getProfileByUserId(user_id);
     
     if (profile) {
       const lookingForArray = profile.looking_for ? profile.looking_for.split(',') : [];
@@ -128,37 +130,43 @@ router.get('/my', (req, res) => {
         hasProfile: false,
       });
     }
-  });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 });
 
-router.post('/my', upload.single('image'), (req, res) => {
+router.post('/my', upload.single('image'), async (req, res) => {
   const { name, race, class: clazz, level, bio, looking_for, experience_level, timezone } = req.body;
   const imagePath = req.file ? '/uploads/' + req.file.filename : null;
   const lookingForArray = Array.isArray(looking_for) ? looking_for.join(',') : looking_for;
   const user_id = getUserId(req);
 
-  db.createProfile(name, race, clazz, Number(level) || 1, bio, imagePath, lookingForArray, experience_level, timezone, user_id, (err) => {
-    if (err) return res.status(500).send(err.message);
+  try {
+    await db.createProfile(name, race, clazz, Number(level) || 1, bio, imagePath, lookingForArray, experience_level, timezone, user_id);
     res.redirect("/profiles/my");
-  });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 });
 
-router.post('/my/update', upload.single('image'), (req, res) => {
+router.post('/my/update', upload.single('image'), async (req, res) => {
   const { name, race, class: clazz, level, bio, looking_for, experience_level, timezone, profile_id } = req.body;
   const imagePath = req.file ? '/uploads/' + req.file.filename : req.body.existing_image;
   const lookingForArray = Array.isArray(looking_for) ? looking_for.join(',') : looking_for;
 
-  db.updateProfile(profile_id, name, race, clazz, Number(level) || 1, bio, imagePath, lookingForArray, experience_level, timezone, (err) => {
-    if (err) return res.status(500).send(err.message);
+  try {
+    await db.updateProfile(profile_id, name, race, clazz, Number(level) || 1, bio, imagePath, lookingForArray, experience_level, timezone);
     res.redirect("/profiles/my");
-  });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 });
 
-router.post('/my/delete', (req, res) => {
+router.post('/my/delete', async (req, res) => {
   const user_id = getUserId(req);
   
-  db.getProfileByUserId(user_id, (err, profile) => {
-    if (err) return res.status(500).send(err.message);
+  try {
+    const profile = await db.getProfileByUserId(user_id);
     if (profile && profile.image_path) {
       const imagePath = path.join(__dirname, '..', profile.image_path);
       if (fs.existsSync(imagePath)) {
@@ -166,23 +174,22 @@ router.post('/my/delete', (req, res) => {
       }
     }
     
-    db.deleteProfile(profile.profile_id, (err) => {
-      if (err) return res.status(500).send(err.message);
-      res.redirect('/profiles/my');
-    });
-  });
+    await db.deleteProfile(profile.profile_id);
+    res.redirect('/profiles/my');
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 });
 
 router.get('/', (req, res) => {
   res.redirect('/profiles/my');
 });
 
-router.get('/:id/edit', (req, res) => {
-  db.getProfileById(req.params.id, (err, profile) => {
-    if (err) return res.status(500).send(err.message);
+router.get('/:id/edit', async (req, res) => {
+  try {
+    const profile = await db.getProfileById(req.params.id);
     if (!profile) return res.status(404).send("Profile not found");
     
-  
     const lookingForArray = profile.looking_for ? profile.looking_for.split(',') : [];
     
     res.render('editProfile', {
@@ -193,23 +200,27 @@ router.get('/:id/edit', (req, res) => {
       timezones: TIMEZONES,
       lookingForArray,
     });
-  });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 });
 
-router.post('/:id', upload.single('image'), (req, res) => {
+router.post('/:id', upload.single('image'), async (req, res) => {
   const { name, race, class: clazz, level, bio, looking_for, experience_level, timezone } = req.body;
   const imagePath = req.file ? '/uploads/' + req.file.filename : req.body.existing_image;
   const lookingForArray = Array.isArray(looking_for) ? looking_for.join(',') : looking_for;
 
-  db.updateProfile(req.params.id, name, race, clazz, Number(level) || 1, bio, imagePath, lookingForArray, experience_level, timezone, (err) => {
-    if (err) return res.status(500).send(err.message);
+  try {
+    await db.updateProfile(req.params.id, name, race, clazz, Number(level) || 1, bio, imagePath, lookingForArray, experience_level, timezone);
     res.redirect("/profiles/my");
-  });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 });
 
-router.post('/:id/delete', (req, res) => {
-  db.getProfileById(req.params.id, (err, profile) => {
-    if (err) return res.status(500).send(err.message);
+router.post('/:id/delete', async (req, res) => {
+  try {
+    const profile = await db.getProfileById(req.params.id);
     if (profile && profile.image_path) {
       const imagePath = path.join(__dirname, '..', profile.image_path);
       if (fs.existsSync(imagePath)) {
@@ -217,11 +228,11 @@ router.post('/:id/delete', (req, res) => {
       }
     }
     
-    db.deleteProfile(req.params.id, (err) => {
-      if (err) return res.status(500).send(err.message);
-      res.redirect('/profiles/my');
-    });
-  });
+    await db.deleteProfile(req.params.id);
+    res.redirect('/profiles/my');
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 });
 
 module.exports = router;
