@@ -5,6 +5,37 @@ const dbPath = path.join(__dirname, 'users.db');
 const db = new sqlite3.Database(dbPath);
 
 db.serialize(() => {
+  db.run('PRAGMA foreign_keys = ON;');
+});
+
+function run(sql, params = []) {
+  return new Promise((resolve, reject) => {
+    db.run(sql, params, function(err) {
+      if (err) reject(err);
+      else resolve(this);
+    });
+  });
+}
+
+function get(sql, params = []) {
+  return new Promise((resolve, reject) => {
+    db.get(sql, params, (err, row) => {
+      if (err) reject(err);
+      else resolve(row);
+    });
+  });
+}
+
+function all(sql, params = []) {
+  return new Promise((resolve, reject) => {
+    db.all(sql, params, (err, rows) => {
+      if (err) reject(err);
+      else resolve(rows);
+    });
+  });
+}
+
+db.serialize(() => {
   db.run(`
     CREATE TABLE IF NOT EXISTS users (
       user_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -38,93 +69,103 @@ db.serialize(() => {
     "ALTER TABLE profiles ADD COLUMN bio TEXT;",
     "ALTER TABLE profiles ADD COLUMN level INTEGER DEFAULT 1;",
   ];
-  
+
   migrations.forEach(sql => {
     db.run(sql, (err) => {
+      if (err) {
+        console.error('Database migration error:', err);
+      }
     });
   });
 
-  db.get(`SELECT COUNT(*) AS count FROM profiles;`, [], (err, row) => {
-    if (err) return;
+  db.get('SELECT COUNT(*) as count FROM profiles;', (err, row) => {
+    if (err) {
+      console.error('Database initialization error:', err);
+      return;
+    }
     if (row.count === 0) {
-      db.run(
-        `INSERT INTO profiles (name, race, class, level, bio, looking_for, experience_level, timezone)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?);`,
-        [
-          "Astarion",
-          "Elf",
-          "Rogue",
-          5,
-          "Charming, dangerous, and absolutely not here to bite… probably.",
-          "Romance/RP relationship,Campaign buddies",
-          "Expert",
-          "UTC-5 (Eastern Time)",
-        ]
-      );
+      db.run(`
+        INSERT INTO profiles (name, race, class, level, bio, looking_for, experience_level, timezone)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+      `, [
+        "Astarion",
+        "Elf",
+        "Rogue",
+        5,
+        "Charming, dangerous, and absolutely not here to bite… probably.",
+        "Romance/RP relationship,Campaign buddies",
+        "Expert",
+        "UTC-5 (Eastern Time)"
+      ]);
     }
   });
 });
 
-function getAllUsers(cb) {
-  db.all('SELECT * FROM users ORDER BY user_id DESC;', [], cb);
+async function getAllUsers() {
+  const rows = await all('SELECT * FROM users ORDER BY user_id DESC;');
+  return rows;
 }
 
-function getUsersWithProfiles(cb) {
-  db.all(`
+async function getUsersWithProfiles() {
+  const rows = await all(`
     SELECT DISTINCT u.*, p.name as profile_name, p.race, p.class, p.level, p.image_path
     FROM users u
     INNER JOIN profiles p ON u.user_id = p.user_id
     WHERE p.user_id > 0
     ORDER BY u.user_id DESC;
-  `, [], cb);
+  `);
+  return rows;
 }
 
-function getUserById(user_id, cb) {
-  db.get('SELECT * FROM users WHERE user_id = ?;', [user_id], cb);
+async function getUserById(user_id) {
+  const row = await get('SELECT * FROM users WHERE user_id = ?;', [user_id]);
+  return row;
 }
 
-function createUser(name, pass, cb) {
-  db.run('INSERT INTO users (name, pass) VALUES (?, ?);', [name, pass], cb);
+async function createUser(name, pass) {
+  const result = await run('INSERT INTO users (name, pass) VALUES (?, ?);', [name, pass]);
+  return result.lastID;
 }
 
-function updateUser(user_id, name, pass, cb) {
-  db.run('UPDATE users SET name = ?, pass = ? WHERE user_id = ?;', [name, pass, user_id], cb);
+async function updateUser(user_id, name, pass) {
+  await run('UPDATE users SET name = ?, pass = ? WHERE user_id = ?;', [name, pass, user_id]);
 }
 
-function deleteUser(user_id, cb) {
-  db.run('DELETE FROM users WHERE user_id = ?;', [user_id], cb);
+async function deleteUser(user_id) {
+  await run('DELETE FROM users WHERE user_id = ?;', [user_id]);
 }
 
-function getAllProfiles(cb) {
-  db.all("SELECT * FROM profiles ORDER BY profile_id DESC;", [], cb);
+async function getAllProfiles() {
+  const rows = await all('SELECT * FROM profiles ORDER BY profile_id DESC;');
+  return rows;
 }
 
-function getProfileById(profile_id, cb) {
-  db.get("SELECT * FROM profiles WHERE profile_id = ?;", [profile_id], cb);
+async function getProfileById(profile_id) {
+  const row = await get('SELECT * FROM profiles WHERE profile_id = ?;', [profile_id]);
+  return row;
 }
 
-function getProfileByUserId(user_id, cb) {
-  db.get("SELECT * FROM profiles WHERE user_id = ?;", [user_id], cb);
+async function getProfileByUserId(user_id) {
+  const row = await get('SELECT * FROM profiles WHERE user_id = ?;', [user_id]);
+  return row;
 }
 
-function createProfile(name, race, clazz, level, bio, imagePath, lookingFor, experienceLevel, timezone, user_id, cb) {
-  db.run(
-    "INSERT INTO profiles (name, race, class, level, bio, image_path, looking_for, experience_level, timezone, user_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
-    [name, race, clazz, level, bio, imagePath, lookingFor, experienceLevel, timezone, user_id],
-    cb
-  );
+async function createProfile(name, race, clazz, level, bio, imagePath, lookingFor, experienceLevel, timezone, user_id) {
+  const result = await run(`
+    INSERT INTO profiles (name, race, class, level, bio, image_path, looking_for, experience_level, timezone, user_id)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+  `, [name, race, clazz, level, bio, imagePath, lookingFor, experienceLevel, timezone, user_id]);
+  return result.lastID;
 }
 
-function updateProfile(profile_id, name, race, clazz, level, bio, imagePath, lookingFor, experienceLevel, timezone, cb) {
-  db.run(
-    "UPDATE profiles SET name = ?, race = ?, class = ?, level = ?, bio = ?, image_path = ?, looking_for = ?, experience_level = ?, timezone = ? WHERE profile_id = ?;",
-    [name, race, clazz, level, bio, imagePath, lookingFor, experienceLevel, timezone, profile_id],
-    cb
-  );
+async function updateProfile(profile_id, name, race, clazz, level, bio, imagePath, lookingFor, experienceLevel, timezone) {
+  await run(`
+    UPDATE profiles SET name = ?, race = ?, class = ?, level = ?, bio = ?, image_path = ?, looking_for = ?, experience_level = ?, timezone = ? WHERE profile_id = ?;
+  `, [name, race, clazz, level, bio, imagePath, lookingFor, experienceLevel, timezone, profile_id]);
 }
 
-function deleteProfile(profile_id, cb) {
-  db.run("DELETE FROM profiles WHERE profile_id = ?;", [profile_id], cb);
+async function deleteProfile(profile_id) {
+  await run('DELETE FROM profiles WHERE profile_id = ?;', [profile_id]);
 }
 
 module.exports = {
@@ -139,5 +180,5 @@ module.exports = {
   getProfileByUserId,
   createProfile,
   updateProfile,
-  deleteProfile,
+  deleteProfile
 };

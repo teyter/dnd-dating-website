@@ -3,6 +3,12 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+function createError(status, message) {
+  const err = new Error(message);
+  err.status = status;
+  return err;
+}
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var profilesRouter = require('./routes/profiles');
@@ -38,3 +44,12 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+
+const PORT = process.env.PORT || 3000;
+const HOST = process.env.HOST || '0.0.0.0';
+
+if (require.main === module) {
+  app.listen(PORT, HOST, () => {
+    console.log(`Server running on http://${HOST}:${PORT}`);
+  });
+}

@@ -19,7 +19,6 @@ const DND_CLASSES = [
   "Ranger",
   "Rogue",
   "Sorcerer",
-  "Warlock",
   "Wizard",
 ];
 
@@ -65,44 +64,54 @@ app.get('/viewUsersTemplate', (req, res) => {
   res.render('viewUsers', { users });
 });
 
-app.get('/users', (req, res) => {
-  db.getAllUsers((err, users) => {
-    if (err) return res.status(500).send(err.message);
+app.get('/users', async (req, res) => {
+  try {
+    const users = await db.getAllUsers();
     res.render('users', { users });
-  });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 });
 
-app.post('/users', (req, res) => {
+app.post('/users', async (req, res) => {
   const { name, pass } = req.body;
 
-  db.createUser(name, pass, (err) => {
-    if (err) return res.status(500).send(err.message);
+  try {
+    await db.createUser(name, pass);
     res.redirect('/users');
-  });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 });
 
-app.post('/users/:id/delete', (req, res) => {
-  db.deleteUser(req.params.id, (err) => {
-    if (err) return res.status(500).send(err.message);
+app.post('/users/:id/delete', async (req, res) => {
+  try {
+    await db.deleteUser(req.params.id);
     res.redirect('/users');
-  });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 });
 
-app.get("/users/:id/edit", (req, res) => {
-  db.getUserById(req.params.id, (err, user) => {
-    if (err) return res.status(500).send(err.message);
+app.get("/users/:id/edit", async (req, res) => {
+  try {
+    const user = await db.getUserById(req.params.id);
     if (!user) return res.status(404).send("User not found");
     res.render("editUser", { user });
-  });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 });
 
-app.post("/users/:id", (req, res) => {
+app.post("/users/:id", async (req, res) => {
   const { name, pass } = req.body;
 
-  db.updateUser(req.params.id, name, pass, (err) => {
-    if (err) return res.status(500).send(err.message);
+  try {
+    await db.updateUser(req.params.id, name, pass);
     res.redirect("/users");
-  });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 });
 
 app.use('/admin', (req, res, next) => {
@@ -162,50 +171,60 @@ app.post("/admin/log", (req, res) => {
   res.redirect("/admin");
 });
 
-app.get("/profiles", (req, res) => {
-  db.getAllProfiles((err, profiles) => {
-    if (err) return res.status(500).send(err.message);
+app.get("/profiles", async (req, res) => {
+  try {
+    const profiles = await db.getAllProfiles();
     res.render("profiles", {
       profiles,
       classes: DND_CLASSES,
     });
-  });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 });
 
-app.post("/profiles", (req, res) => {
+app.post("/profiles", async (req, res) => {
   const { name, race, class: clazz, level, bio } = req.body;
 
-  db.createProfile(name, race, clazz, Number(level), bio, (err) => {
-    if (err) return res.status(500).send(err.message);
+  try {
+    await db.createProfile(name, race, clazz, Number(level), bio, null, '', '', '', 0);
     res.redirect("/profiles");
-  });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 });
 
-app.get("/profiles/:id/edit", (req, res) => {
-  db.getProfileById(req.params.id, (err, profile) => {
-    if (err) return res.status(500).send(err.message);
+app.get("/profiles/:id/edit", async (req, res) => {
+  try {
+    const profile = await db.getProfileById(req.params.id);
     if (!profile) return res.status(404).send("Profile not found");
     res.render("editProfile", {
       profile,
       classes: DND_CLASSES,
     });
-  });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 });
 
-app.post("/profiles/:id", (req, res) => {
+app.post("/profiles/:id", async (req, res) => {
   const { name, race, class: clazz, level, bio } = req.body;
 
-  db.updateProfile(req.params.id, name, race, clazz, Number(level), bio, (err) => {
-    if (err) return res.status(500).send(err.message);
+  try {
+    await db.updateProfile(req.params.id, name, race, clazz, Number(level), bio, null, '', '', '');
     res.redirect("/profiles");
-  });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 });
 
-app.post("/profiles/:id/delete", (req, res) => {
-  db.deleteProfile(req.params.id, (err) => {
-    if (err) return res.status(500).send(err.message);
+app.post("/profiles/:id/delete", async (req, res) => {
+  try {
+    await db.deleteProfile(req.params.id);
     res.redirect("/profiles");
-  });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
 });
 
 app.listen(port, () => {
