@@ -9,4 +9,19 @@ function requireLogin(req, res, next) {
   return res.redirect("/login");
 }
 
-module.exports = { requireLogin };
+function requireAdmin(req, res, next) {
+  if (req.session && req.session.user && req.session.user.is_admin) {
+    return next();
+  }
+
+  // If not logged in, redirect to login
+  if (!req.session || !req.session.user) {
+    req.session.returnTo = req.originalUrl;
+    return res.redirect("/login");
+  }
+
+  // Logged in but not admin - redirect to home
+  return res.redirect("/");
+}
+
+module.exports = { requireLogin, requireAdmin };

@@ -17,6 +17,13 @@
                 <li><a href="/">Home</a></li>
             </ul>
         </div>
+        <div class="logout">
+            <% if (locals.user) { %>
+                <form method="POST" action="/logout">
+                    <button type="submit">Logout (<%= locals.user.name %>)</button>
+                </form>
+            <% } %>
+        </div>
     </nav>
 
     <!-- Main Content -->

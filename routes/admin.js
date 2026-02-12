@@ -7,24 +7,6 @@ const { execFile } = require("child_process");
 const { log, logPath } = require("../logger");
 const db = require("../Database");
 
-router.use('/', (req, res, next) => {
-  const auth = req.headers.authorization || '';
-  const [type, encoded] = auth.split(' ');
-
-  if (type !== 'Basic' || !encoded) {
-    res.setHeader('WWW-Authenticate', 'Basic realm="Admin"');
-    return res.status(401).send('Authentication required');
-  }
-
-  const decoded = Buffer.from(encoded, 'base64').toString('utf8');
-  const [user, pass] = decoded.split(':');
-
-  if (user === (process.env.ADMIN_USER || 'TheBoss') && pass === (process.env.ADMIN_PASS || 'Hacker1')) return next();
-
-  res.setHeader('WWW-Authenticate', 'Basic realm="Admin"');
-  return res.status(401).send('Invalid credentials');
-});
-
 function readLastLines(filePath, maxLines = 200) {
   try {
     if (!fs.existsSync(filePath)) return "";

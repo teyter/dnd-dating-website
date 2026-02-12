@@ -3,7 +3,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session');
-const { requireLogin } = require('./middleware/auth');
+const { requireLogin, requireAdmin } = require('./middleware/auth');
 
 function createError(status, message) {
   const err = new Error(message);
@@ -46,7 +46,7 @@ app.use(function(req, res, next) {
 app.use('/', indexRouter);
 app.use('/users', requireLogin, usersRouter);
 app.use('/profiles', requireLogin, profilesRouter);
-app.use('/admin', adminRouter);
+app.use('/admin', requireLogin, requireAdmin, adminRouter);
 
 app.use(function(req, res, next) {
   next(createError(404));

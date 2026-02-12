@@ -3,6 +3,7 @@
 In this project we implement a Dungeons & Dragons themed dating website featuring character-based profiles, admin passport verification.
 
 ## Authors
+
 Teitur Guðmundarson
 
 Silja Rós Svansdóttir Þormar
@@ -36,5 +37,5 @@ npm start / npm run dev
 The admin monitoring page is available at `/admin`.
 
 Credentials:
-- Username: `admin`
-- Password: `admin`
+- Username: `TheBoos`
+- Password: `Hacker1.`
