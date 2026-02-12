@@ -60,23 +60,25 @@ db.serialize(() => {
     );
   `);
 
-  const migrations = [
-    "ALTER TABLE profiles ADD COLUMN user_id INTEGER DEFAULT 0;",
-    "ALTER TABLE profiles ADD COLUMN image_path TEXT;",
-    "ALTER TABLE profiles ADD COLUMN looking_for TEXT;",
-    "ALTER TABLE profiles ADD COLUMN experience_level TEXT;",
-    "ALTER TABLE profiles ADD COLUMN timezone TEXT;",
-    "ALTER TABLE profiles ADD COLUMN bio TEXT;",
-    "ALTER TABLE profiles ADD COLUMN level INTEGER DEFAULT 1;",
-  ];
-
-  migrations.forEach(sql => {
-    db.run(sql, (err) => {
-      if (err) {
-        console.error('Database migration error:', err);
+  function addColumnIfMissing(table, column, definition) {
+    db.all(`PRAGMA table_info(${table});`, (err, rows) => {
+      if (err) return console.error(err);
+      const exists = rows.some(r => r.name === column);
+      if (!exists) {
+        db.run(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition};`, (e) => {
+          if (e) console.error('Database migration error:', e);
+        });
       }
     });
-  });
+  }
+
+  addColumnIfMissing('profiles', 'user_id', 'INTEGER DEFAULT 0');
+  addColumnIfMissing('profiles', 'image_path', 'TEXT');
+  addColumnIfMissing('profiles', 'looking_for', 'TEXT');
+  addColumnIfMissing('profiles', 'experience_level', 'TEXT');
+  addColumnIfMissing('profiles', 'timezone', 'TEXT');
+  addColumnIfMissing('profiles', 'bio', 'TEXT');
+  addColumnIfMissing('profiles', 'level', 'INTEGER DEFAULT 1');
 
   db.get('SELECT COUNT(*) as count FROM profiles;', (err, row) => {
     if (err) {
