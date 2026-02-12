@@ -29,13 +29,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'dev-secret-change-me',
+  secret: process.env.SESSION_SECRET || "dev-secret-change-me",
   resave: false,
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
-    sameSite: 'lax',
-    secure: false, // set true only behind HTTPS
+    secure: process.env.NODE_ENV === "production",
+    maxAge: 1000 * 60 * 60 // 1 hour
   }
 }));
 
