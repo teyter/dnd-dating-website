@@ -54,7 +54,14 @@ router.post("/login", async (req, res) => {
     if (!ok) return res.status(401).render("login", { error: "Invalid username or password" });
 
     req.session.user = { user_id: user.user_id, name: user.name };
-    return res.redirect("/");
+    
+    let redirectTo = req.session.returnTo || "/";
+    delete req.session.returnTo;
+    
+    // safety: only allow internal redirects
+    if (!redirectTo.startsWith("/")) redirectTo = "/";
+
+return res.redirect(redirectTo);
   } catch (err) {
     return res.status(500).render("login", { error: err.message });
   }
