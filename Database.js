@@ -39,7 +39,7 @@ db.serialize(() => {
   db.run(`
     CREATE TABLE IF NOT EXISTS users (
       user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT NOT NULL,
+      name TEXT NOT NULL UNIQUE,
       pass TEXT NOT NULL
     );
   `);
@@ -119,6 +119,10 @@ async function getUsersWithProfiles() {
   return rows;
 }
 
+async function getUserByName(name) {
+  return await get('SELECT * FROM users WHERE name = ?;', [name]);
+}
+
 async function getUserById(user_id) {
   const row = await get('SELECT * FROM users WHERE user_id = ?;', [user_id]);
   return row;
@@ -174,6 +178,7 @@ module.exports = {
   getAllUsers,
   getUsersWithProfiles,
   getUserById,
+  getUserByName,
   createUser,
   updateUser,
   deleteUser,

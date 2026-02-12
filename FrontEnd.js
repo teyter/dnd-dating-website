@@ -5,8 +5,9 @@ const os = require("os");
 const fs = require("fs");
 const { execFile } = require("child_process");
 const { log, logPath } = require("./logger");
-
 const db = require('./Database');
+const session = require("express-session");
+const bcrypt = require("bcrypt");
 
 const DND_CLASSES = [
   "Barbarian",
@@ -39,6 +40,24 @@ app.locals.races = DND_RACES;
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "dev-secret-change-me",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      sameSite: "lax",
+      secure: false, // set true only when using HTTPS
+    },
+  })
+);
+
+app.use((req, res, next) => {
+  res.locals.user = req.session.user || null; // usable in EJS templates
+  next();
+});
 
 app.get('/viewUsers', (req, res) => {
   const user = { name: 'Bob', pass: 'password123' };
@@ -227,6 +246,56 @@ app.post("/profiles/:id/delete", async (req, res) => {
   }
 });
 
+app.get("/register", (req, res) => {
+  res.render("register", { error: null });
+});
+
+app.post("/register", async (req, res) => {
+  const name = (req.body.name || "").trim();
+  const pass = req.body.pass || "";
+  const pass2 = req.body.pass2 || "";
+
+  if (!name || !pass) return res.status(400).render("register", { error: "Missing username or password" });
+  if (pass.length < 8) return res.status(400).render("register", { error: "Password must be at least 8 characters" });
+  if (pass !== pass2) return res.status(400).render("register", { error: "Passwords do not match" });
+
+  try {
+    const existing = await db.getUserByName(name);
+    if (existing) return res.status(400).render("register", { error: "Username already taken" });
+
+    const hash = await bcrypt.hash(pass, 12);
+    await db.createUser(name, hash);
+    return res.redirect("/login");
+  } catch (err) {
+    return res.status(500).render("register", { error: err.message });
+  }
+});
+
+app.get("/login", (req, res) => {
+  res.render("login", { error: null });
+});
+
+app.post("/login", async (req, res) => {
+  const name = (req.body.name || "").trim();
+  const pass = req.body.pass || "";
+
+  try {
+    const user = await db.getUserByName(name);
+    if (!user) return res.status(401).render("login", { error: "Invalid username or password" });
+
+    const ok = await bcrypt.compare(pass, user.pass);
+    if (!ok) return res.status(401).render("login", { error: "Invalid username or password" });
+
+    req.session.user = { user_id: user.user_id, name: user.name };
+    return res.redirect("/");
+  } catch (err) {
+    return res.status(500).render("login", { error: err.message });
+  }
+});
+
+app.post("/logout", (req, res) => {
+  req.session.destroy(() => res.redirect("/"));
+});
 app.listen(port, () => {
   console.log(`Example app listening on http://localhost:${port}`);
 });

@@ -14,14 +14,25 @@
             <div class="nav-text">D&D Dating</div>
             <ul>
                 <li><a href="/">Home</a></li>
-                <li><a href="/profiles/my">My Profile</a></li>
                 <li><a href="/profiles/all">All Profiles</a></li>
-                <li><a href="/users">Users</a></li>
+            
+                <% if (locals.user) { %>
+                    <li><a href="/profiles/my">My Profile</a></li>
+                    <li><a href="/users">Users</a></li>
+                <% } %>
+            
                 <li><a href="/admin">Admin</a></li>
             </ul>
         </div>
         <div class="logout">
-            <button onclick="location.href='/logout'">Logout</button>
+            <% if (locals.user) { %>
+                <form method="POST" action="/logout">
+                    <button type="submit">Logout (<%= locals.user.name %>)</button>
+                </form>
+            <% } else { %>
+                <a href="/login" class="button">Login</a>
+                <a href="/register" class="button">Register</a>
+            <% } %>
         </div>
     </nav>
 
@@ -29,16 +40,22 @@
     <div class="content">
         <div class="home-content">
             <h1 class="home-title">Welcome to D&D Dating!</h1>
+            <% if (locals.user) { %>
+                <p class="home-subtitle">Welcome back, <strong><%= locals.user.name %></strong>!</p>
+            <% } %>
             <p class="home-subtitle">Find your perfect adventuring partner</p>
             <p class="home-description">
                 Whether you're looking for romance, campaign buddies, or just friends to chat with,
                 our community of adventurers is ready to meet you. Create your character profile
                 and start your journey today!
             </p>
-            <div class="home-buttons">
-                <a href="/profiles/all" class="button button-primary">Browse All Profiles</a>
+        <div class="home-buttons">
+            <a href="/profiles/all" class="button button-primary">Browse All Profiles</a>
+        
+            <% if (locals.user) { %>
                 <a href="/profiles/my" class="button button-secondary">My Profile</a>
-            </div>
+            <% } %>
+        </div>
         </div>
     </div>
 </body>

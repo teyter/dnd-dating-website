@@ -2,6 +2,8 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var session = require('express-session');
+const { requireLogin } = require('./middleware/auth');
 
 function createError(status, message) {
   const err = new Error(message);
@@ -26,9 +28,24 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'dev-secret-change-me',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: false, // set true only behind HTTPS
+  }
+}));
+
+app.use(function(req, res, next) {
+  res.locals.user = req.session.user || null;
+  next();
+});
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/profiles', profilesRouter);
+app.use('/users', requireLogin, usersRouter);
+app.use('/profiles', requireLogin, profilesRouter);
 app.use('/admin', adminRouter);
 
 app.use(function(req, res, next) {
