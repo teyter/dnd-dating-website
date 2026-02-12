@@ -40,7 +40,8 @@ db.serialize(() => {
     CREATE TABLE IF NOT EXISTS users (
       user_id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL UNIQUE,
-      pass TEXT NOT NULL
+      pass TEXT NOT NULL,
+      is_admin INTEGER DEFAULT 0
     );
   `);
 
@@ -79,6 +80,7 @@ db.serialize(() => {
   addColumnIfMissing('profiles', 'timezone', 'TEXT');
   addColumnIfMissing('profiles', 'bio', 'TEXT');
   addColumnIfMissing('profiles', 'level', 'INTEGER DEFAULT 1');
+  addColumnIfMissing('users', 'is_admin', 'INTEGER DEFAULT 0');
 
   db.get('SELECT COUNT(*) as count FROM profiles;', (err, row) => {
     if (err) {

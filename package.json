@@ -31,11 +31,11 @@
     "express-session": "^1.19.0",
     "morgan": "^1.10.1",
     "multer": "^2.0.2",
-    "sqlite3": "^5.1.7"
+    "sqlite3": "^5.0.2"
   },
   "devDependencies": {
     "browser-sync": "^3.0.4",
-    "express-generator": "^4.16.1",
+    "express-generator": "^4.14.1",
     "nodemon": "^3.1.11",
     "prettier": "^3.8.1"
   }

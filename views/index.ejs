@@ -14,14 +14,16 @@
             <div class="nav-text">D&D Dating</div>
             <ul>
                 <li><a href="/">Home</a></li>
-                <li><a href="/profiles/all">All Profiles</a></li>
-            
+                
                 <% if (locals.user) { %>
-                    <li><a href="/profiles/my">My Profile</a></li>
-                    <li><a href="/users">Users</a></li>
+                    <% if (locals.user.is_admin) { %>
+                        <li><a href="/admin">Admin</a></li>
+                        <li><a href="/users">Users</a></li>
+                    <% } else { %>
+                        <li><a href="/profiles/all">All Profiles</a></li>
+                        <li><a href="/profiles/my">My Profile</a></li>
+                    <% } %>
                 <% } %>
-            
-                <li><a href="/admin">Admin</a></li>
             </ul>
         </div>
         <div class="logout">
@@ -50,9 +52,8 @@
                 and start your journey today!
             </p>
         <div class="home-buttons">
-            <a href="/profiles/all" class="button button-primary">Browse All Profiles</a>
-        
-            <% if (locals.user) { %>
+            <% if (locals.user && !locals.user.is_admin) { %>
+                <a href="/profiles/all" class="button button-primary">Browse All Profiles</a>
                 <a href="/profiles/my" class="button button-secondary">My Profile</a>
             <% } %>
         </div>
