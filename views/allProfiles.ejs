@@ -21,7 +21,14 @@
             </ul>
         </div>
         <div class="logout">
-            <button onclick="location.href='/logout'">Logout</button>
+          <% if (locals.user) { %>
+            <form method="POST" action="/logout">
+              <button type="submit">Logout (<%= locals.user.name %>)</button>
+            </form>
+          <% } else { %>
+            <a href="/login" class="button">Login</a>
+            <a href="/register" class="button">Register</a>
+          <% } %>
         </div>
     </nav>
 
