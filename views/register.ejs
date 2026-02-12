@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head><title>Register</title></head>
+<body>
+  <h1>Register</h1>
+
+  <% if (error) { %>
+    <p style="color:red;"><%= error %></p>
+  <% } %>
+
+  <form method="POST" action="/register">
+    <div>
+      <label>Username</label>
+      <input name="name" required />
+    </div>
+
+    <div>
+      <label>Password</label>
+      <input type="password" name="pass" minlength="8" required />
+    </div>
+
+    <div>
+      <label>Confirm password</label>
+      <input type="password" name="pass2" minlength="8" required />
+    </div>
+
+    <button type="submit">Create account</button>
+  </form>
+
+  <p>Already have an account? <a href="/login">Login</a></p>
+</body>
+</html>
