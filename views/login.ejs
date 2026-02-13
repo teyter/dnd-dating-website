@@ -9,7 +9,6 @@
 </head>
 <body class="home-bg">
 
-    <!-- Sidebar -->
     <nav class="main-menu home-nav">
         <div>
             <div class="nav-text">D&D Dating</div>
@@ -26,7 +25,6 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
     <div class="content">
         <div class="home-content">
             <h1 class="home-title">Login</h1>
@@ -36,6 +34,7 @@
             <% } %>
 
             <form method="POST" action="/login" class="auth-form">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <div class="form-group">
                     <label>Username</label>
                     <input type="text" name="name" required />

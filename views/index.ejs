@@ -8,7 +8,6 @@
     <link rel='stylesheet' href='/stylesheets/homepage.css' />
 </head>
 <body class="home-bg">
-    <!-- Main Menu Sidebar -->
     <nav class="main-menu home-nav">
         <div>
             <div class="nav-text">D&D Dating</div>
@@ -29,6 +28,7 @@
         <div class="logout">
             <% if (locals.user) { %>
                 <form method="POST" action="/logout">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <button type="submit">Logout (<%= locals.user.name %>)</button>
                 </form>
             <% } else { %>
@@ -38,7 +38,6 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
     <div class="content">
         <div class="home-content">
             <h1 class="home-title">Welcome to D&D Dating!</h1>

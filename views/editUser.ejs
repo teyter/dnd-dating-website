@@ -7,7 +7,6 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
 </head>
 <body>
-    <!-- Main Menu Sidebar -->
     <nav class="main-menu">
         <div>
             <div class="nav-text">D&D Dating</div>
@@ -22,6 +21,7 @@
         <div class="logout">
           <% if (locals.user) { %>
             <form method="POST" action="/logout">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               <button type="submit">Logout (<%= locals.user.name %>)</button>
             </form>
           <% } else { %>
@@ -31,7 +31,6 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
     <div class="content">
         <h2>Edit user</h2>
 
@@ -39,6 +38,7 @@
 
         <div class="profile-container" style="flex-direction: column;">
             <form method="POST" action="/users/<%= user.user_id %>">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <div class="form-group">
                     <label>Name:</label>
                     <input name="name" value="<%= user.name %>" required />

@@ -6,9 +6,41 @@
     <title>Edit Profile</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel='stylesheet' href='/stylesheets/editProfile.css' />
+    <script>
+        // Here we add an CSRF token header for multipart form submissions, this is so that we can handle the form submission via AJAX and still have CSRF protection in place.
+        document.addEventListener('DOMContentLoaded', function() {
+            const multipartForms = document.querySelectorAll('form[enctype="multipart/form-data"]');
+            multipartForms.forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    const csrfInput = form.querySelector('input[name="_csrf"]');
+                    if (!csrfInput) return;
+                    
+                    const csrfToken = csrfInput.value;
+                    e.preventDefault();
+                    
+                    fetch(form.action, {
+                        method: 'POST',
+                        body: new FormData(form),
+                        headers: {
+                            'X-CSRF-Token': csrfToken
+                        }
+                    }).then(response => {
+                        if (response.redirected) {
+                            window.location.href = response.url;
+                        } else if (response.ok) {
+                            window.location.reload();
+                        } else {
+                            alert('Error: ' + response.statusText);
+                        }
+                    }).catch(err => {
+                        alert('Error: ' + err.message);
+                    });
+                });
+            });
+        });
+    </script>
 </head>
 <body>
-    <!-- Main Menu Sidebar -->
     <nav class="main-menu">
         <div>
             <div class="nav-text">D&D Dating</div>
@@ -22,6 +54,7 @@
         <div class="logout">
           <% if (locals.user) { %>
             <form method="POST" action="/logout">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               <button type="submit">Logout (<%= locals.user.name %>)</button>
             </form>
           <% } else { %>
@@ -31,7 +64,6 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
     <div class="content">
         <h2>Edit Profile: <%= profile.name %></h2>
 
@@ -39,6 +71,7 @@
 
         <div class="edit-profile-container">
             <form method="POST" action="/profiles/<%= profile.profile_id %>" enctype="multipart/form-data">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <input type="hidden" name="existing_image" value="<%= profile.image_path || '' %>" />
 
                 <div class="form-group">

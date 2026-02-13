@@ -49,13 +49,13 @@ app.use(
     cookie: {
       httpOnly: true,
       sameSite: "lax",
-      secure: false, // set true only when using HTTPS
+      secure: false, // set true only when using HTTPS, but for local development, like we are doing, we can keep it as false
     },
   })
 );
 
 app.use((req, res, next) => {
-  res.locals.user = req.session.user || null; // usable in EJS templates
+  res.locals.user = req.session.user || null; 
   next();
 });
 

@@ -8,7 +8,7 @@
     <link rel='stylesheet' href='/stylesheets/users.css' />
 </head>
 <body>
-    <!-- Main Menu Sidebar -->
+
     <nav class="main-menu">
         <div>
             <div class="nav-text">D&D Dating</div>
@@ -21,6 +21,7 @@
         <div class="logout">
           <% if (locals.user) { %>
             <form method="POST" action="/logout">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               <button type="submit">Logout (<%= locals.user.name %>)</button>
             </form>
           <% } else { %>
@@ -30,7 +31,6 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
     <div class="content">
         <h2>Users from SQLite</h2>
 
@@ -39,6 +39,7 @@
         <div class="users-container">
             <h3>Add user</h3>
             <form method="POST" action="/users">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <div class="form-group">
                     <input name="name" placeholder="Name" required />
                 </div>
@@ -68,6 +69,7 @@
                             <td class="actions-cell">
                                 <a href="/users/<%= u.user_id %>/edit">Edit</a>
                                 <form method="POST" action="/users/<%= u.user_id %>/delete" style="display:inline">
+                                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                     <button type="submit" onclick="return confirm('Delete this user?')">Delete</button>
                                 </form>
                             </td>
