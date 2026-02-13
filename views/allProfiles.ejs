@@ -8,7 +8,6 @@
     <link rel='stylesheet' href='/stylesheets/allProfiles.css' />
 </head>
 <body>
-    <!-- Main Menu Sidebar -->
     <nav class="main-menu">
         <div>
             <div class="nav-text">D&D Dating</div>
@@ -25,6 +24,7 @@
         <div class="logout">
           <% if (locals.user) { %>
             <form method="POST" action="/logout">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               <button type="submit">Logout (<%= locals.user.name %>)</button>
             </form>
           <% } else { %>
@@ -34,7 +34,6 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
     <div class="content">
         <h2>All D&D Dating Profiles</h2>
 
@@ -51,7 +50,6 @@
                         <% } else { %>
                             <div class="profile-image-placeholder">🎲</div>
                         <% } %>
-                        <!-- Add this wrapper div -->
                         <div class="profile-card-content">
                             <h3><%= p.name %></h3>
                             <p><strong>Race:</strong> <%= p.race %></p>

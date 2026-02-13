@@ -8,7 +8,6 @@
     <link rel='stylesheet' href='/stylesheets/admin.css' />
 </head>
 <body>
-    <!-- Main Menu Sidebar -->
     <nav class="main-menu">
         <div>
             <div class="nav-text">D&D Dating</div>
@@ -21,6 +20,7 @@
         <div class="logout">
           <% if (locals.user) { %>
             <form method="POST" action="/logout">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               <button type="submit">Logout (<%= locals.user.name %>)</button>
             </form>
           <% } else { %>
@@ -30,13 +30,11 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
     <div class="content">
         <h2>Admin Dashboard</h2>
 
         <a href="/" class="back-link">← Back to Home</a>
 
-        <!-- Server Stats Cards -->
         <div class="admin-stats-grid">
             <div class="stat-card green">
                 <div class="stat-value"><%= totalUsers %></div>
@@ -56,9 +54,7 @@
             </div>
         </div>
 
-        <!-- Centered Admin Panels -->
         <div class="admin-center">
-            <!-- Server Info Panel -->
             <div class="admin-panel">
                 <h3>Server Info</h3>
                 
@@ -75,16 +71,16 @@
                 
                 <h3 class="warning" style="margin-top: 20px;">Write Log Entry</h3>
                 <form method="POST" action="/admin/log" class="log-form">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <input name="message" placeholder="Enter log message..." />
                     <button type="submit">Write</button>
                 </form>
             </div>
 
-            <!-- Log Panel -->
             <div class="admin-panel">
                 <h3 class="info">Recent Log</h3>
                 <div class="log-output">
-                    <%- logTail %>
+                    <%- logTail.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>') %>
                 </div>
             </div>
         </div>

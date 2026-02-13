@@ -5,6 +5,7 @@ var path = require('path');
 var fs = require('fs');
 
 const db = require('../Database');
+const { validateCsrf, validateCsrfFromHeader } = require('../middleware/csrf');
 
 const DND_CLASSES = [
   "Barbarian", "Bard", "Cleric", "Druid", "Fighter",
@@ -103,7 +104,19 @@ router.get('/all', async (req, res) => {
 });
 
 router.get('/my', async (req, res) => {
+  // Prevent caching to ensure fresh CSRF token
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+  
   const user_id = getUserId(req);
+  
+  // Ensure CSRF token is available
+  if (!req.session.csrfToken) {
+    const { generateToken } = require('../middleware/csrf');
+    req.session.csrfToken = generateToken();
+  }
+  res.locals.csrfToken = req.session.csrfToken;
   
   try {
     const profile = await db.getProfileByUserId(user_id);
@@ -136,6 +149,11 @@ router.get('/my', async (req, res) => {
 });
 
 router.post('/my', upload.single('image'), async (req, res) => {
+  // Validate CSRF token from header
+  if (!validateCsrfFromHeader(req)) {
+    return res.status(403).json({ error: 'Invalid CSRF token' });
+  }
+  
   const { name, race, class: clazz, level, bio, looking_for, experience_level, timezone } = req.body;
   const imagePath = req.file ? '/uploads/' + req.file.filename : null;
   const lookingForArray = Array.isArray(looking_for) ? looking_for.join(',') : looking_for;
@@ -150,6 +168,11 @@ router.post('/my', upload.single('image'), async (req, res) => {
 });
 
 router.post('/my/update', upload.single('image'), async (req, res) => {
+  // Here we validate CSRF token from header.
+  if (!validateCsrfFromHeader(req)) {
+    return res.status(403).json({ error: 'Invalid CSRF token' });
+  }
+  
   const { name, race, class: clazz, level, bio, looking_for, experience_level, timezone, profile_id } = req.body;
   const imagePath = req.file ? '/uploads/' + req.file.filename : req.body.existing_image;
   const lookingForArray = Array.isArray(looking_for) ? looking_for.join(',') : looking_for;
@@ -186,11 +209,23 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id/edit', async (req, res) => {
+  // Here we are preventin caching to ensure fresh CSRF token
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+  
   try {
     const profile = await db.getProfileById(req.params.id);
     if (!profile) return res.status(404).send("Profile not found");
     
     const lookingForArray = profile.looking_for ? profile.looking_for.split(',') : [];
+    
+    // Then we ensure CSRF token is available
+    if (!req.session.csrfToken) {
+      const { generateToken } = require('../middleware/csrf');
+      req.session.csrfToken = generateToken();
+    }
+    res.locals.csrfToken = req.session.csrfToken;
     
     res.render('editProfile', {
       profile,
@@ -206,6 +241,11 @@ router.get('/:id/edit', async (req, res) => {
 });
 
 router.post('/:id', upload.single('image'), async (req, res) => {
+  // Here we are preventing caching to ensure fresh CSRF token.
+  if (!validateCsrfFromHeader(req)) {
+    return res.status(403).json({ error: 'Invalid CSRF token' });
+  }
+  
   const { name, race, class: clazz, level, bio, looking_for, experience_level, timezone } = req.body;
   const imagePath = req.file ? '/uploads/' + req.file.filename : req.body.existing_image;
   const lookingForArray = Array.isArray(looking_for) ? looking_for.join(',') : looking_for;

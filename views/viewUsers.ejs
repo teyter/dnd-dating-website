@@ -7,21 +7,19 @@
     <link rel='stylesheet' href='/stylesheets/style.css' />
 </head>
 <body>
-    <!-- Main Menu Sidebar -->
     <nav class="main-menu">
         <div>
             <div class="nav-text">D&D Dating</div>
             <ul>
                 <li><a href="/">Home</a></li>
-                <li><a href="/profiles/my">My Profile</a></li>
-                <li><a href="/profiles/all">All Profiles</a></li>
-                <li><a href="/users">Users</a></li>
                 <li><a href="/admin">Admin</a></li>
+                <li><a href="/users">Users</a></li>
             </ul>
         </div>
         <div class="logout">
           <% if (locals.user) { %>
             <form method="POST" action="/logout">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               <button type="submit">Logout (<%= locals.user.name %>)</button>
             </form>
           <% } else { %>
@@ -31,7 +29,6 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
     <div class="content">
         <h2>User List</h2>
 
@@ -45,8 +42,8 @@
                 </tr>
                 <% users.forEach(function(user) { %>
                     <tr>
-                        <td><%- user.name %></td>
-                        <td><%- user.pass %></td>
+                        <td><%= user.name %></td>
+                        <td><%= user.pass %></td>
                     </tr>
                 <% }); %>
             </table>

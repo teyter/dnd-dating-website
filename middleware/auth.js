@@ -3,7 +3,7 @@ function requireLogin(req, res, next) {
     return next();
   }
 
-  // Remember where they were trying to go
+  // If not logged in, save the original URL and redirect to login, so we can remember where to go after successful login
   req.session.returnTo = req.originalUrl;
 
   return res.redirect("/login");
