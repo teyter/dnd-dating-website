@@ -21,7 +21,7 @@ var app = express();
 
 // Security headers middleware
 app.use((req, res, next) => {
-  // Content Security Policy that prevents XSS by controlling resources
+  // Content Security Policy that prevents XSS.
   res.setHeader('Content-Security-Policy', 
     "default-src 'self'; " +
     "script-src 'self' 'unsafe-inline'; " +
@@ -54,10 +54,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Session must be defined BEFORE the protected uploads middleware
 app.use(session({
-  secret: process.env.SESSION_SECRET || "dev-secret-change-me",
+  secret: process.env.SESSION_SECRET || (process.env.NODE_ENV === 'production' ? (() => { throw new Error('SESSION_SECRET must be set in production'); })() : "dev-secret-for-testing-only"),
   resave: false,
   saveUninitialized: false,
   cookie: {
@@ -67,6 +67,14 @@ app.use(session({
     maxAge: 1000 * 60 * 60 // 1 hour
   }
 }));
+
+// Protected uploads directory - requires authentication
+app.use('/uploads', (req, res, next) => {
+  if (req.session && req.session.user) {
+    return next();
+  }
+  return res.status(403).send('Access denied');
+}, express.static(path.join(__dirname, 'uploads')));
 
 // Input sanitization middleware, escapes HTML to prevent XSS
 app.use((req, res, next) => {
