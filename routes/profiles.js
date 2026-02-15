@@ -85,7 +85,10 @@ const TIMEZONES = [
 ];
 
 function getUserId(req) {
-  return parseInt(req.cookies.user_id) || 1; 
+  // we use session user_id instead of cookie. This is more secure because cookies can be manipulated.
+    return req.session.user.user_id;
+  }
+  return null;
 }
 
 router.get('/all', async (req, res) => {
@@ -168,7 +171,7 @@ router.post('/my', upload.single('image'), async (req, res) => {
 });
 
 router.post('/my/update', upload.single('image'), async (req, res) => {
-  // Here we validate CSRF token from header.
+  // Validate CSRF token from header.
   if (!validateCsrfFromHeader(req)) {
     return res.status(403).json({ error: 'Invalid CSRF token' });
   }
@@ -176,8 +179,22 @@ router.post('/my/update', upload.single('image'), async (req, res) => {
   const { name, race, class: clazz, level, bio, looking_for, experience_level, timezone, profile_id } = req.body;
   const imagePath = req.file ? '/uploads/' + req.file.filename : req.body.existing_image;
   const lookingForArray = Array.isArray(looking_for) ? looking_for.join(',') : looking_for;
-
+  
+  // Authorization check: ensure the profile belongs to the logged-in user
+  const user_id = getUserId(req);
+  if (!user_id) {
+    return res.status(401).json({ error: 'Not authenticated' });
+  }
+  
   try {
+    const profile = await db.getProfileById(profile_id);
+    if (!profile) {
+      return res.status(404).json({ error: 'Profile not found' });
+    }
+    if (profile.user_id !== user_id) {
+      return res.status(403).json({ error: 'Not authorized to edit this profile' });
+    }
+    
     await db.updateProfile(profile_id, name, race, clazz, Number(level) || 1, bio, imagePath, lookingForArray, experience_level, timezone);
     res.redirect("/profiles/my");
   } catch (err) {
@@ -187,9 +204,15 @@ router.post('/my/update', upload.single('image'), async (req, res) => {
 
 router.post('/my/delete', async (req, res) => {
   const user_id = getUserId(req);
+  if (!user_id) {
+    return res.status(401).json({ error: 'Not authenticated' });
+  }
   
   try {
     const profile = await db.getProfileByUserId(user_id);
+    if (!profile) {
+      return res.status(404).json({ error: 'Profile not found' });
+    }
     if (profile && profile.image_path) {
       const imagePath = path.join(__dirname, '..', profile.image_path);
       if (fs.existsSync(imagePath)) {
@@ -249,8 +272,22 @@ router.post('/:id', upload.single('image'), async (req, res) => {
   const { name, race, class: clazz, level, bio, looking_for, experience_level, timezone } = req.body;
   const imagePath = req.file ? '/uploads/' + req.file.filename : req.body.existing_image;
   const lookingForArray = Array.isArray(looking_for) ? looking_for.join(',') : looking_for;
+  const user_id = getUserId(req);
+  
+  // Authorization check: ensure the profile belongs to the logged-in user
+  if (!user_id) {
+    return res.status(401).json({ error: 'Not authenticated' });
+  }
 
   try {
+    const profile = await db.getProfileById(req.params.id);
+    if (!profile) {
+      return res.status(404).json({ error: 'Profile not found' });
+    }
+    if (profile.user_id !== user_id) {
+      return res.status(403).json({ error: 'Not authorized to edit this profile' });
+    }
+    
     await db.updateProfile(req.params.id, name, race, clazz, Number(level) || 1, bio, imagePath, lookingForArray, experience_level, timezone);
     res.redirect("/profiles/my");
   } catch (err) {
@@ -259,8 +296,21 @@ router.post('/:id', upload.single('image'), async (req, res) => {
 });
 
 router.post('/:id/delete', async (req, res) => {
+  const user_id = getUserId(req);
+  if (!user_id) {
+    return res.status(401).json({ error: 'Not authenticated' });
+  }
+  
   try {
     const profile = await db.getProfileById(req.params.id);
+    if (!profile) {
+      return res.status(404).json({ error: 'Profile not found' });
+    }
+    // Authorization check: ensure the profile belongs to the logged-in user
+    if (profile.user_id !== user_id) {
+      return res.status(403).json({ error: 'Not authorized to delete this profile' });
+    }
+    
     if (profile && profile.image_path) {
       const imagePath = path.join(__dirname, '..', profile.image_path);
       if (fs.existsSync(imagePath)) {

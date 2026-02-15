@@ -62,11 +62,23 @@ db.serialize(() => {
   `);
 
   function addColumnIfMissing(table, column, definition) {
-    db.all(`PRAGMA table_info(${table});`, (err, rows) => {
+    // Validate table and column names to prevent SQL injection
+    // Only allow alphanumeric characters and underscores
+    const safeTableName = table.replace(/[^a-zA-Z0-9_]/g, '');
+    const safeColumnName = column.replace(/[^a-zA-Z0-9_]/g, '');
+    
+    // here we add additional validation, were we only allow known tables and columns
+    const allowedTables = ['users', 'profiles'];
+    if (!allowedTables.includes(safeTableName)) {
+      console.error('Invalid table name:', safeTableName);
+      return;
+    }
+    
+    db.all(`PRAGMA table_info(${safeTableName});`, (err, rows) => {
       if (err) return console.error(err);
-      const exists = rows.some(r => r.name === column);
+      const exists = rows.some(r => r.name === safeColumnName);
       if (!exists) {
-        db.run(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition};`, (e) => {
+        db.run(`ALTER TABLE ${safeTableName} ADD COLUMN ${safeColumnName} ${definition};`, (e) => {
           if (e) console.error('Database migration error:', e);
         });
       }
