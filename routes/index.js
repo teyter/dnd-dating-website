@@ -19,7 +19,7 @@ const loginLimiter = rateLimit({
 // Registration rate limiter, to prevent username enumeration
 const registerLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 10, // limit each IP to 10 registration attempts
+  max: 5, // limit each IP to 5 registration attempts
   message: "Too many registration attempts. Try again later.",
   handler: (req, res) => {
     log(`REGISTER: Rate limit exceeded - IP: ${req.ip}`);

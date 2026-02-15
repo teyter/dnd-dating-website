@@ -86,6 +86,7 @@ const TIMEZONES = [
 
 function getUserId(req) {
   // we use session user_id instead of cookie. This is more secure because cookies can be manipulated.
+  if (req.session && req.session.user && req.session.user.user_id) {
     return req.session.user.user_id;
   }
   return null;
