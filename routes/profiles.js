@@ -233,14 +233,26 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id/edit', async (req, res) => {
-  // Here we are preventin caching to ensure fresh CSRF token
+  // Prevent caching to ensure fresh CSRF token
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
   res.setHeader('Pragma', 'no-cache');
   res.setHeader('Expires', '0');
   
+  const user_id = getUserId(req);
+  
+  // Ensure user is authenticated
+  if (!user_id) {
+    return res.redirect('/login');
+  }
+  
   try {
     const profile = await db.getProfileById(req.params.id);
     if (!profile) return res.status(404).send("Profile not found");
+    
+    // Authorization check: ensure the profile belongs to the logged-in user
+    if (profile.user_id !== user_id) {
+      return res.status(403).send("Not authorized to edit this profile");
+    }
     
     const lookingForArray = profile.looking_for ? profile.looking_for.split(',') : [];
     
