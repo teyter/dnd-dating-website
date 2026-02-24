@@ -256,7 +256,7 @@ app.post("/register", async (req, res) => {
   const pass2 = req.body.pass2 || "";
 
   if (!name || !pass) return res.status(400).render("register", { error: "Missing username or password" });
-  if (pass.length < 8) return res.status(400).render("register", { error: "Password must be at least 8 characters" });
+  if (pass.length < 12) return res.status(400).render("register", { error: "Password must be at least 12 characters" });
   if (pass !== pass2) return res.status(400).render("register", { error: "Passwords do not match" });
 
   try {
