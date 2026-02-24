@@ -25,9 +25,10 @@ app.use((req, res, next) => {
   res.setHeader('Content-Security-Policy', 
     "default-src 'self'; " +
     "script-src 'self' 'unsafe-inline'; " +
+    "style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
     "style-src 'self' 'unsafe-inline'; " +
     "img-src 'self' data: https://i.pinimg.com; " +
-    "font-src 'self'; " +
+    "font-src 'self' https://fonts.gstatic.com; " +
     "connect-src 'self'"
   );
   
@@ -128,6 +129,7 @@ app.use(function(req, res, next) {
 app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.statusCode = err.status || 500;
 
   res.status(err.status || 500);
   res.render('error');

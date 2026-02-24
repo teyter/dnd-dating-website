@@ -2,18 +2,89 @@
 <html>
 <head>
   <title>Error</title>
-  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <link rel='stylesheet' href='/stylesheets/error.css' />
+  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
+
+  <!-- 404 Error Page -->
 <body>
-  <h1><%= message %></h1>
-  <h2><%= error.status %></h2>
-  <pre><%= error.stack %></pre>
-  
-  <div class="nav">
-    <a href="/">Home</a>
-    <a href="/users">Users</a>
-    <a href="/profiles">Profiles</a>
-    <a href="/admin">Admin</a>
-  </div>
+  <% if (statusCode === 404) { %>
+    <div class="top">
+      <h1>404</h1>
+      <h3>page not found</h3>
+    </div>
+    <div class="container">
+      <div class="ghost-copy">
+        <div class="one"></div>
+        <div class="two"></div>
+        <div class="three"></div>
+        <div class="four"></div>
+      </div>
+      <div class="ghost">
+        <div class="face">
+          <div class="ghost-eye"></div>
+          <div class="ghost-eye-right"></div>
+          <div class="mouth"></div>
+        </div>
+      </div>
+      <div class="shadow"></div>
+    </div>
+    <div class="bottom">
+      <p>Boo, looks like a ghost stole this page!</p>
+      <div class="buttons">
+        <a href="/" class="btn">Home</a>
+      </div>
+    </div>
+  <% } else if (statusCode === 500) { %>
+
+    <!-- 500 Error Page -->
+    <div class="error-500">
+      <div class="error-content">
+        <div class="five-zero">
+          <span class="error-num">5</span>
+          <div class="eye-container">
+            <div class="eye"></div>
+            <div class="eye"></div>
+          </div>
+        </div>
+        <p class="sub-text">Oh eyeballs! Something went wrong. We're <i>looking</i> to see what happened.</p>
+        <a href="/" class="btn">Go back</a>
+      </div>
+    </div>
+  <% } else { %>
+
+    <!-- Generic Error Page -->
+    <div class="error-generic">
+      <h1>Oops! Something went wrong</h1>
+      <p>We're sorry, but an unexpected error occurred.</p>
+      <div class="buttons">
+        <a href="javascript:history.back()" class="btn">Back</a>
+        <a href="/" class="btn">Home</a>
+      </div>
+    </div>
+  <% } %>
+
+  <script>
+    // Eyeball tracking for 500 error page - using vanilla JavaScript
+    document.addEventListener('DOMContentLoaded', function() {
+      var eyes = document.querySelectorAll('.error-500 .eye');
+      
+      if (eyes.length > 0) {
+        document.addEventListener('mousemove', function(event) {
+          eyes.forEach(function(eye) {
+            var rect = eye.getBoundingClientRect();
+            var x = rect.left + rect.width / 2;
+            var y = rect.top + rect.height / 2;
+            
+            var rad = Math.atan2(event.clientX - x, event.clientY - y);
+            var rot = (rad * (180 / Math.PI) * -1) + 180;
+            
+            eye.style.transform = 'rotate(' + rot + 'deg)';
+            eye.style.webkitTransform = 'rotate(' + rot + 'deg)';
+          });
+        });
+      }
+    });
+  </script>
 </body>
 </html>

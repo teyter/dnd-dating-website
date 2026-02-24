@@ -116,7 +116,6 @@ router.post("/login", loginLimiter, async (req, res) => {
   }
 });
 
-
 // Logout (POST)
 router.post("/logout", (req, res) => {
   const userName = req.session?.user?.name || "Unknown";
