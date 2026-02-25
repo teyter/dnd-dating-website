@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Message Requests - D&D Dating</title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <link rel='stylesheet' href='/stylesheets/messageRequests.css' />
+  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav class="main-menu">
+    <div>
+      <div class="nav-text">D&D Dating</div>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/profiles/all">All Profiles</a></li>
+        <li><a href="/profiles/my">My Profile</a></li>
+        <li><a href="/messages">Messages</a></li>
+        <% if (locals.user && locals.user.is_admin) { %>
+          <li><a href="/admin">Admin</a></li>
+        <% } %>
+      </ul>
+    </div>
+    <div class="logout">
+      <% if (locals.user) { %>
+        <form method="POST" action="/logout">
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <button type="submit">Logout (<%= locals.user.name %>)</button>
+        </form>
+      <% } %>
+    </div>
+  </nav>
+
+  <div class="content">
+    <div class="requests-container">
+      <h1>Message Requests</h1>
+      <a href="/messages" class="back-link">← Back to Messages</a>
+
+      <% if (requests && requests.length > 0) { %>
+        <div class="requests-list">
+          <% requests.forEach(function(request) { %>
+            <div class="request-card">
+              <div class="request-user">
+                <div class="user-avatar">
+                  <% if (request.from_profile_image) { %>
+                    <img src="<%= request.from_profile_image %>" alt="Avatar">
+                  <% } else { %>
+                    <div class="default-avatar"><%= request.from_user_name ? request.from_user_name.charAt(0).toUpperCase() : '?' %></div>
+                  <% } %>
+                </div>
+                <div class="user-info">
+                  <span class="user-name"><%= request.from_user_name %></span>
+                  <% if (request.from_profile_name) { %>
+                    <span class="user-profile-name"><%= request.from_profile_name %></span>
+                  <% } %>
+                </div>
+              </div>
+              <div class="request-actions">
+                <form method="POST" action="/messages/requests/accept" style="display:inline;">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <input type="hidden" name="requestId" value="<%= request.request_id %>">
+                  <button type="submit" class="btn-accept">Accept</button>
+                </form>
+                <form method="POST" action="/messages/requests/decline" style="display:inline;">
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <input type="hidden" name="requestId" value="<%= request.request_id %>">
+                  <button type="submit" class="btn-decline">Decline</button>
+                </form>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      <% } else { %>
+        <div class="no-requests">
+          <p>No pending message requests.</p>
+          <p>When someone wants to message you, their request will appear here.</p>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</body>
+</html>

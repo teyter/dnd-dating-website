@@ -120,6 +120,7 @@ app.use((req, res, next) => {
 app.use('/', indexRouter);
 app.use('/users', requireLogin, usersRouter);
 app.use('/profiles', requireLogin, profilesRouter);
+app.use('/messages', requireLogin, require('./routes/messages'));
 app.use('/admin', requireLogin, requireAdmin, adminRouter);
 
 app.use(function(req, res, next) {

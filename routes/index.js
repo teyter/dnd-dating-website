@@ -6,6 +6,44 @@ const db = require("../Database");
 const rateLimit = require("express-rate-limit");
 const { log } = require("../logger");
 
+// Helper function to normalize username for comparison, to prevent homograph attacks
+function normalizeUsername(username) {
+  // Convert to ASCII equivalents and remove diacritics
+  return username
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[\u0400-\u04FF]/g, '') // Cyrillic
+    .replace(/[\u0370-\u03FF]/g, '') // Greek
+    .replace(/[\u0400-\u04FF]/g, '') // Cyrillic extended
+    .toLowerCase();
+}
+
+// Check if username is attempting to impersonate TheBoss
+function isImpersonatingTheBoss(username) {
+  const normalized = normalizeUsername(username);
+  const bossNormalized = normalizeUsername('TheBoss');
+  
+  // Block exact match and visually similar usernames
+  return normalized === bossNormalized || 
+         normalized.includes('theboss') ||
+         username.toLowerCase().includes('theboss');
+}
+
+// Reserved usernames that could confuse users or impersonate privileged accounts
+const RESERVED_USERNAMES = [
+  'admin', 'administrator', 'root', 'moderator', 'sysadmin',
+  'theboss', 'superuser', 'super admin', 'owner', 'webmaster'
+];
+
+// Check if username is reserved (prevents impersonation of admin/privileged roles)
+function isReservedUsername(username) {
+  const normalized = normalizeUsername(username);
+  return RESERVED_USERNAMES.some(reserved => 
+    normalized === reserved || 
+    normalized.includes(reserved)
+  );
+}
+
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 5, // limit each IP to 5 login attempts
@@ -45,6 +83,17 @@ router.post("/register", registerLimiter, async (req, res) => {
   const pass2 = req.body.pass2 || "";
 
   if (!name || !pass) return res.status(400).render("register", { error: "Missing username or password" });
+  
+  // Block usernames that impersonate TheBoss
+  if (isImpersonatingTheBoss(name)) {
+    return res.status(400).render("register", { error: "Username not available" });
+  }
+  
+  // Block reserved usernames that could impersonate admin/privileged roles
+  if (isReservedUsername(name)) {
+    return res.status(400).render("register", { error: "Username not available" });
+  }
+  
   // Modern NIST guidelines: allow all characters including unicode and whitespace
   // Minimum 12 characters, OWASP recommendation!, no composition rules
   if (pass.length < 12) {
@@ -63,7 +112,8 @@ router.post("/register", registerLimiter, async (req, res) => {
     }
 
     const hash = await bcrypt.hash(pass, 12);
-    await db.createUser(name, hash);
+    // All new users start as 'player' - can change in profile
+    await db.createUser(name, hash, 'player');
     log(`REGISTER: Success - New user created: ${name}`);
 
     return res.redirect("/login");
@@ -100,7 +150,9 @@ router.post("/login", loginLimiter, async (req, res) => {
         return res.status(500).render("login", { error: "Session error" });
       }
 
-      req.session.user = { user_id: user.user_id, name: user.name, is_admin: user.is_admin };
+      // Hardcode TheBoss as the only admin (with safe comparison)
+      const is_admin = isImpersonatingTheBoss(user.name) ? 1 : 0;
+      req.session.user = { user_id: user.user_id, name: user.name, is_admin };
       log(`LOGIN: Success - User logged in: ${name}, IP: ${req.ip}`);
 
       let redirectTo = req.session.returnTo || "/";

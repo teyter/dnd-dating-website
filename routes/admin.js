@@ -7,6 +7,17 @@ const { execFile } = require("child_process");
 const { log, logPath } = require("../logger");
 const db = require("../Database");
 
+// Middleware to check if user is admin
+function requireAdmin(req, res, next) {
+  if (!req.session || !req.session.user || !req.session.user.is_admin) {
+    return res.status(403).render('../views/error', { statusCode: 403 });
+  }
+  next();
+}
+
+// Apply admin check to all admin routes
+router.use(requireAdmin);
+
 function readLastLines(filePath, maxLines = 200) {
   try {
     if (!fs.existsSync(filePath)) return "";

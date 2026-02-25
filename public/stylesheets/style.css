@@ -9,7 +9,7 @@
 }
 
 body, html {
-    margin: 15px;
+    margin: 0px;
     padding: 0;
     height: 100%;
     display: flex;
@@ -129,14 +129,18 @@ h2 {
 .back-link {
     display: inline-block;
     margin-bottom: 20px;
-    color: #333;
+    padding: 10px 20px;
+    background: #d4af37;
+    color: #1a0f0a;
     text-decoration: none;
     font-weight: bold;
+    border-radius: 5px;
+    transition: background 0.3s;
 }
 
 .back-link:hover {
-    color: #28a745;
-    text-decoration: underline;
+    background: #b8962e;
+    color: #1a0f0a;
 }
 
 table {

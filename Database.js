@@ -36,12 +36,15 @@ function all(sql, params = []) {
 }
 
 db.serialize(() => {
+  db.run('PRAGMA foreign_keys = ON;');
+
   db.run(`
     CREATE TABLE IF NOT EXISTS users (
       user_id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL UNIQUE,
       pass TEXT NOT NULL,
-      is_admin INTEGER DEFAULT 0
+      is_admin INTEGER DEFAULT 0,
+      user_type TEXT DEFAULT 'player'
     );
   `);
 
@@ -58,6 +61,27 @@ db.serialize(() => {
       looking_for TEXT,
       experience_level TEXT,
       timezone TEXT
+    );
+  `);
+
+  db.run(`
+    CREATE TABLE IF NOT EXISTS messages (
+      message_id INTEGER PRIMARY KEY AUTOINCREMENT,
+      sender_id INTEGER NOT NULL,
+      receiver_id INTEGER NOT NULL,
+      content TEXT NOT NULL,
+      timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+      is_read INTEGER DEFAULT 0
+    );
+  `);
+
+  db.run(`
+    CREATE TABLE IF NOT EXISTS message_requests (
+      request_id INTEGER PRIMARY KEY AUTOINCREMENT,
+      from_user_id INTEGER NOT NULL,
+      to_user_id INTEGER NOT NULL,
+      status TEXT DEFAULT 'pending',
+      timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
     );
   `);
 
@@ -93,6 +117,7 @@ db.serialize(() => {
   addColumnIfMissing('profiles', 'bio', 'TEXT');
   addColumnIfMissing('profiles', 'level', 'INTEGER DEFAULT 1');
   addColumnIfMissing('users', 'is_admin', 'INTEGER DEFAULT 0');
+  addColumnIfMissing('users', 'user_type', 'TEXT DEFAULT "player"');
 
   db.get('SELECT COUNT(*) as count FROM profiles;', (err, row) => {
     if (err) {
@@ -142,13 +167,23 @@ async function getUserById(user_id) {
   return row;
 }
 
-async function createUser(name, pass) {
-  const result = await run('INSERT INTO users (name, pass) VALUES (?, ?);', [name, pass]);
+async function createUser(name, pass, userType = 'player') {
+  const result = await run('INSERT INTO users (name, pass, user_type) VALUES (?, ?, ?);', [name, pass, userType]);
   return result.lastID;
 }
 
 async function updateUser(user_id, name, pass) {
   await run('UPDATE users SET name = ?, pass = ? WHERE user_id = ?;', [name, pass, user_id]);
+}
+
+async function updateUserType(user_id, userType) {
+  console.log('DB - updateUserType called with:', user_id, userType);
+  const validTypes = ['player', 'dm', 'both'];
+  if (!validTypes.includes(userType)) {
+    throw new Error('Invalid user type');
+  }
+  await run('UPDATE users SET user_type = ? WHERE user_id = ?;', [userType, user_id]);
+  console.log('DB - user_type updated successfully');
 }
 
 async function deleteUser(user_id) {
@@ -188,6 +223,145 @@ async function deleteProfile(profile_id) {
   await run('DELETE FROM profiles WHERE profile_id = ?;', [profile_id]);
 }
 
+// Message functions
+async function createMessage(senderId, receiverId, content) {
+  const result = await run(
+    'INSERT INTO messages (sender_id, receiver_id, content) VALUES (?, ?, ?);',
+    [senderId, receiverId, content]
+  );
+  return result.lastID;
+}
+
+async function getConversation(userId1, userId2) {
+  const rows = await all(`
+    SELECT * FROM messages 
+    WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)
+    ORDER BY timestamp ASC;
+  `, [userId1, userId2, userId2, userId1]);
+  return rows;
+}
+
+async function getConversations(userId) {
+  // get conversations from messages
+  const messageConvs = await all(`
+    SELECT DISTINCT 
+      CASE 
+        WHEN sender_id = ? THEN receiver_id 
+        ELSE sender_id 
+      END as other_user_id,
+      (SELECT content FROM messages 
+       WHERE (sender_id = ? AND receiver_id = CASE WHEN sender_id = ? THEN receiver_id ELSE sender_id END)
+       OR (sender_id = CASE WHEN sender_id = ? THEN receiver_id ELSE sender_id END AND receiver_id = ?)
+       ORDER BY timestamp DESC LIMIT 1) as last_message,
+      (SELECT timestamp FROM messages 
+       WHERE (sender_id = ? AND receiver_id = CASE WHEN sender_id = ? THEN receiver_id ELSE sender_id END)
+       OR (sender_id = CASE WHEN sender_id = ? THEN receiver_id ELSE sender_id END AND receiver_id = ?)
+       ORDER BY timestamp DESC LIMIT 1) as last_timestamp
+    FROM messages
+    WHERE sender_id = ? OR receiver_id = ?
+    ORDER BY last_timestamp DESC;
+  `, [userId, userId, userId, userId, userId, userId, userId, userId, userId, userId, userId]);
+  
+  // Get connections from accepted requests that don't have messages yet
+  const requestConvs = await all(`
+    SELECT 
+      CASE 
+        WHEN from_user_id = ? THEN to_user_id 
+        ELSE from_user_id 
+      END as other_user_id,
+      NULL as last_message,
+      NULL as last_timestamp
+    FROM message_requests
+    WHERE (from_user_id = ? OR to_user_id = ?)
+    AND status = 'accepted'
+  `, [userId, userId, userId]);
+  
+  // Filter out requestConvs that already have messages, to avoid duplicates.
+  const userIdsWithMessages = new Set(messageConvs.map(c => c.other_user_id));
+  const filteredRequestConvs = requestConvs.filter(c => !userIdsWithMessages.has(c.other_user_id));
+  
+  // Combine and sort by last_timestamp.
+  const allConvs = [...messageConvs, ...filteredRequestConvs];
+  allConvs.sort((a, b) => {
+    if (!a.last_timestamp) return 1;
+    if (!b.last_timestamp) return -1;
+    return new Date(b.last_timestamp) - new Date(a.last_timestamp);
+  });
+  
+  return allConvs;
+}
+
+async function getUnreadCount(userId, otherUserId) {
+  const row = await get(`
+    SELECT COUNT(*) as count FROM messages 
+    WHERE sender_id = ? AND receiver_id = ? AND is_read = 0;
+  `, [otherUserId, userId]);
+  return row ? row.count : 0;
+}
+
+async function markMessagesAsRead(senderId, receiverId) {
+  await run(`
+    UPDATE messages SET is_read = 1 WHERE sender_id = ? AND receiver_id = ?;
+  `, [senderId, receiverId]);
+}
+
+// Message request functions
+async function createMessageRequest(fromUserId, toUserId) {
+  // Check if request already exists
+  const existing = await get(`
+    SELECT * FROM message_requests 
+    WHERE from_user_id = ? AND to_user_id = ?
+  `, [fromUserId, toUserId]);
+  
+  if (existing) {
+    return { exists: true, request: existing };
+  }
+  
+  const result = await run(
+    'INSERT INTO message_requests (from_user_id, to_user_id) VALUES (?, ?);',
+    [fromUserId, toUserId]
+  );
+  return { exists: false, requestId: result.lastID };
+}
+
+async function getMessageRequests(userId) {
+  const rows = await all(`
+    SELECT mr.*, u.name as from_user_name, p.name as from_profile_name, p.image_path as from_profile_image
+    FROM message_requests mr
+    LEFT JOIN users u ON mr.from_user_id = u.user_id
+    LEFT JOIN profiles p ON mr.from_user_id = p.user_id
+    WHERE mr.to_user_id = ? AND mr.status = 'pending'
+    ORDER BY mr.timestamp DESC;
+  `, [userId]);
+  return rows;
+}
+
+async function acceptMessageRequest(requestId, userId) {
+  await run(`
+    UPDATE message_requests SET status = 'accepted' WHERE request_id = ? AND to_user_id = ?;
+  `, [requestId, userId]);
+}
+
+async function declineMessageRequest(requestId, userId) {
+  await run(`
+    UPDATE message_requests SET status = 'declined' WHERE request_id = ? AND to_user_id = ?;
+  `, [requestId, userId]);
+}
+
+async function getMessageConnection(userId1, userId2) {
+  const row = await get(`
+    SELECT * FROM message_requests 
+    WHERE ((from_user_id = ? AND to_user_id = ?) OR (from_user_id = ? AND to_user_id = ?))
+    AND status = 'accepted'
+  `, [userId1, userId2, userId2, userId1]);
+  return row;
+}
+
+async function hasMessageConnection(userId1, userId2) {
+  const connection = await getMessageConnection(userId1, userId2);
+  return connection !== undefined;
+}
+
 module.exports = {
   getAllUsers,
   getUsersWithProfiles,
@@ -195,11 +369,22 @@ module.exports = {
   getUserByName,
   createUser,
   updateUser,
+  updateUserType,
   deleteUser,
   getAllProfiles,
   getProfileById,
   getProfileByUserId,
   createProfile,
   updateProfile,
-  deleteProfile
+  deleteProfile,
+  createMessage,
+  getConversation,
+  getConversations,
+  getUnreadCount,
+  markMessagesAsRead,
+  createMessageRequest,
+  getMessageRequests,
+  acceptMessageRequest,
+  declineMessageRequest,
+  hasMessageConnection
 };

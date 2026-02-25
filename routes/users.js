@@ -3,6 +3,17 @@ var router = express.Router();
 
 const db = require('../Database');
 
+// Middleware to check if user is admin
+function requireAdmin(req, res, next) {
+  if (!req.session || !req.session.user || !req.session.user.is_admin) {
+    return res.status(403).render('../views/error', { statusCode: 403 });
+  }
+  next();
+}
+
+// Apply admin check to all users routes
+router.use(requireAdmin);
+
 router.get('/', async (req, res) => {
   try {
     const users = await db.getAllUsers();

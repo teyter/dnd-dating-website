@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Messages - D&D Dating</title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <link rel='stylesheet' href='/stylesheets/messages.css' />
+  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="messages-container">
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <h2>Messages</h2>
+        <a href="/messages/requests" class="requests-link">View Requests</a>
+      </div>
+      <div class="conversations-list">
+        <% if (conversations && conversations.length > 0) { %>
+          <% conversations.forEach(function(conv) { %>
+            <a href="/messages/user/<%= conv.other_user_id %>" 
+               class="conversation-item <%= selectedUserId === conv.other_user_id ? 'active' : '' %>">
+              <div class="user-avatar">
+                <% if (conv.profile && conv.profile.image_path) { %>
+                  <img src="<%= conv.profile.image_path %>" alt="Avatar">
+                <% } else { %>
+                  <div class="default-avatar"><%= conv.user ? conv.user.name.charAt(0).toUpperCase() : '?' %></div>
+                <% } %>
+              </div>
+              <div class="conversation-info">
+                <div class="conversation-name"><%= conv.user ? conv.user.name : 'Unknown' %></div>
+                <div class="last-message"><%= conv.last_message ? (conv.last_message.length > 30 ? conv.last_message.substring(0, 30) + '...' : conv.last_message) : 'No messages yet' %></div>
+              </div>
+              <% if (conv.unreadCount > 0) { %>
+                <div class="unread-badge"><%= conv.unreadCount %></div>
+              <% } %>
+            </a>
+          <% }); %>
+        <% } else { %>
+          <div class="no-conversations">
+            <p>No conversations yet.</p>
+            <p>Start chatting with someone from your matches!</p>
+          </div>
+        <% } %>
+      </div>
+    </div>
+
+    <div class="chat-area">
+      <div class="back-link-container">
+        <a href="/profiles/all" class="back-link">← Back to Profiles</a>
+      </div>
+      <% if (selectedUserId) { %>
+        <div class="chat-header">
+          <div class="chat-user-info">
+            <div class="user-avatar">
+              <% if (selectedProfile && selectedProfile.image_path) { %>
+                <img src="<%= selectedProfile.image_path %>" alt="Avatar">
+              <% } else { %>
+                <div class="default-avatar"><%= selectedUser ? selectedUser.name.charAt(0).toUpperCase() : '?' %></div>
+              <% } %>
+            </div>
+            <div class="user-details">
+              <span class="user-name"><%= selectedUser ? selectedUser.name : 'Unknown' %></span>
+              <% if (selectedProfile) { %>
+                <span class="user-race-class"><%= selectedProfile.race %> <%= selectedProfile.class %></span>
+              <% } %>
+            </div>
+          </div>
+        </div>
+
+        <div class="messages-list" id="messagesList">
+          <% if (messages && messages.length > 0) { %>
+            <% messages.forEach(function(msg) { %>
+              <div class="message <%= msg.sender_id === currentUserId ? 'sent' : 'received' %>">
+                <div class="message-content">
+                  <%= msg.content %>
+                </div>
+                <div class="message-time">
+                  <%= new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %>
+                </div>
+              </div>
+            <% }); %>
+          <% } else { %>
+            <div class="no-messages">
+              <p>No messages yet. Say hello!</p>
+            </div>
+          <% } %>
+        </div>
+
+        <div class="message-input">
+          <form id="sendMessageForm" method="POST" action="/messages/send">
+            <input type="hidden" name="_csrf" value="<%= typeof csrfToken !== 'undefined' ? csrfToken : '' %>">
+            <input type="hidden" name="receiverId" value="<%= selectedUserId %>">
+            <input type="text" name="content" placeholder="Write your message..." autocomplete="off" required>
+            <button type="submit">Send</button>
+          </form>
+        </div>
+      <% } else { %>
+
+        <div class="no-selection">
+          <div class="no-selection-content">
+            <h2>Select a conversation</h2>
+            <p>Choose a conversation from the sidebar to start chatting</p>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+  <script>
+    const messagesList = document.getElementById('messagesList');
+    if (messagesList) {
+      messagesList.scrollTop = messagesList.scrollHeight;
+    }
+
+    // Here we are using a standard form submission for sending messages, but you could enhance this with AJAX for a experience. 
+    const form = document.getElementById('sendMessageForm');
+    if (form) {
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(form);
+        const content = formData.get('content');
+        
+        if (!content.trim()) return;
+
+        try {
+          const response = await fetch('/messages/send', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+              'X-CSRF-Token': formData.get('_csrf')
+            },
+            body: 'receiverId=' + encodeURIComponent(formData.get('receiverId')) + '&content=' + encodeURIComponent(content)
+          });
+          
+          const result = await response.json();
+          
+          if (result.success) {
+            window.location.reload();
+          } else {
+            alert('Failed to send message: ' + result.error);
+          }
+        } catch (err) {
+          console.error('Error sending message:', err);
+          alert('Failed to send message');
+        }
+      });
+    }
+  </script>
+</body>
+</html>

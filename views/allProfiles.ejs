@@ -6,7 +6,39 @@
     <title>All Profiles - D&D Dating</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel='stylesheet' href='/stylesheets/allProfiles.css' />
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add CSRF token header to all POST forms
+            document.querySelectorAll('form[method="POST"]').forEach(form => {
+                form.addEventListener('submit', function(e) {
+                    const csrfInput = form.querySelector('input[name="_csrf"]');
+                    if (csrfInput) {
+                        e.preventDefault();
+                        const formData = new FormData(form);
+                        const csrfToken = csrfInput.value;
+                        
+                        fetch(form.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-CSRF-Token': csrfToken
+                            }
+                        }).then(response => {
+                            if (response.ok || response.redirected) {
+                                window.location.reload();
+                            } else {
+                                alert('Error: ' + response.statusText);
+                            }
+                        }).catch(err => {
+                            alert('Error: ' + err.message);
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 </head>
+
 <body>
     <nav class="main-menu">
         <div>
@@ -15,6 +47,7 @@
                 <li><a href="/">Home</a></li>
                 <li><a href="/profiles/all">All Profiles</a></li>
                 <li><a href="/profiles/my">My Profile</a></li>
+                <li><a href="/messages">Messages</a></li>
                 <% if (locals.user && locals.user.is_admin) { %>
                     <li><a href="/admin">Admin</a></li>
                     <li><a href="/users">Users</a></li>
@@ -52,6 +85,9 @@
                         <% } %>
                         <div class="profile-card-content">
                             <h3><%= p.name %></h3>
+                            <% if (p.user_type) { %>
+                                <span class="user-type-badge <%= p.user_type %>"><%= p.user_type === 'player' ? 'Player' : p.user_type === 'dm' ? 'Dungeon Master' : p.user_type === 'both' ? 'Player & Dungeon Master' : p.user_type %></span>
+                            <% } %>
                             <p><strong>Race:</strong> <%= p.race %></p>
                             <p><strong>Class:</strong> <%= p.class %></p>
                             <p><strong>Level:</strong> <%= p.level %></p>
@@ -66,6 +102,21 @@
                             <% } %>
                             <% if (p.looking_for) { %>
                                 <p class="looking-for"><strong>Looking for:</strong> <%= p.looking_for %></p>
+                            <% } %>
+                            <% if (locals.user && locals.user.user_id !== p.user_id && !p.is_admin) { %>
+                                <div class="profile-actions">
+                                    <% if (p.hasConnection) { %>
+                                        <a href="/messages/user/<%= p.user_id %>" class="button message-btn">Send Message</a>
+                                    <% } else if (p.requestSent) { %>
+                                        <span class="button request-sent-btn">Request Sent</span>
+                                    <% } else { %>
+                                        <form method="POST" action="/messages/request" style="display:inline;">
+                                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                            <input type="hidden" name="toUserId" value="<%= p.user_id %>">
+                                            <button type="submit" class="button request-btn">Send Message Request</button>
+                                        </form>
+                                    <% } %>
+                                </div>
                             <% } %>
                         </div>
                     </div>

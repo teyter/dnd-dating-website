@@ -3,12 +3,13 @@
 <head>
   <title>Error</title>
   <link rel='stylesheet' href='/stylesheets/error.css' />
-  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Lato:wght@400;700;900&family=Aladin&display=swap" rel="stylesheet">
 </head>
 
   <!-- 404 Error Page -->
 <body>
-  <% if (statusCode === 404) { %>
+  <% const status = statusCode || 500; %>
+  <% if (status === 404) { %>
     <div class="top">
       <h1>404</h1>
       <h3>page not found</h3>
@@ -35,7 +36,29 @@
         <a href="/" class="btn">Home</a>
       </div>
     </div>
-  <% } else if (statusCode === 500) { %>
+  <% } else if (status === 403) { %>
+
+    <!-- 403 Error Page - Gandalf "You Shall Not Pass" -->
+    <div class="error-403">
+      <div class="gandalf-container">
+        <div class="gandalf-body">
+          <div class="gandalf-moustache"></div>
+          <div class="gandalf-beard"></div>
+        </div>
+        <div class="gandalf-feet"></div>
+        <div class="gandalf-hand-left"></div>
+        <div class="gandalf-hand-right"></div>
+        <div class="sword"></div>
+        <div class="spear"></div>
+        <div class="spear-head"></div>
+        <div class="message">
+          <h2>You Shall Not Pass</h2>
+          <p>403 Forbidden</p>
+          <a href="/" class="btn">Home</a>
+        </div>
+      </div>
+    </div>
+  <% } else if (status === 500) { %>
 
     <!-- 500 Error Page -->
     <div class="error-500">
