@@ -30,7 +30,9 @@
                         } else if (response.ok) {
                             window.location.reload();
                         } else {
-                            alert('Error: ' + response.statusText);
+                            response.text().then(text => {
+                                alert('Error: ' + text);
+                            });
                         }
                     }).catch(err => {
                         alert('Error: ' + err.message);
@@ -46,9 +48,13 @@
             <div class="nav-text">D&D Dating</div>
             <ul>
                 <li><a href="/">Home</a></li>
-                <li><a href="/profiles">Profiles</a></li>
-                <li><a href="/users">Users</a></li>
-                <li><a href="/admin">Admin</a></li>
+                <li><a href="/profiles/all">All Profiles</a></li>
+                <li><a href="/profiles/my">My Profile</a></li>
+                <li><a href="/messages">Messages</a></li>
+                <% if (locals.user && locals.user.is_admin) { %>
+                    <li><a href="/admin">Admin</a></li>
+                    <li><a href="/users">Users</a></li>
+                <% } %>
             </ul>
         </div>
         <div class="logout">
@@ -77,6 +83,16 @@
                 <div class="form-group">
                     <label>Character Name:</label>
                     <input name="name" value="<%= profile.name %>" required />
+                </div>
+
+                <div class="form-group">
+                    <label>I am a:</label>
+                    <select name="user_type" required>
+                        <option value="player" <%= (user && user.user_type === 'player') ? 'selected' : '' %>>Player</option>
+                        <option value="dm" <%= (user && user.user_type === 'dm') ? 'selected' : '' %>>Dungeon Master</option>
+                        <option value="both" <%= (user && user.user_type === 'both') ? 'selected' : '' %>>Player & DM</option>
+                    </select>
+                    <small>Choose your role in D&D - you can change this anytime</small>
                 </div>
 
                 <div class="form-group">

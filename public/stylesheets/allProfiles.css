@@ -94,3 +94,81 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* User type badges */
+.user-type-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.user-type-badge.player {
+    background: #4CAF50;
+    color: white;
+}
+
+.user-type-badge.dm {
+    background: #2196F3;
+    color: white;
+}
+
+.user-type-badge.both {
+    background: #9C27B0;
+    color: white;
+}
+
+.user-type-badge.admin {
+    background: #f44336;
+    color: white;
+}
+
+/* Profile actions, messages and friend requests */
+.profile-actions {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+.message-btn {
+    background: linear-gradient(135deg, #AA17E0, #2B32B2);
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 20px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.message-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(170, 23, 224, 0.4);
+}
+
+.request-btn {
+    background: #FF9800;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 20px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.request-btn:hover {
+    background: #F57C00;
+}
+
+.request-sent-btn {
+    background: #9E9E9E;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    display: inline-block;
+}

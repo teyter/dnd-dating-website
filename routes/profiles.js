@@ -95,8 +95,34 @@ function getUserId(req) {
 router.get('/all', async (req, res) => {
   try {
     const profiles = await db.getAllProfiles();
+    const currentUserId = req.session && req.session.user ? req.session.user.user_id : null;
+    
+    // Add user info to each profile
+    const profilesWithUser = await Promise.all(
+      profiles.map(async (profile) => {
+        const user = await db.getUserById(profile.user_id);
+        let hasConnection = false;
+        let requestSent = false;
+        
+        if (currentUserId && currentUserId !== profile.user_id) {
+          hasConnection = await db.hasMessageConnection(currentUserId, profile.user_id);
+          if (!hasConnection) {
+            const requests = await db.getMessageRequests(profile.user_id);
+            requestSent = requests.some(r => r.from_user_id === currentUserId);
+          }
+        }
+        
+        return {
+          ...profile,
+          user_type: user ? user.user_type : null,
+          is_admin: user ? user.is_admin : 0,
+          hasConnection,
+          requestSent
+        };
+      })
+    );
     res.render('allProfiles', {
-      profiles,
+      profiles: profilesWithUser,
       classes: DND_CLASSES,
       races: DND_RACES,
       experienceLevels: EXPERIENCE_LEVELS,
@@ -107,15 +133,42 @@ router.get('/all', async (req, res) => {
   }
 });
 
+router.get('/user/:username', async (req, res) => {
+  try {
+    const user = await db.getUserByName(req.params.username);
+    if (!user) {
+      return res.status(404).render('../views/error', { statusCode: 404 });
+    }
+    
+    const profile = await db.getProfileByUserId(user.user_id);
+    if (!profile) {
+      return res.status(404).render('../views/error', { statusCode: 404 });
+    }
+    
+    const lookingForArray = profile.looking_for ? profile.looking_for.split(',') : [];
+    
+    res.render('viewProfile', {
+      profile,
+      classes: DND_CLASSES,
+      races: DND_RACES,
+      experienceLevels: EXPERIENCE_LEVELS,
+      timezones: TIMEZONES,
+      lookingForArray,
+    });
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+});
+
+// here we are preventing caching to ensure fresh CSRF token. 
 router.get('/my', async (req, res) => {
-  // Prevent caching to ensure fresh CSRF token
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
   res.setHeader('Pragma', 'no-cache');
   res.setHeader('Expires', '0');
   
   const user_id = getUserId(req);
   
-  // Ensure CSRF token is available
+  // here we ensure CSRF token is available
   if (!req.session.csrfToken) {
     const { generateToken } = require('../middleware/csrf');
     req.session.csrfToken = generateToken();
@@ -153,18 +206,25 @@ router.get('/my', async (req, res) => {
 });
 
 router.post('/my', upload.single('image'), async (req, res) => {
-  // Validate CSRF token from header
+  // Validate the CSRF token from the header, since this is a multipart/form-data request and we can't
+  //  validate it in the middleware before multer processes the body.
   if (!validateCsrfFromHeader(req)) {
     return res.status(403).json({ error: 'Invalid CSRF token' });
   }
   
-  const { name, race, class: clazz, level, bio, looking_for, experience_level, timezone } = req.body;
+  const { name, race, class: clazz, level, bio, looking_for, experience_level, timezone, user_type } = req.body;
   const imagePath = req.file ? '/uploads/' + req.file.filename : null;
   const lookingForArray = Array.isArray(looking_for) ? looking_for.join(',') : looking_for;
   const user_id = getUserId(req);
 
   try {
     await db.createProfile(name, race, clazz, Number(level) || 1, bio, imagePath, lookingForArray, experience_level, timezone, user_id);
+    
+    // here we set the user_type, we allow users to set their user_type on profile creation, but they can also change it later in the edit profile page.
+    if (user_type && ['player', 'dm', 'both'].includes(user_type)) {
+      await db.updateUserType(user_id, user_type);
+    }
+    
     res.redirect("/profiles/my");
   } catch (err) {
     res.status(500).send(err.message);
@@ -177,11 +237,13 @@ router.post('/my/update', upload.single('image'), async (req, res) => {
     return res.status(403).json({ error: 'Invalid CSRF token' });
   }
   
-  const { name, race, class: clazz, level, bio, looking_for, experience_level, timezone, profile_id } = req.body;
+  const { name, race, class: clazz, level, bio, looking_for, experience_level, timezone, profile_id, user_type } = req.body;
+  console.log('DEBUG - user_type from form:', user_type);
+  console.log('DEBUG - profile_id:', profile_id);
   const imagePath = req.file ? '/uploads/' + req.file.filename : req.body.existing_image;
   const lookingForArray = Array.isArray(looking_for) ? looking_for.join(',') : looking_for;
   
-  // Authorization check: ensure the profile belongs to the logged-in user
+  //  here we check authorization to ensure the profile belongs to the logged-in user.
   const user_id = getUserId(req);
   if (!user_id) {
     return res.status(401).json({ error: 'Not authenticated' });
@@ -194,6 +256,17 @@ router.post('/my/update', upload.single('image'), async (req, res) => {
     }
     if (profile.user_id !== user_id) {
       return res.status(403).json({ error: 'Not authorized to edit this profile' });
+    }
+    
+    // Update user_type
+    console.log('DEBUG - checking user_type:', user_type, 'valid:', ['player', 'dm', 'both'].includes(user_type));
+    if (user_type && ['player', 'dm', 'both'].includes(user_type)) {
+      console.log('DEBUG - updating user_type to:', user_type, 'for user_id:', user_id);
+      await db.updateUserType(user_id, user_type);
+      // Update session for user_type
+      if (req.session.user) {
+        req.session.user.user_type = user_type;
+      }
     }
     
     await db.updateProfile(profile_id, name, race, clazz, Number(level) || 1, bio, imagePath, lookingForArray, experience_level, timezone);
@@ -233,14 +306,11 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id/edit', async (req, res) => {
-  // Prevent caching to ensure fresh CSRF token
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
   res.setHeader('Pragma', 'no-cache');
   res.setHeader('Expires', '0');
-  
   const user_id = getUserId(req);
   
-  // Ensure user is authenticated
   if (!user_id) {
     return res.redirect('/login');
   }
@@ -249,14 +319,14 @@ router.get('/:id/edit', async (req, res) => {
     const profile = await db.getProfileById(req.params.id);
     if (!profile) return res.status(404).send("Profile not found");
     
-    // Authorization check: ensure the profile belongs to the logged-in user
+    const user = await db.getUserById(user_id);
     if (profile.user_id !== user_id) {
-      return res.status(403).send("Not authorized to edit this profile");
+      res.locals.statusCode = 403;
+      return res.status(403).render('../views/error');
     }
     
     const lookingForArray = profile.looking_for ? profile.looking_for.split(',') : [];
     
-    // Then we ensure CSRF token is available
     if (!req.session.csrfToken) {
       const { generateToken } = require('../middleware/csrf');
       req.session.csrfToken = generateToken();
@@ -265,6 +335,7 @@ router.get('/:id/edit', async (req, res) => {
     
     res.render('editProfile', {
       profile,
+      user: { user_id: user.user_id, name: user.name, user_type: user.user_type, is_admin: user.is_admin },
       classes: DND_CLASSES,
       races: DND_RACES,
       experienceLevels: EXPERIENCE_LEVELS,
@@ -277,7 +348,6 @@ router.get('/:id/edit', async (req, res) => {
 });
 
 router.post('/:id', upload.single('image'), async (req, res) => {
-  // Here we are preventing caching to ensure fresh CSRF token.
   if (!validateCsrfFromHeader(req)) {
     return res.status(403).json({ error: 'Invalid CSRF token' });
   }
@@ -287,7 +357,6 @@ router.post('/:id', upload.single('image'), async (req, res) => {
   const lookingForArray = Array.isArray(looking_for) ? looking_for.join(',') : looking_for;
   const user_id = getUserId(req);
   
-  // Authorization check: ensure the profile belongs to the logged-in user
   if (!user_id) {
     return res.status(401).json({ error: 'Not authenticated' });
   }
@@ -319,7 +388,7 @@ router.post('/:id/delete', async (req, res) => {
     if (!profile) {
       return res.status(404).json({ error: 'Profile not found' });
     }
-    // Authorization check: ensure the profile belongs to the logged-in user
+    
     if (profile.user_id !== user_id) {
       return res.status(403).json({ error: 'Not authorized to delete this profile' });
     }

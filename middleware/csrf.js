@@ -26,9 +26,9 @@ function validateCsrfFromHeader(req) {
     return false;
   }
   
-  // Rotate token on successful validation
-  req.session.csrfToken = generateToken();
-  console.log('CSRF Debug - Token valid, rotated');
+  // Don't rotate token on successful validation to prevent frontend token mismatch
+  // Token rotation can be enabled for higher security if needed
+  console.log('CSRF Debug - Token valid');
   return true;
 }
 
@@ -48,7 +48,7 @@ function csrfMiddleware(req, res, next) {
   // For POST requests with multipart/form-data, we'll validate CSRF in the route handler
   // because multer processes the body first and we need to check after multer
   if (req.method === 'POST' && req.headers['content-type'] && req.headers['content-type'].includes('multipart/form-data')) {
-    // Ensure session exists and token is set for the form
+    // here we ensure session exists and token is set for the form
     if (req.session) {
       if (!req.session.csrfToken) {
         req.session.csrfToken = generateToken();
@@ -75,7 +75,7 @@ function csrfMiddleware(req, res, next) {
     });
   }
 
-  // Generate new token after successful validation (token rotation)
+  // Generate new token after successful validation to prevent token rotation.
   req.session.csrfToken = generateToken();
   res.locals.csrfToken = req.session.csrfToken;
 
