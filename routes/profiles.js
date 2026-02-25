@@ -6,7 +6,7 @@ var fs = require('fs');
 
 const db = require('../Database');
 const { validateCsrf, validateCsrfFromHeader } = require('../middleware/csrf');
-
+const { requirePremium } = require('../middleware/auth');
 const DND_CLASSES = [
   "Barbarian", "Bard", "Cleric", "Druid", "Fighter",
   "Monk", "Paladin", "Ranger", "Rogue", "Sorcerer",
@@ -92,7 +92,7 @@ function getUserId(req) {
   return null;
 }
 
-router.get('/all', async (req, res) => {
+router.get('/all', requirePremium, async (req, res) => {
   try {
     const profiles = await db.getAllProfiles();
     res.render('allProfiles', {
@@ -233,24 +233,32 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id/edit', async (req, res) => {
-  // Here we are preventin caching to ensure fresh CSRF token
+  // Prevent caching
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
   res.setHeader('Pragma', 'no-cache');
   res.setHeader('Expires', '0');
-  
+
   try {
     const profile = await db.getProfileById(req.params.id);
     if (!profile) return res.status(404).send("Profile not found");
-    
-    const lookingForArray = profile.looking_for ? profile.looking_for.split(',') : [];
-    
-    // Then we ensure CSRF token is available
+
+    const user_id = getUserId(req);
+    if (!user_id || profile.user_id !== user_id) {
+      return res.status(403).send("Not authorized");
+    }
+
+    const lookingForArray = profile.looking_for
+      ? profile.looking_for.split(',')
+      : [];
+
+    // Ensure CSRF token exists
     if (!req.session.csrfToken) {
       const { generateToken } = require('../middleware/csrf');
       req.session.csrfToken = generateToken();
     }
+
     res.locals.csrfToken = req.session.csrfToken;
-    
+
     res.render('editProfile', {
       profile,
       classes: DND_CLASSES,
@@ -259,6 +267,7 @@ router.get('/:id/edit', async (req, res) => {
       timezones: TIMEZONES,
       lookingForArray,
     });
+
   } catch (err) {
     res.status(500).send(err.message);
   }

@@ -100,7 +100,7 @@ router.post("/login", loginLimiter, async (req, res) => {
         return res.status(500).render("login", { error: "Session error" });
       }
 
-      req.session.user = { user_id: user.user_id, name: user.name, is_admin: user.is_admin };
+      req.session.user = { user_id: user.user_id, name: user.name, is_admin: user.is_admin, is_premium: user.is_premium };
       log(`LOGIN: Success - User logged in: ${name}, IP: ${req.ip}`);
 
       let redirectTo = req.session.returnTo || "/";

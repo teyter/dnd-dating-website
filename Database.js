@@ -93,6 +93,7 @@ db.serialize(() => {
   addColumnIfMissing('profiles', 'bio', 'TEXT');
   addColumnIfMissing('profiles', 'level', 'INTEGER DEFAULT 1');
   addColumnIfMissing('users', 'is_admin', 'INTEGER DEFAULT 0');
+  addColumnIfMissing('users', 'is_premium', 'INTEGER DEFAULT 0');
 
   db.get('SELECT COUNT(*) as count FROM profiles;', (err, row) => {
     if (err) {
