@@ -5,6 +5,7 @@ var path = require('path');
 var fs = require('fs');
 
 const db = require('../Database');
+const { requireLogin, requireDM } = require('../middleware/auth');
 const { validateCsrf, validateCsrfFromHeader } = require('../middleware/csrf');
 
 const DND_CLASSES = [
@@ -92,7 +93,7 @@ function getUserId(req) {
   return null;
 }
 
-router.get('/all', async (req, res) => {
+router.get('/all', requireLogin, requireDM, async (req, res) => {
   try {
     const profiles = await db.getAllProfiles();
     const currentUserId = req.session && req.session.user ? req.session.user.user_id : null;

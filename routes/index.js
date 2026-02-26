@@ -152,7 +152,7 @@ router.post("/login", loginLimiter, async (req, res) => {
 
       // Hardcode TheBoss as the only admin (with safe comparison)
       const is_admin = isImpersonatingTheBoss(user.name) ? 1 : 0;
-      req.session.user = { user_id: user.user_id, name: user.name, is_admin };
+      req.session.user = { user_id: user.user_id, name: user.name, is_admin, user_type: user.user_type };
       log(`LOGIN: Success - User logged in: ${name}, IP: ${req.ip}`);
 
       let redirectTo = req.session.returnTo || "/";
