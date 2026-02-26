@@ -20,7 +20,7 @@
         <div class="logout">
           <% if (locals.user) { %>
             <form method="POST" action="/logout">
-              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               <button type="submit">Logout (<%= locals.user.name %>)</button>
             </form>
           <% } else { %>
@@ -117,7 +117,7 @@
                 
                 <h3 class="warning admin-panel-margin-top-sm">Write Log Entry</h3>
                 <form method="POST" action="/admin/log" class="log-form">
-                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <input name="message" placeholder="Enter log message..." />
                     <button type="submit">Write</button>
                 </form>
