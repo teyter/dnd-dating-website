@@ -8,7 +8,7 @@
     <link rel='stylesheet' href='/stylesheets/allProfiles.css' />
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Add CSRF token header to all POST forms
+            // we add CSRF token header to all POST forms, so that we can handle form submissions via AJAX and still have CSRF protection in place.
             document.querySelectorAll('form[method="POST"]').forEach(form => {
                 form.addEventListener('submit', function(e) {
                     const csrfInput = form.querySelector('input[name="_csrf"]');
@@ -45,12 +45,13 @@
             <div class="nav-text">D&D Dating</div>
             <ul>
                 <li><a href="/">Home</a></li>
-                <li><a href="/profiles/all">All Profiles</a></li>
-                <li><a href="/profiles/my">My Profile</a></li>
-                <li><a href="/messages">Messages</a></li>
                 <% if (locals.user && locals.user.is_admin) { %>
                     <li><a href="/admin">Admin</a></li>
                     <li><a href="/users">Users</a></li>
+                <% } else { %>
+                    <li><a href="/profiles/all">All Profiles</a></li>
+                    <li><a href="/profiles/my">My Profile</a></li>
+                    <li><a href="/messages">Messages</a></li>
                 <% } %>
             </ul>
         </div>
