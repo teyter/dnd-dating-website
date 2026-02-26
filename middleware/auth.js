@@ -24,4 +24,18 @@ function requireAdmin(req, res, next) {
   return res.redirect("/");
 }
 
-module.exports = { requireLogin, requireAdmin };
+function requireDM(req, res, next) {
+  if (!req.session || !req.session.user) {
+    req.session.returnTo = req.originalUrl;
+    return res.redirect("/login");
+  }
+
+  const type = req.session.user.user_type;
+
+  if (type === "dm" || type === "both") {
+    return next();
+  }
+
+  return res.status(403).send("Access denied: DM role required");
+}
+module.exports = { requireLogin, requireAdmin, requireDM };
