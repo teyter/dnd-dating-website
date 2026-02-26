@@ -19,7 +19,8 @@
         <div class="logout">
             <% if (locals.user) { %>
                 <form method="POST" action="/logout">
-                    <button type="submit">Logout (<%= locals.user.name %>)</button>
+                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                  <button type="submit">Logout (<%= locals.user.name %>)</button>
                 </form>
             <% } %>
         </div>
@@ -49,7 +50,7 @@
 
                 <div class="form-group">
                     <label>Confirm Password</label>
-                    <input type="password" name="pass2" minlength="8" required />
+                    <input type="password" name="pass2" minlength="12" required />
                 </div>
 
                 <button type="submit" class="button button-primary">

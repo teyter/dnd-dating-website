@@ -87,7 +87,7 @@
 
         <div class="message-input">
           <form id="sendMessageForm" method="POST" action="/messages/send">
-            <input type="hidden" name="_csrf" value="<%= typeof csrfToken !== 'undefined' ? csrfToken : '' %>">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             <input type="hidden" name="receiverId" value="<%= selectedUserId %>">
             <input type="text" name="content" placeholder="Write your message..." autocomplete="off" required>
             <button type="submit">Send</button>

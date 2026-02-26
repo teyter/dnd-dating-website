@@ -58,7 +58,7 @@
         <div class="logout">
           <% if (locals.user) { %>
             <form method="POST" action="/logout">
-              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               <button type="submit">Logout (<%= locals.user.name %>)</button>
             </form>
           <% } else { %>
@@ -112,7 +112,7 @@
                                         <span class="button request-sent-btn">Request Sent</span>
                                     <% } else { %>
                                         <form method="POST" action="/messages/request" style="display:inline;">
-                                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                                             <input type="hidden" name="toUserId" value="<%= p.user_id %>">
                                             <button type="submit" class="button request-btn">Send Message Request</button>
                                         </form>
