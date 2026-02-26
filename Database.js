@@ -4,6 +4,8 @@ const path = require('path');
 const dbPath = path.join(__dirname, 'users.db');
 const db = new sqlite3.Database(dbPath);
 
+// Here we are enabling foreign key constraints for SQLite, which is important for maintaining data integrity between tables like users and profiles.
+// this means that if a user is deleted, their profile will also be automatically deleted, and we won't have orphaned profiles without corresponding users.
 db.serialize(() => {
   db.run('PRAGMA foreign_keys = ON;');
 });
@@ -82,6 +84,16 @@ db.serialize(() => {
       to_user_id INTEGER NOT NULL,
       status TEXT DEFAULT 'pending',
       timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+
+  // Here we create the page_views table, where data like page name, user id, if an user is logged in and timestamp are stored.
+  db.run(`
+    CREATE TABLE IF NOT EXISTS page_views (
+      view_id INTEGER PRIMARY KEY AUTOINCREMENT,
+      page_name TEXT NOT NULL,
+      user_id INTEGER,
+      viewed_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
   `);
 
@@ -386,5 +398,55 @@ module.exports = {
   getMessageRequests,
   acceptMessageRequest,
   declineMessageRequest,
-  hasMessageConnection
+  hasMessageConnection,
+  getTotalMessages,
+  getTodayMessages,
+  getTotalPageViews,
+  getTodayPageViews,
+  logPageView,
+  getTotalActiveUsers,
+  getRecentActivity
 };
+
+// Analytics functions
+async function getTotalMessages() {
+  const result = await get('SELECT COUNT(*) as count FROM messages;');
+  return result ? result.count : 0;
+}
+
+async function getTodayMessages() {
+  const today = new Date().toISOString().split('T')[0];
+  const result = await get('SELECT COUNT(*) as count FROM messages WHERE DATE(timestamp) = ?;', [today]);
+  return result ? result.count : 0;
+}
+
+async function getTotalPageViews() {
+  const result = await get('SELECT COUNT(*) as count FROM page_views;');
+  return result ? result.count : 0;
+}
+
+async function getTodayPageViews() {
+  const today = new Date().toISOString().split('T')[0];
+  const result = await get('SELECT COUNT(*) as count FROM page_views WHERE DATE(viewed_at) = ?;', [today]);
+  return result ? result.count : 0;
+}
+
+async function logPageView(pageName, userId = null) {
+  await run('INSERT INTO page_views (page_name, user_id) VALUES (?, ?);', [pageName, userId]);
+}
+
+async function getTotalActiveUsers() {
+  const result = await get('SELECT COUNT(DISTINCT user_id) as count FROM page_views WHERE viewed_at > datetime("now", "-24 hours");');
+  return result ? result.count : 0;
+}
+
+async function getRecentActivity(limit = 20) {
+  const rows = await all(`
+    SELECT pv.*, u.name as user_name 
+    FROM page_views pv 
+    LEFT JOIN users u ON pv.user_id = u.user_id 
+    ORDER BY pv.viewed_at DESC 
+    LIMIT ?;
+  `, [limit]);
+  return rows;
+}

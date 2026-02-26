@@ -40,9 +40,29 @@
                 <div class="stat-value"><%= totalUsers %></div>
                 <div class="stat-label">Total Accounts</div>
             </div>
-            <div class="stat-card">
+            <div class="stat-card teal">
                 <div class="stat-value"><%= totalProfiles %></div>
                 <div class="stat-label">Profiles Created</div>
+            </div>
+            <div class="stat-card blue">
+                <div class="stat-value"><%= totalMessages %></div>
+                <div class="stat-label">Total Messages</div>
+            </div>
+            <div class="stat-card cyan">
+                <div class="stat-value"><%= todayMessages %></div>
+                <div class="stat-label">Messages Today</div>
+            </div>
+            <div class="stat-card purple">
+                <div class="stat-value"><%= totalPageViews %></div>
+                <div class="stat-label">Total Page Views</div>
+            </div>
+            <div class="stat-card magenta">
+                <div class="stat-value"><%= todayPageViews %></div>
+                <div class="stat-label">Page Views Today</div>
+            </div>
+            <div class="stat-card orange">
+                <div class="stat-value"><%= activeUsers %></div>
+                <div class="stat-label">Active Users (24h)</div>
             </div>
             <div class="stat-card yellow">
                 <div class="stat-value"><%= Math.round(appUptimeSeconds) %>s</div>
@@ -54,22 +74,48 @@
             </div>
         </div>
 
-        <div class="admin-center">
+        <!-- Our real time activity feed -->
+        <div class="admin-panel admin-panel-margin-top">
+            <h3>Real-Time Activity Feed</h3>
+            <div class="activity-feed">
+                <% if (recentActivity && recentActivity.length > 0) { %>
+                    <% recentActivity.forEach(function(activity) { %>
+                        <div class="activity-item">
+                            <span class="activity-time"><%= new Date(activity.viewed_at).toLocaleString() %></span>
+                            <span class="activity-page"><%= activity.page_name %></span>
+                            <% if (activity.user_name) { %>
+                                <span class="activity-user"><%= activity.user_name %></span>
+                            <% } else { %>
+                                <span class="activity-guest">guest</span>
+                            <% } %>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <div class="no-activity-message">
+                        No recent activity yet<br>
+                        <small>Activity will appear here as users browse the site</small>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+
+        <!-- Server Info and Security Log -->
+        <div class="two-column">
             <div class="admin-panel">
                 <h3>Server Info</h3>
-                
-                <h4 style="color: #888; margin-top: 15px; margin-bottom: 10px;">System Details</h4>
                 <div class="server-output">
                     <div><strong>System Uptime:</strong> <%= Math.round(systemUptimeSeconds / 60) %> minutes</div>
                     <div><strong>Heap Used:</strong> <%= Math.round(memory.heapUsed / 1024 / 1024) %> MB</div>
                 </div>
                 
-                <h4 style="color: #888; margin-top: 20px; margin-bottom: 10px;">Shell Command Output</h4>
-                <div class="uptime-output">
-                    <%= uptimeOut %>
+                <div class="admin-panel-margin-top-sm">
+                    <strong>Shell Output:</strong>
+                    <div class="uptime-output">
+                        <%= uptimeOut %>
+                    </div>
                 </div>
                 
-                <h3 class="warning" style="margin-top: 20px;">Write Log Entry</h3>
+                <h3 class="warning admin-panel-margin-top-sm">Write Log Entry</h3>
                 <form method="POST" action="/admin/log" class="log-form">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <input name="message" placeholder="Enter log message..." />
@@ -77,11 +123,20 @@
                 </form>
             </div>
 
+            <!-- Security Log -->
             <div class="admin-panel">
-                <h3 class="info">Recent Log</h3>
-                <div class="log-output">
-                    <%- logTail.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>') %>
+                <h3>Security Log</h3>
+                <div class="log-panel">
+                    <%- securityLogTail.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>') %>
                 </div>
+            </div>
+        </div>
+
+        <!-- Recent Log -->
+        <div class="admin-panel admin-panel-margin-top-sm">
+            <h3>Recent Log</h3>
+            <div class="log-panel">
+                <%- logTail.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>') %>
             </div>
         </div>
     </div>

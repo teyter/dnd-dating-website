@@ -3,20 +3,17 @@ var router = express.Router();
 
 const os = require("os");
 const fs = require("fs");
+const path = require("path");
 const { execFile } = require("child_process");
-const { log, logPath } = require("../logger");
+const { log, logPath, securityLog, getClientIp } = require("../logger");
 const db = require("../Database");
+const { requirePermission, PERMISSIONS } = require('../middleware/auth');
 
-// Middleware to check if user is admin
-function requireAdmin(req, res, next) {
-  if (!req.session || !req.session.user || !req.session.user.is_admin) {
-    return res.status(403).render('../views/error', { statusCode: 403 });
-  }
-  next();
-}
-
-// Apply admin check to all admin routes
-router.use(requireAdmin);
+// Security log path, used for admin dashboard to view recent security events.
+// we are implementing our own security log instead of using a logging library, to have more control and prevent log injection attacks.
+// we have a separate log file for security events, and a separate log file for regular events.
+// we secure this by sanitizing all log messages, and by not allowing user input to be logged directly without sanitization.
+const securityLogPath = path.join(__dirname, "../security.log");
 
 function readLastLines(filePath, maxLines = 200) {
   try {
@@ -46,9 +43,29 @@ router.get("/", async (req, res) => {
     profiles = [];
   }
   
+  // analytics stats for admin dashboard
+  let totalMessages = 0;
+  let todayMessages = 0;
+  let totalPageViews = 0;
+  let todayPageViews = 0;
+  let activeUsers = 0;
+  let recentActivity = [];
+  
+  try {
+    totalMessages = await db.getTotalMessages();
+    todayMessages = await db.getTodayMessages();
+    totalPageViews = await db.getTotalPageViews();
+    todayPageViews = await db.getTodayPageViews();
+    activeUsers = await db.getTotalActiveUsers();
+    recentActivity = await db.getRecentActivity(30);
+  } catch (err) {
+    console.log('Analytics error:', err.message);
+  }
+  
   const totalUsers = users.length;
   const totalProfiles = profiles.length;
   const logTail = readLastLines(logPath, 200);
+  const securityLogTail = readLastLines(securityLogPath, 200);
   
   const appUptimeSeconds = process.uptime();
   const systemUptimeSeconds = os.uptime();
@@ -72,8 +89,15 @@ router.get("/", async (req, res) => {
       systemUptimeSeconds,
       memory,
       logTail,
+      securityLogTail,
       totalUsers,
       totalProfiles,
+      totalMessages,
+      todayMessages,
+      totalPageViews,
+      todayPageViews,
+      activeUsers,
+      recentActivity
     });
   });
 });

@@ -2,20 +2,33 @@ var express = require('express');
 var router = express.Router();
 var multer = require('multer');
 var upload = multer();
+var rateLimit = require('express-rate-limit');
 
 const db = require('../Database');
 const { validateCsrfFromHeader, generateToken } = require('../middleware/csrf');
-const { log } = require('../logger');
+const { log, securityLog, getClientIp } = require('../logger');
+const { requirePermission, PERMISSIONS, isOwner, getUserId } = require('../middleware/auth');
 
-function getUserId(req) {
-  if (req.session && req.session.user && req.session.user.user_id) {
-    return req.session.user.user_id;
-  }
-  return null;
-}
+// Rate limiter for sending messages,to prevent spam
+const messageRateLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 10, // 10 messages per minute
+  message: { error: 'Too many messages. Please slow down.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
 
-// The main messages page, we list all conversations here
-router.get('/', async (req, res) => {
+// Rate limiter for message requests
+const messageRequestLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 5, // 5 requests per minute
+  message: { error: 'Too many requests. Please slow down.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// The main messages page, it require VIEW_MESSAGES permission. users need to be logged in to access messages, 
+router.get('/', requirePermission(PERMISSIONS.VIEW_MESSAGES), async (req, res) => {
   const user_id = getUserId(req);
   if (!user_id) {
     return res.redirect('/login');
@@ -131,24 +144,7 @@ router.get('/user/:id', async (req, res) => {
 });
 
 // Send a message
-router.post('/send', upload.none(), async (req, res) => {
-  // Validate CSRF token - accept from body or header, and update session to match
-  let csrfToken = req.body && req.body._csrf;
-  
-  // If no token in body, check header
-  if (!csrfToken) {
-    csrfToken = req.headers['x-csrf-token'];
-  }
-  
-  // If we have a token, update session to use this token, we do this to handle page refreshes where the token might come from header but session has old token, this way we sync them up.
-  if (csrfToken && req.session) {
-    req.session.csrfToken = csrfToken;
-  }
-  
-  if (!req.session || !req.session.csrfToken) {
-    return res.status(403).json({ error: 'Invalid CSRF token' });
-  }
-  
+router.post('/send', messageRateLimiter, upload.none(), async (req, res) => {
   const user_id = getUserId(req);
   if (!user_id) {
     return res.status(401).json({ error: 'Not authenticated' });
@@ -188,43 +184,22 @@ router.post('/send', upload.none(), async (req, res) => {
 });
 
 // Send message request
-router.post('/request', upload.none(), async (req, res) => {
-  console.log('DEBUG - /messages/request endpoint hit');
-  console.log('DEBUG - body:', req.body);
-  console.log('DEBUG - headers:', req.headers);
-  
-  const csrfToken = req.headers['x-csrf-token'] || (req.body && req.body._csrf);
-  console.log('DEBUG - csrfToken:', csrfToken);
-  
-  if (!req.session || !req.session.csrfToken) {
-    console.log('DEBUG - No session or csrfToken');
-    return res.status(403).json({ error: 'Invalid CSRF token' });
-  }
-  
-  if (!csrfToken || csrfToken !== req.session.csrfToken) {
-    console.log('DEBUG - Token mismatch:', { submitted: csrfToken, session: req.session.csrfToken });
-    return res.status(403).json({ error: 'Invalid CSRF token' });
-  }
-  
-  console.log('DEBUG - CSRF valid, proceeding');
-  
+router.post('/request', messageRequestLimiter, upload.none(), async (req, res) => {
   const user_id = getUserId(req);
   if (!user_id) {
     return res.status(401).json({ error: 'Not authenticated' });
   }
-  
-  console.log('DEBUG - user_id:', user_id);
+
   const { toUserId } = req.body;
-  console.log('DEBUG - toUserId:', toUserId);
   const toUserIdNum = parseInt(toUserId);
-  console.log('DEBUG - toUserIdNum:', toUserIdNum);
 
   if (isNaN(toUserIdNum) || toUserIdNum === user_id) {
+    console.log('DEBUG - Invalid toUserId');
     return res.status(400).json({ error: 'Invalid user' });
   }
   
   try {
-    // here we verify the other user exists and we have a aggred from users to message with each other.
+    // Create message request
     const result = await db.createMessageRequest(user_id, toUserIdNum);
     if (result.exists) {
       return res.status(400).json({ error: 'Request already sent' });
@@ -234,7 +209,6 @@ router.post('/request', upload.none(), async (req, res) => {
     res.json({ success: true });
   } catch (err) {
     log(`MESSAGE REQUEST: Error - ${err.message}`);
-    console.log('DEBUG - Error:', err);
     res.status(500).json({ error: 'Failed to send request' });
   }
 });
@@ -261,26 +235,7 @@ router.get('/requests', async (req, res) => {
 });
 
 // Accept message request
-router.post('/requests/accept', upload.none(), async (req, res) => {
-  console.log('DEBUG accept - body:', req.body);
-  console.log('DEBUG accept - headers x-csrf-token:', req.headers['x-csrf-token']);
-  console.log('DEBUG accept - session csrfToken:', req.session.csrfToken);
-  
-  let csrfToken = req.body && req.body._csrf;
-  
-  if (!csrfToken) {
-    csrfToken = req.headers['x-csrf-token'];
-  }
-  
-  if (csrfToken && req.session) {
-    req.session.csrfToken = csrfToken;
-    console.log('DEBUG accept - updated session csrfToken to:', csrfToken);
-  }
-  
-  if (!req.session || !req.session.csrfToken) {
-    return res.status(403).json({ error: 'Invalid CSRF token' });
-  }
-  
+router.post('/requests/accept', messageRequestLimiter, upload.none(), async (req, res) => {
   const user_id = getUserId(req);
   if (!user_id) {
     return res.status(401).json({ error: 'Not authenticated' });
@@ -299,21 +254,7 @@ router.post('/requests/accept', upload.none(), async (req, res) => {
 });
 
 // Decline message request
-router.post('/requests/decline', upload.none(), async (req, res) => {
-  let csrfToken = req.body && req.body._csrf;
-  
-  if (!csrfToken) {
-    csrfToken = req.headers['x-csrf-token'];
-  }
-  
-  if (csrfToken && req.session) {
-    req.session.csrfToken = csrfToken;
-  }
-  
-  if (!req.session || !req.session.csrfToken) {
-    return res.status(403).json({ error: 'Invalid CSRF token' });
-  }
-  
+router.post('/requests/decline', messageRequestLimiter, upload.none(), async (req, res) => {
   const user_id = getUserId(req);
   if (!user_id) {
     return res.status(401).json({ error: 'Not authenticated' });

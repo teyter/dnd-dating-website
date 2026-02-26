@@ -6,6 +6,7 @@ var fs = require('fs');
 
 const db = require('../Database');
 const { validateCsrf, validateCsrfFromHeader } = require('../middleware/csrf');
+const { requirePermission, PERMISSIONS, getUserId } = require('../middleware/auth');
 
 const DND_CLASSES = [
   "Barbarian", "Bard", "Cleric", "Druid", "Fighter",
@@ -84,15 +85,7 @@ const TIMEZONES = [
   "UTC+12 (New Zealand)"
 ];
 
-function getUserId(req) {
-  // we use session user_id instead of cookie. This is more secure because cookies can be manipulated.
-  if (req.session && req.session.user && req.session.user.user_id) {
-    return req.session.user.user_id;
-  }
-  return null;
-}
-
-router.get('/all', async (req, res) => {
+router.get('/all', requirePermission(PERMISSIONS.VIEW_PROFILES), async (req, res) => {
   try {
     const profiles = await db.getAllProfiles();
     const currentUserId = req.session && req.session.user ? req.session.user.user_id : null;
@@ -161,7 +154,7 @@ router.get('/user/:username', async (req, res) => {
 });
 
 // here we are preventing caching to ensure fresh CSRF token. 
-router.get('/my', async (req, res) => {
+router.get('/my', requirePermission(PERMISSIONS.EDIT_OWN_PROFILE), async (req, res) => {
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
   res.setHeader('Pragma', 'no-cache');
   res.setHeader('Expires', '0');

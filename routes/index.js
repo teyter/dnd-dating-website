@@ -4,7 +4,10 @@ var router = express.Router();
 const bcrypt = require("bcrypt");
 const db = require("../Database");
 const rateLimit = require("express-rate-limit");
-const { log } = require("../logger");
+const { log, securityLog, getClientIp } = require("../logger");
+
+// Admin username from environment variable (not hardcoded)
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'TheBoss';
 
 // Helper function to normalize username for comparison, to prevent homograph attacks
 function normalizeUsername(username) {
@@ -18,15 +21,15 @@ function normalizeUsername(username) {
     .toLowerCase();
 }
 
-// Check if username is attempting to impersonate TheBoss
-function isImpersonatingTheBoss(username) {
+// Check if username is the admin (configured via environment variable)
+function isAdminUser(username) {
   const normalized = normalizeUsername(username);
-  const bossNormalized = normalizeUsername('TheBoss');
+  const adminNormalized = normalizeUsername(ADMIN_USERNAME);
   
   // Block exact match and visually similar usernames
-  return normalized === bossNormalized || 
-         normalized.includes('theboss') ||
-         username.toLowerCase().includes('theboss');
+  return normalized === adminNormalized || 
+         normalized.includes(ADMIN_USERNAME.toLowerCase()) ||
+         username.toLowerCase().includes(ADMIN_USERNAME.toLowerCase());
 }
 
 // Reserved usernames that could confuse users or impersonate privileged accounts
@@ -35,7 +38,7 @@ const RESERVED_USERNAMES = [
   'theboss', 'superuser', 'super admin', 'owner', 'webmaster'
 ];
 
-// Check if username is reserved (prevents impersonation of admin/privileged roles)
+// Checks if username is reserved, to prevent impersonation of admin, privileged roles
 function isReservedUsername(username) {
   const normalized = normalizeUsername(username);
   return RESERVED_USERNAMES.some(reserved => 
@@ -65,14 +68,11 @@ const registerLimiter = rateLimit({
   }
 });
 
-
-// Home
 router.get('/', function(req, res, next) {
   const websiteName = "D&D Dating!";
   res.render('index', { websiteName });
 });
 
-// Register
 router.get("/register", (req, res) => {
   res.render("register", { error: null });
 });
@@ -84,8 +84,8 @@ router.post("/register", registerLimiter, async (req, res) => {
 
   if (!name || !pass) return res.status(400).render("register", { error: "Missing username or password" });
   
-  // Block usernames that impersonate TheBoss
-  if (isImpersonatingTheBoss(name)) {
+  // Block usernames that impersonate the admin
+  if (isAdminUser(name)) {
     return res.status(400).render("register", { error: "Username not available" });
   }
   
@@ -94,8 +94,9 @@ router.post("/register", registerLimiter, async (req, res) => {
     return res.status(400).render("register", { error: "Username not available" });
   }
   
-  // Modern NIST guidelines: allow all characters including unicode and whitespace
-  // Minimum 12 characters, OWASP recommendation!, no composition rules
+  // we follow NIST guidelines: allow all characters including unicode and whitespace
+  // Minimum 12 characters, OWASP recommendation!, no composition rules, meaning that passphrase style passwords are allowed and encouraged, 
+  // which are more resistant to brute force attacks
   if (pass.length < 12) {
     return res.status(400).render("register", { 
       error: "Password must be at least 12 characters" 
@@ -112,7 +113,7 @@ router.post("/register", registerLimiter, async (req, res) => {
     }
 
     const hash = await bcrypt.hash(pass, 12);
-    // All new users start as 'player' - can change in profile
+    // All new users start as 'player', can be changed in profile with edit
     await db.createUser(name, hash, 'player');
     log(`REGISTER: Success - New user created: ${name}`);
 
@@ -134,12 +135,15 @@ router.post("/login", loginLimiter, async (req, res) => {
   try {
     const user = await db.getUserByName(name);
     if (!user) {
+      securityLog('FAILED_LOGIN', `User not found: ${name} from IP: ${getClientIp(req)}`);
       log(`LOGIN: Failed - User not found: ${name}, IP: ${req.ip}`);
       return res.status(401).render("login", { error: "Invalid username or password" });
     }
 
+    log(`LOGIN: Found user: ${name}, password in DB: ${user.pass ? 'exists' : 'missing'}`);
     const ok = await bcrypt.compare(pass, user.pass);
     if (!ok) {
+      securityLog('FAILED_LOGIN', `Wrong password for user: ${name} from IP: ${getClientIp(req)}`);
       log(`LOGIN: Failed - Wrong password for user: ${name}, IP: ${req.ip}`);
       return res.status(401).render("login", { error: "Invalid username or password" });
     }
@@ -150,9 +154,10 @@ router.post("/login", loginLimiter, async (req, res) => {
         return res.status(500).render("login", { error: "Session error" });
       }
 
-      // Hardcode TheBoss as the only admin (with safe comparison)
-      const is_admin = isImpersonatingTheBoss(user.name) ? 1 : 0;
-      req.session.user = { user_id: user.user_id, name: user.name, is_admin };
+      // Admin determined by environment variable, it is not hardcoded anylonger, and visually similar usernames are blocked in registration.
+      const is_admin = isAdminUser(user.name) ? 1 : 0;
+      req.session.user = { user_id: user.user_id, name: user.name, is_admin, user_type: user.user_type };
+      securityLog('SUCCESSFUL_LOGIN', `User: ${name} logged in from IP: ${getClientIp(req)}`);
       log(`LOGIN: Success - User logged in: ${name}, IP: ${req.ip}`);
 
       let redirectTo = req.session.returnTo || "/";
@@ -164,6 +169,7 @@ router.post("/login", loginLimiter, async (req, res) => {
     });
 
   } catch (err) {
+    log(`LOGIN: Error - ${err.message}, stack: ${err.stack}`);
     return res.status(500).render("login", { error: err.message });
   }
 });
@@ -171,6 +177,7 @@ router.post("/login", loginLimiter, async (req, res) => {
 // Logout (POST)
 router.post("/logout", (req, res) => {
   const userName = req.session?.user?.name || "Unknown";
+  securityLog('LOGOUT', `User: ${userName} logged out from IP: ${getClientIp(req)}`);
   log(`LOGOUT: User logged out: ${userName}`);
   req.session.destroy(() => res.redirect("/"));
 });
