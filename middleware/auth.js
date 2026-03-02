@@ -13,8 +13,10 @@
  * 
  */
 
-// Here we define all permissions in the system
+const db = require('../Database');
+const { log, securityLog, getClientIp } = require('../logger');
 const PERMISSIONS = {
+  
   // User permissions
   'VIEW_PROFILES': 'view_profiles',
   'EDIT_OWN_PROFILE': 'edit_own_profile',
@@ -115,8 +117,8 @@ function requirePermission(permission) {
     
     // Deny by default, we check permission
     if (!hasPermission(user, permission)) {
-      // Log unauthorized access attempt
-      console.log(`SECURITY: PERMISSION_DENIED - User ${user ? user.name : 'anonymous'} denied: ${permission}`);
+      // Log unauthorized access attempt to security log
+      securityLog('PERMISSION_DENIED', `User: ${user ? user.name : 'anonymous'}, Permission: ${permission}, Path: ${req.path}, IP: ${getClientIp(req)}`);
       
       return res.status(403).render('../views/error', { 
         statusCode: 403,
@@ -159,7 +161,8 @@ function requireAdmin(req, res, next) {
 }
 
 /**
- * Here we are creating a function to check if the user is the owner of a resource, which can be used to protect routes that require ownership. 
+ * Here we are creating a function to check if the user is the owner of a resource,
+ *  which can be used to protect routes that require ownership. 
  */
 function isOwner(resourceOwnerId, user) {
   // Admin users can access all resources, but they should not be able to access user features, so we return false for admins
