@@ -25,7 +25,7 @@ app.use((req, res, next) => {
   // Content Security Policy that prevents XSS.
   res.setHeader('Content-Security-Policy', 
     "default-src 'self'; " +
-    "script-src 'self' 'unsafe-inline'; " +
+    "script-src 'self'; " +
     "style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
     "style-src 'self' 'unsafe-inline'; " +
     "img-src 'self' data: https://i.pinimg.com; " +
@@ -60,7 +60,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Here we make sure that the session must be defined BEFORE the protected uploads middleware, 
 // otherwise we won't be able to check if the user is authenticated when they try to access /uploads, which would cause a crash.
 app.use(session({
-  secret: process.env.SESSION_SECRET || (process.env.NODE_ENV === 'production' ? (() => { throw new Error('SESSION_SECRET must be set in production'); })() : "dev-secret-for-testing-only"),
+  secret: process.env.SESSION_SECRET || (process.env.NODE_ENV === 'production' ? (() => { 
+    throw new Error('SESSION_SECRET must be set in production'); })() : "dev-secret-for-testing-only"),
   resave: false,
   saveUninitialized: false,
   cookie: {

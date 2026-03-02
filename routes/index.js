@@ -6,7 +6,7 @@ const db = require("../Database");
 const rateLimit = require("express-rate-limit");
 const { log, securityLog, getClientIp } = require("../logger");
 
-// Admin username from environment variable (not hardcoded)
+// Admin username is now an environment variable (not hardcoded)
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'TheBoss';
 
 // Helper function to normalize username for comparison, to prevent homograph attacks
