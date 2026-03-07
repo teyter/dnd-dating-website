@@ -14,14 +14,16 @@ function validateCsrfFromHeader(req) {
   if (!req.session || !req.session.csrfToken) {
     return false;
   }
-  
-  const submittedToken = req.headers['x-csrf-token'];
-  
+
+  const submittedToken =
+    req.headers['x-csrf-token'] ||
+    (req.body && req.body._csrf);
+
   if (!submittedToken || submittedToken !== req.session.csrfToken) {
     securityLog('CSRF_ATTACK', `Invalid CSRF token from IP: ${getClientIp(req)}`);
     return false;
   }
-  
+
   return true;
 }
 
