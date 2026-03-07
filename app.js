@@ -79,12 +79,14 @@ const csrfProtection = csrf();
 app.use((req, res, next) => {
   const contentType = req.headers['content-type'] || '';
   const isMultipart = contentType.includes('multipart/form-data');
-  const isProfileRoute =
-    req.path === '/profiles/my' ||
-    req.path === '/profiles/my/update';
 
-  if (req.method === 'POST' && isMultipart && isProfileRoute) {
-    return next(); // let custom CSRF handling in routes/profiles.js deal with it
+  const skipCsurf =
+    req.method === 'POST' &&
+    isMultipart &&
+    req.path === '/profiles/my';
+
+  if (skipCsurf) {
+    return next();
   }
 
   return csrfProtection(req, res, next);
@@ -108,7 +110,7 @@ app.use((req, res, next) => {
   try {
     res.locals.csrfToken = req.csrfToken();
   } catch (e) {
-    res.locals.csrfToken = req.session.csrfToken;
+    res.locals.csrfToken = null;
   }
 
   res.locals.customCsrfToken = req.session.csrfToken;

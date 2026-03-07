@@ -166,7 +166,7 @@ router.get('/my', requirePermission(PERMISSIONS.EDIT_OWN_PROFILE), async (req, r
     const { generateToken } = require('../middleware/csrf');
     req.session.csrfToken = generateToken();
   }
-  res.locals.csrfToken = req.session.csrfToken;
+  res.locals.customCsrfToken = req.session.csrfToken;
   
   try {
     const profile = await db.getProfileByUserId(user_id);
@@ -324,7 +324,7 @@ router.get('/:id/edit', async (req, res) => {
       const { generateToken } = require('../middleware/csrf');
       req.session.csrfToken = generateToken();
     }
-    res.locals.csrfToken = req.session.csrfToken;
+    res.locals.customCsrfToken = req.session.csrfToken;
     
     res.render('editProfile', {
       profile,

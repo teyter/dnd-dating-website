@@ -56,7 +56,7 @@
         <div class="logout">
           <% if (locals.user) { %>
             <form method="POST" action="/logout">
-                <input type="hidden" name="_csrf" value="<%= customCsrfToken %>">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
               <button type="submit">Logout (<%= locals.user.name %>)</button>
             </form>
           <% } else { %>
@@ -100,7 +100,7 @@
                     <div class="profile-actions">
                         <a href="/profiles/<%= profile.profile_id %>/edit">Edit Profile</a>
                         <form method="POST" action="/profiles/my/delete" style="display:inline">
-                <input type="hidden" name="_csrf" value="<%= customCsrfToken %>">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                             <button type="submit" onclick="return confirm('Delete your profile?')">Delete Profile</button>
                         </form>
                     </div>
