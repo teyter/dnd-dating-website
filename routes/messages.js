@@ -27,8 +27,8 @@ const messageRequestLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-// The main messages page, it require VIEW_MESSAGES permission. users need to be logged in to access messages, 
-router.get('/', requirePermission(PERMISSIONS.VIEW_MESSAGES), async (req, res) => {
+// The main messages page, it require VIEW_MESSAGES permission. users need to be logged in to access messages,
+router.get('/', requirePermission(PERMISSIONS.VIEW_MESSAGES), async (req, res, next) => {
   const user_id = getUserId(req);
   if (!user_id) {
     return res.redirect('/login');
@@ -67,12 +67,12 @@ router.get('/', requirePermission(PERMISSIONS.VIEW_MESSAGES), async (req, res) =
     });
   } catch (err) {
     log(`MESSAGES: Error loading conversations - ${err.message}`);
-    res.status(500).render('error', { statusCode: 500 });
+    next(err);
   }
 });
 
 // here we conversation with specific user
-router.get('/user/:id', async (req, res) => {
+router.get('/user/:id', async (req, res, next) => {
   const user_id = getUserId(req);
   if (!user_id) {
     return res.redirect('/login');
@@ -139,12 +139,12 @@ router.get('/user/:id', async (req, res) => {
     });
   } catch (err) {
     log(`MESSAGES: Error loading conversation - ${err.message}`);
-    res.status(500).render('error', { statusCode: 500 });
+    next(err);
   }
 });
 
 // Send a message
-router.post('/send', messageRateLimiter, upload.none(), async (req, res) => {
+router.post('/send', messageRateLimiter, upload.none(), async (req, res, next) => {
   const user_id = getUserId(req);
   if (!user_id) {
     return res.status(401).json({ error: 'Not authenticated' });
@@ -179,20 +179,20 @@ router.post('/send', messageRateLimiter, upload.none(), async (req, res) => {
     return res.json({ success: true });
   } catch (err) {
     log(`MESSAGE: Error sending - ${err.message}`);
-    return res.status(500).json({ error: 'Failed to send message' });
+    next(err);
   }
 });
 
 // Send message request
-router.post('/request', messageRequestLimiter, upload.none(), async (req, res) => {
+router.post('/request', messageRequestLimiter, upload.none(), async (req, res, next) => {
   const user_id = getUserId(req);
   if (!user_id) {
     return res.status(401).json({ error: 'Not authenticated' });
   }
-
+  
   const { toUserId } = req.body;
   const toUserIdNum = parseInt(toUserId);
-
+  
   if (isNaN(toUserIdNum) || toUserIdNum === user_id) {
     console.log('DEBUG - Invalid toUserId');
     return res.status(400).json({ error: 'Invalid user' });
@@ -209,12 +209,12 @@ router.post('/request', messageRequestLimiter, upload.none(), async (req, res) =
     res.json({ success: true });
   } catch (err) {
     log(`MESSAGE REQUEST: Error - ${err.message}`);
-    res.status(500).json({ error: 'Failed to send request' });
+    next(err);
   }
 });
 
 // Get message requests page
-router.get('/requests', async (req, res) => {
+router.get('/requests', async (req, res, next) => {
   const user_id = getUserId(req);
   if (!user_id) {
     return res.redirect('/login');
@@ -230,12 +230,12 @@ router.get('/requests', async (req, res) => {
     res.render('messageRequests', { requests, currentUserId: user_id });
   } catch (err) {
     log(`MESSAGE REQUESTS: Error - ${err.message}`);
-    res.status(500).render('error', { statusCode: 500 });
+    next(err);
   }
 });
 
 // Accept message request
-router.post('/requests/accept', messageRequestLimiter, upload.none(), async (req, res) => {
+router.post('/requests/accept', messageRequestLimiter, upload.none(), async (req, res, next) => {
   const user_id = getUserId(req);
   if (!user_id) {
     return res.status(401).json({ error: 'Not authenticated' });
@@ -249,12 +249,12 @@ router.post('/requests/accept', messageRequestLimiter, upload.none(), async (req
     return res.redirect('/messages');
   } catch (err) {
     log(`MESSAGE REQUEST: Error accepting - ${err.message}`);
-    res.status(500).json({ error: 'Failed to accept request' });
+    next(err);
   }
 });
 
 // Decline message request
-router.post('/requests/decline', messageRequestLimiter, upload.none(), async (req, res) => {
+router.post('/requests/decline', messageRequestLimiter, upload.none(), async (req, res, next) => {
   const user_id = getUserId(req);
   if (!user_id) {
     return res.status(401).json({ error: 'Not authenticated' });
@@ -268,7 +268,7 @@ router.post('/requests/decline', messageRequestLimiter, upload.none(), async (re
     return res.redirect('/messages');
   } catch (err) {
     log(`MESSAGE REQUEST: Error declining - ${err.message}`);
-    res.status(500).json({ error: 'Failed to decline request' });
+    next(err);
   }
 });
 

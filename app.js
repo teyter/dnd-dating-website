@@ -1,7 +1,8 @@
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+var morgan = require('morgan');
+const { log } = require('./logger');
 var session = require('express-session');
 const { requireLogin, requireAdmin } = require('./middleware/auth');
 const { csrfMiddleware } = require('./middleware/csrf');
@@ -52,7 +53,7 @@ app.use((req, res, next) => {
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.use(logger('dev'));
+app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -163,18 +164,52 @@ app.use(function(req, res, next) {
 });
 
 app.use(function(err, req, res, next) {
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-  res.locals.statusCode = err.status || 500;
+  // Log the error (full stack in development, message only in production)
+  if (req.app.get('env') === 'development') {
+    log(`ERROR: ${err.message}\nStack: ${err.stack}`);
+  } else {
+    log(`ERROR: ${err.message}`);
+  }
 
-  res.status(err.status || 500);
-  res.render('error');
+  // Determine the response format
+  if (req.accepts('html') && !req.xhr) {
+    // Browser request – render your beautiful HTML error page
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
+    res.locals.statusCode = err.status || 500;
+    res.status(err.status || 500);
+    res.render('error');
+  } else {
+    // API / XHR request – return JSON
+    const status = err.status || 500;
+    const response = {
+      error: {
+        status,
+        message: status === 404 ? 'Not found' : 'Internal server error',
+      }
+    };
+    // Optionally include stack trace in development
+    if (req.app.get('env') === 'development') {
+      response.error.stack = err.stack;
+    }
+    res.status(status).json(response);
+  }
 });
 
 module.exports = app;
 
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || '0.0.0.0';
+
+process.on('uncaughtException', (err) => {
+  log(`UNCAUGHT EXCEPTION: ${err.message}\nStack: ${err.stack}`);
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  log(`UNHANDLED REJECTION: ${reason}`);
+  process.exit(1);
+});
 
 if (require.main === module) {
   app.listen(PORT, HOST, () => {

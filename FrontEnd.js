@@ -83,53 +83,53 @@ app.get('/viewUsersTemplate', (req, res) => {
   res.render('viewUsers', { users });
 });
 
-app.get('/users', async (req, res) => {
+app.get('/users', async (req, res, next) => {
   try {
     const users = await db.getAllUsers();
     res.render('users', { users });
   } catch (err) {
-    res.status(500).send(err.message);
+    next(err);
   }
 });
 
-app.post('/users', async (req, res) => {
+app.post('/users', async (req, res, next) => {
   const { name, pass } = req.body;
 
   try {
     await db.createUser(name, pass);
     res.redirect('/users');
   } catch (err) {
-    res.status(500).send(err.message);
+    next(err);
   }
 });
 
-app.post('/users/:id/delete', async (req, res) => {
+app.post('/users/:id/delete', async (req, res, next) => {
   try {
     await db.deleteUser(req.params.id);
     res.redirect('/users');
   } catch (err) {
-    res.status(500).send(err.message);
+    next(err);
   }
 });
 
-app.get("/users/:id/edit", async (req, res) => {
+app.get("/users/:id/edit", async (req, res, next) => {
   try {
     const user = await db.getUserById(req.params.id);
     if (!user) return res.status(404).send("User not found");
     res.render("editUser", { user });
   } catch (err) {
-    res.status(500).send(err.message);
+    next(err);
   }
 });
 
-app.post("/users/:id", async (req, res) => {
+app.post("/users/:id", async (req, res, next) => {
   const { name, pass } = req.body;
 
   try {
     await db.updateUser(req.params.id, name, pass);
     res.redirect("/users");
   } catch (err) {
-    res.status(500).send(err.message);
+    next(err);
   }
 });
 
@@ -162,35 +162,43 @@ function readLastLines(filePath, maxLines = 200) {
   }
 }
 
-app.get("/admin", (req, res) => {
-  const logTail = readLastLines(logPath, 200);
+app.get("/admin", (req, res, next) => {
+  try {
+    const logTail = readLastLines(logPath, 200);
 
-  const appUptimeSeconds = process.uptime();
-  const systemUptimeSeconds = os.uptime();
-  const memory = process.memoryUsage();
+    const appUptimeSeconds = process.uptime();
+    const systemUptimeSeconds = os.uptime();
+    const memory = process.memoryUsage();
 
-  execFile("uptime", [], { timeout: 1500 }, (err, stdout, stderr) => {
-    const uptimeOut = err
-      ? `Error running uptime: ${err.message}`
-      : (stdout || stderr || "").trim();
+    execFile("uptime", [], { timeout: 1500 }, (err, stdout, stderr) => {
+      const uptimeOut = err
+        ? `Error running uptime: ${err.message}`
+        : (stdout || stderr || "").trim();
 
-    res.render("admin", {
-      uptimeOut,
-      appUptimeSeconds,
-      systemUptimeSeconds,
-      memory,
-      logTail,
+      res.render("admin", {
+        uptimeOut,
+        appUptimeSeconds,
+        systemUptimeSeconds,
+        memory,
+        logTail,
+      });
     });
-  });
+  } catch (err) {
+    next(err);
+  }
 });
 
-app.post("/admin/log", (req, res) => {
-  const msg = (req.body.message || "").trim();
-  if (msg.length > 0) log(`ADMIN_NOTE: ${msg}`);
-  res.redirect("/admin");
+app.post("/admin/log", (req, res, next) => {
+  try {
+    const msg = (req.body.message || "").trim();
+    if (msg.length > 0) log(`ADMIN_NOTE: ${msg}`);
+    res.redirect("/admin");
+  } catch (err) {
+    next(err);
+  }
 });
 
-app.get("/profiles", async (req, res) => {
+app.get("/profiles", async (req, res, next) => {
   try {
     const profiles = await db.getAllProfiles();
     res.render("profiles", {
@@ -198,22 +206,22 @@ app.get("/profiles", async (req, res) => {
       classes: DND_CLASSES,
     });
   } catch (err) {
-    res.status(500).send(err.message);
+    next(err);
   }
 });
 
-app.post("/profiles", async (req, res) => {
+app.post("/profiles", async (req, res, next) => {
   const { name, race, class: clazz, level, bio } = req.body;
 
   try {
     await db.createProfile(name, race, clazz, Number(level), bio, null, '', '', '', 0);
     res.redirect("/profiles");
   } catch (err) {
-    res.status(500).send(err.message);
+    next(err);
   }
 });
 
-app.get("/profiles/:id/edit", async (req, res) => {
+app.get("/profiles/:id/edit", async (req, res, next) => {
   try {
     const profile = await db.getProfileById(req.params.id);
     if (!profile) return res.status(404).send("Profile not found");
@@ -222,27 +230,27 @@ app.get("/profiles/:id/edit", async (req, res) => {
       classes: DND_CLASSES,
     });
   } catch (err) {
-    res.status(500).send(err.message);
+    next(err);
   }
 });
 
-app.post("/profiles/:id", async (req, res) => {
+app.post("/profiles/:id", async (req, res, next) => {
   const { name, race, class: clazz, level, bio } = req.body;
 
   try {
     await db.updateProfile(req.params.id, name, race, clazz, Number(level), bio, null, '', '', '');
     res.redirect("/profiles");
   } catch (err) {
-    res.status(500).send(err.message);
+    next(err);
   }
 });
 
-app.post("/profiles/:id/delete", async (req, res) => {
+app.post("/profiles/:id/delete", async (req, res, next) => {
   try {
     await db.deleteProfile(req.params.id);
     res.redirect("/profiles");
   } catch (err) {
-    res.status(500).send(err.message);
+    next(err);
   }
 });
 
@@ -250,7 +258,7 @@ app.get("/register", (req, res) => {
   res.render("register", { error: null });
 });
 
-app.post("/register", async (req, res) => {
+app.post("/register", async (req, res, next) => {
   const name = (req.body.name || "").trim();
   const pass = req.body.pass || "";
   const pass2 = req.body.pass2 || "";
@@ -267,7 +275,7 @@ app.post("/register", async (req, res) => {
     await db.createUser(name, hash);
     return res.redirect("/login");
   } catch (err) {
-    return res.status(500).render("register", { error: err.message });
+    next(err);
   }
 });
 
@@ -275,7 +283,7 @@ app.get("/login", (req, res) => {
   res.render("login", { error: null });
 });
 
-app.post("/login", async (req, res) => {
+app.post("/login", async (req, res, next) => {
   const name = (req.body.name || "").trim();
   const pass = req.body.pass || "";
 
@@ -289,7 +297,7 @@ app.post("/login", async (req, res) => {
     req.session.user = { user_id: user.user_id, name: user.name };
     return res.redirect("/");
   } catch (err) {
-    return res.status(500).render("login", { error: err.message });
+    next(err);
   }
 });
 

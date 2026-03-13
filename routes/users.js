@@ -25,26 +25,26 @@ function readLastLines(filePath, maxLines = 200) {
 }
 
 // View all users
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
   try {
     const users = await db.getAllUsers();
     res.render("viewUsers", { users, csrfToken: req.session.csrfToken });
   } catch (err) {
-    res.status(500).send(err.message);
+    next(err);
   }
 });
 
 // Create new user, admin only as it require CREATE_USER permission
-router.get('/new', requirePermission(PERMISSIONS.CREATE_USER), async (req, res) => {
+router.get('/new', requirePermission(PERMISSIONS.CREATE_USER), async (req, res, next) => {
   try {
     res.render("createUser", { csrfToken: req.session.csrfToken });
   } catch (err) {
-    res.status(500).send(err.message);
+    next(err);
   }
 });
 
 // Handle to create new user
-router.post('/new', upload.none(), async (req, res) => {
+router.post('/new', upload.none(), async (req, res, next) => {
   const { name, pass, userType } = req.body;
 
   try {
@@ -54,21 +54,21 @@ router.post('/new', upload.none(), async (req, res) => {
     securityLog('USER_CREATED', `Admin created user: ${name}`);
     res.redirect("/users");
   } catch (err) {
-    res.status(500).send(err.message);
+    next(err);
   }
 });
 
-router.get('/:id/edit', async (req, res) => {
+router.get('/:id/edit', async (req, res, next) => {
   try {
     const user = await db.getUserById(req.params.id);
     if (!user) return res.status(404).send("User not found");
     res.render("editUser", { user, csrfToken: req.session.csrfToken });
   } catch (err) {
-    res.status(500).send(err.message);
+    next(err);
   }
 });
 
-router.post('/:id', upload.none(), async (req, res) => {
+router.post('/:id', upload.none(), async (req, res, next) => {
   const { name, pass } = req.body;
 
   try {
@@ -84,17 +84,17 @@ router.post('/:id', upload.none(), async (req, res) => {
     securityLog('USER_UPDATED', `Admin updated user ID: ${req.params.id}`);
     res.redirect("/users");
   } catch (err) {
-    res.status(500).send(err.message);
+    next(err);
   }
 });
 
-router.post('/:id/delete', upload.none(), async (req, res) => {
+router.post('/:id/delete', upload.none(), async (req, res, next) => {
   try {
     await db.deleteUser(req.params.id);
     securityLog('USER_DELETED', `Admin deleted user ID: ${req.params.id}`);
     res.redirect('/users');
   } catch (err) {
-    res.status(500).send(err.message);
+    next(err);
   }
 });
 

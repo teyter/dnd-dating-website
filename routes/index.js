@@ -77,7 +77,7 @@ router.get("/register", (req, res) => {
   res.render("register", { error: null });
 });
 
-router.post("/register", registerLimiter, async (req, res) => {
+router.post("/register", registerLimiter, async (req, res, next) => {
   const name = (req.body.name || "").trim();
   const pass = req.body.pass || "";
   const pass2 = req.body.pass2 || "";
@@ -119,7 +119,7 @@ router.post("/register", registerLimiter, async (req, res) => {
 
     return res.redirect("/login");
   } catch (err) {
-    return res.status(500).render("register", { error: err.message });
+    next(err);
   }
 });
 
@@ -128,7 +128,7 @@ router.get("/login", (req, res) => {
   res.render("login", { error: null });
 });
 
-router.post("/login", loginLimiter, async (req, res) => {
+router.post("/login", loginLimiter, async (req, res, next) => {
   const name = (req.body.name || "").trim();
   const pass = req.body.pass || "";
 
@@ -170,7 +170,7 @@ router.post("/login", loginLimiter, async (req, res) => {
 
   } catch (err) {
     log(`LOGIN: Error - ${err.message}, stack: ${err.stack}`);
-    return res.status(500).render("login", { error: err.message });
+    next(err);
   }
 });
 
