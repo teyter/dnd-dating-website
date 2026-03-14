@@ -27,85 +27,70 @@ function readLastLines(filePath, maxLines = 200) {
   }
 }
 
-router.get("/", async (req, res) => {
-  let users = [];
-  let profiles = [];
-  
+router.get("/", async (req, res, next) => {
   try {
-    users = await db.getAllUsers();
-  } catch (err) {
-    users = [];
-  }
-  
-  try {
-    profiles = await db.getAllProfiles();
-  } catch (err) {
-    profiles = [];
-  }
-  
-  // analytics stats for admin dashboard
-  let totalMessages = 0;
-  let todayMessages = 0;
-  let totalPageViews = 0;
-  let todayPageViews = 0;
-  let activeUsers = 0;
-  let recentActivity = [];
-  
-  try {
-    totalMessages = await db.getTotalMessages();
-    todayMessages = await db.getTodayMessages();
-    totalPageViews = await db.getTotalPageViews();
-    todayPageViews = await db.getTodayPageViews();
-    activeUsers = await db.getTotalActiveUsers();
-    recentActivity = await db.getRecentActivity(30);
-  } catch (err) {
-    console.log('Analytics error:', err.message);
-  }
-  
-  const totalUsers = users.length;
-  const totalProfiles = profiles.length;
-  const logTail = readLastLines(logPath, 200);
-  const securityLogTail = readLastLines(securityLogPath, 200);
-  
-  const appUptimeSeconds = process.uptime();
-  const systemUptimeSeconds = os.uptime();
-  const memory = process.memoryUsage();
-
-  const isWindows = os.platform() === 'win32';
-  const uptimeCmd = isWindows ? 'net stats SRV' : 'uptime';
-  const uptimeArgs = isWindows ? [] : [];
-  
-  execFile(uptimeCmd, uptimeArgs, { timeout: 1500 }, (err, stdout, stderr) => {
-    let uptimeOut;
-    if (err) {
-      uptimeOut = `OS Uptime: ${Math.round(os.uptime() / 60)} minutes`;
-    } else {
-      uptimeOut = isWindows ? stdout : (stdout || stderr || "").trim();
-    }
-
-    res.render("admin", {
-      uptimeOut,
-      appUptimeSeconds,
-      systemUptimeSeconds,
-      memory,
-      logTail,
-      securityLogTail,
-      totalUsers,
-      totalProfiles,
-      totalMessages,
-      todayMessages,
-      totalPageViews,
-      todayPageViews,
-      activeUsers,
-      recentActivity
+    const users = await db.getAllUsers();
+    const profiles = await db.getAllProfiles();
+    
+    // analytics stats for admin dashboard
+    const totalMessages = await db.getTotalMessages();
+    const todayMessages = await db.getTodayMessages();
+    const totalPageViews = await db.getTotalPageViews();
+    const todayPageViews = await db.getTodayPageViews();
+    const activeUsers = await db.getTotalActiveUsers();
+    const recentActivity = await db.getRecentActivity(30);
+    
+    const totalUsers = users.length;
+    const totalProfiles = profiles.length;
+    const logTail = readLastLines(logPath, 200);
+    const securityLogTail = readLastLines(securityLogPath, 200);
+    
+    const appUptimeSeconds = process.uptime();
+    const systemUptimeSeconds = os.uptime();
+    const memory = process.memoryUsage();
+    
+    const isWindows = os.platform() === 'win32';
+    const uptimeCmd = isWindows ? 'net stats SRV' : 'uptime';
+    const uptimeArgs = isWindows ? [] : [];
+    
+    execFile(uptimeCmd, uptimeArgs, { timeout: 1500 }, (err, stdout, stderr) => {
+      let uptimeOut;
+      if (err) {
+        uptimeOut = `OS Uptime: ${Math.round(os.uptime() / 60)} minutes`;
+      } else {
+        uptimeOut = isWindows ? stdout : (stdout || stderr || "").trim();
+      }
+      
+      res.render("admin", {
+        uptimeOut,
+        appUptimeSeconds,
+        systemUptimeSeconds,
+        memory,
+        logTail,
+        securityLogTail,
+        totalUsers,
+        totalProfiles,
+        totalMessages,
+        todayMessages,
+        totalPageViews,
+        todayPageViews,
+        activeUsers,
+        recentActivity
+      });
     });
-  });
+  } catch (err) {
+    next(err);
+  }
 });
 
-router.post("/log", (req, res) => {
-  const msg = (req.body.message || "").trim();
-  if (msg.length > 0) log(`ADMIN_NOTE: ${msg}`);
-  res.redirect("/admin");
+router.post("/log", (req, res, next) => {
+  try {
+    const msg = (req.body.message || "").trim();
+    if (msg.length > 0) log(`ADMIN_NOTE: ${msg}`);
+    res.redirect("/admin");
+  } catch (err) {
+    next(err);
+  }
 });
 
 module.exports = router;

@@ -369,6 +369,34 @@ async function getMessageConnection(userId1, userId2) {
   return row;
 }
 
+// Transaction support for atomic operations
+function beginTransaction() {
+  return new Promise((resolve, reject) => {
+    db.run('BEGIN TRANSACTION', (err) => {
+      if (err) reject(err);
+      else resolve();
+    });
+  });
+}
+
+function commitTransaction() {
+  return new Promise((resolve, reject) => {
+    db.run('COMMIT', (err) => {
+      if (err) reject(err);
+      else resolve();
+    });
+  });
+}
+
+function rollbackTransaction() {
+  return new Promise((resolve, reject) => {
+    db.run('ROLLBACK', (err) => {
+      if (err) reject(err);
+      else resolve();
+    });
+  });
+}
+
 async function hasMessageConnection(userId1, userId2) {
   const connection = await getMessageConnection(userId1, userId2);
   return connection !== undefined;
@@ -399,6 +427,10 @@ module.exports = {
   acceptMessageRequest,
   declineMessageRequest,
   hasMessageConnection,
+  // Transaction support
+  beginTransaction,
+  commitTransaction,
+  rollbackTransaction,
   getTotalMessages,
   getTodayMessages,
   getTotalPageViews,

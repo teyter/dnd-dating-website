@@ -85,7 +85,7 @@ const TIMEZONES = [
   "UTC+12 (New Zealand)"
 ];
 
-router.get('/all', requirePermission(PERMISSIONS.VIEW_PROFILES), async (req, res) => {
+router.get('/all', requirePermission(PERMISSIONS.VIEW_PROFILES), async (req, res, next) => {
   try {
     const profiles = await db.getAllProfiles();
     const currentUserId = req.session && req.session.user ? req.session.user.user_id : null;
@@ -122,11 +122,11 @@ router.get('/all', requirePermission(PERMISSIONS.VIEW_PROFILES), async (req, res
       timezones: TIMEZONES,
     });
   } catch (err) {
-    res.status(500).send(err.message);
+    next(err);
   }
 });
 
-router.get('/user/:username', async (req, res) => {
+router.get('/user/:username', async (req, res, next) => {
   try {
     const user = await db.getUserByName(req.params.username);
     if (!user) {
@@ -149,12 +149,12 @@ router.get('/user/:username', async (req, res) => {
       lookingForArray,
     });
   } catch (err) {
-    res.status(500).send(err.message);
+    next(err);
   }
 });
 
-// here we are preventing caching to ensure fresh CSRF token. 
-router.get('/my', requirePermission(PERMISSIONS.EDIT_OWN_PROFILE), async (req, res) => {
+// here we are preventing caching to ensure fresh CSRF token.
+router.get('/my', requirePermission(PERMISSIONS.EDIT_OWN_PROFILE), async (req, res, next) => {
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
   res.setHeader('Pragma', 'no-cache');
   res.setHeader('Expires', '0');
@@ -194,14 +194,20 @@ router.get('/my', requirePermission(PERMISSIONS.EDIT_OWN_PROFILE), async (req, r
       });
     }
   } catch (err) {
-    res.status(500).send(err.message);
+    next(err);
   }
 });
 
-router.post('/my', upload.single('image'), async (req, res) => {
+router.post('/my', upload.single('image'), async (req, res, next) => {
   // Validate the CSRF token from the header, since this is a multipart/form-data request and we can't
   //  validate it in the middleware before multer processes the body.
   if (!validateCsrfFromHeader(req)) {
+    // Delete uploaded file if CSRF validation fails
+    if (req.file) {
+      fs.unlink(req.file.path, (unlinkErr) => {
+        if (unlinkErr) console.error('Failed to delete orphaned file:', unlinkErr);
+      });
+    }
     return res.status(403).json({ error: 'Invalid CSRF token' });
   }
   
@@ -209,8 +215,11 @@ router.post('/my', upload.single('image'), async (req, res) => {
   const imagePath = req.file ? '/uploads/' + req.file.filename : null;
   const lookingForArray = Array.isArray(looking_for) ? looking_for.join(',') : looking_for;
   const user_id = getUserId(req);
-
+  
   try {
+    // Use transaction to ensure atomicity
+    await db.beginTransaction();
+    
     await db.createProfile(name, race, clazz, Number(level) || 1, bio, imagePath, lookingForArray, experience_level, timezone, user_id);
     
     // here we set the user_type, we allow users to set their user_type on profile creation, but they can also change it later in the edit profile page.
@@ -218,15 +227,36 @@ router.post('/my', upload.single('image'), async (req, res) => {
       await db.updateUserType(user_id, user_type);
     }
     
+    await db.commitTransaction();
     res.redirect("/profiles/my");
   } catch (err) {
-    res.status(500).send(err.message);
+    // Rollback transaction on error
+    try {
+      await db.rollbackTransaction();
+    } catch (rollbackErr) {
+      console.error('Transaction rollback failed:', rollbackErr);
+    }
+    
+    // Clean up uploaded file if there's an error
+    if (req.file) {
+      fs.unlink(req.file.path, (unlinkErr) => {
+        if (unlinkErr) console.error('Failed to delete orphaned file:', unlinkErr);
+      });
+    }
+    
+    next(err);
   }
 });
 
-router.post('/my/update', upload.single('image'), async (req, res) => {
+router.post('/my/update', upload.single('image'), async (req, res, next) => {
   // Validate CSRF token from header.
   if (!validateCsrfFromHeader(req)) {
+    // Delete uploaded file if CSRF validation fails
+    if (req.file) {
+      fs.unlink(req.file.path, (unlinkErr) => {
+        if (unlinkErr) console.error('Failed to delete orphaned file:', unlinkErr);
+      });
+    }
     return res.status(403).json({ error: 'Invalid CSRF token' });
   }
   
@@ -239,17 +269,38 @@ router.post('/my/update', upload.single('image'), async (req, res) => {
   //  here we check authorization to ensure the profile belongs to the logged-in user.
   const user_id = getUserId(req);
   if (!user_id) {
+    // Delete uploaded file if not authenticated
+    if (req.file) {
+      fs.unlink(req.file.path, (unlinkErr) => {
+        if (unlinkErr) console.error('Failed to delete orphaned file:', unlinkErr);
+      });
+    }
     return res.status(401).json({ error: 'Not authenticated' });
   }
   
   try {
     const profile = await db.getProfileById(profile_id);
     if (!profile) {
+      // Delete uploaded file if profile not found
+      if (req.file) {
+        fs.unlink(req.file.path, (unlinkErr) => {
+          if (unlinkErr) console.error('Failed to delete orphaned file:', unlinkErr);
+        });
+      }
       return res.status(404).json({ error: 'Profile not found' });
     }
     if (profile.user_id !== user_id) {
+      // Delete uploaded file if not authorized
+      if (req.file) {
+        fs.unlink(req.file.path, (unlinkErr) => {
+          if (unlinkErr) console.error('Failed to delete orphaned file:', unlinkErr);
+        });
+      }
       return res.status(403).json({ error: 'Not authorized to edit this profile' });
     }
+    
+    // Use transaction to ensure atomicity
+    await db.beginTransaction();
     
     // Update user_type
     console.log('DEBUG - checking user_type:', user_type, 'valid:', ['player', 'dm', 'both'].includes(user_type));
@@ -263,13 +314,29 @@ router.post('/my/update', upload.single('image'), async (req, res) => {
     }
     
     await db.updateProfile(profile_id, name, race, clazz, Number(level) || 1, bio, imagePath, lookingForArray, experience_level, timezone);
+    
+    await db.commitTransaction();
     res.redirect("/profiles/my");
   } catch (err) {
-    res.status(500).send(err.message);
+    // Rollback transaction on error
+    try {
+      await db.rollbackTransaction();
+    } catch (rollbackErr) {
+      console.error('Transaction rollback failed:', rollbackErr);
+    }
+    
+    // Clean up uploaded file if there's an error
+    if (req.file) {
+      fs.unlink(req.file.path, (unlinkErr) => {
+        if (unlinkErr) console.error('Failed to delete orphaned file:', unlinkErr);
+      });
+    }
+    
+    next(err);
   }
 });
 
-router.post('/my/delete', async (req, res) => {
+router.post('/my/delete', async (req, res, next) => {
   const user_id = getUserId(req);
   if (!user_id) {
     return res.status(401).json({ error: 'Not authenticated' });
@@ -290,15 +357,15 @@ router.post('/my/delete', async (req, res) => {
     await db.deleteProfile(profile.profile_id);
     res.redirect('/profiles/my');
   } catch (err) {
-    res.status(500).send(err.message);
+    next(err);
   }
 });
 
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
   res.redirect('/profiles/my');
 });
 
-router.get('/:id/edit', async (req, res) => {
+router.get('/:id/edit', async (req, res, next) => {
   res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, private');
   res.setHeader('Pragma', 'no-cache');
   res.setHeader('Expires', '0');
@@ -336,11 +403,11 @@ router.get('/:id/edit', async (req, res) => {
       lookingForArray,
     });
   } catch (err) {
-    res.status(500).send(err.message);
+    next(err);
   }
 });
 
-router.post('/:id', upload.single('image'), async (req, res) => {
+router.post('/:id', upload.single('image'), async (req, res, next) => {
   if (!validateCsrfFromHeader(req)) {
     return res.status(403).json({ error: 'Invalid CSRF token' });
   }
@@ -353,7 +420,7 @@ router.post('/:id', upload.single('image'), async (req, res) => {
   if (!user_id) {
     return res.status(401).json({ error: 'Not authenticated' });
   }
-
+  
   try {
     const profile = await db.getProfileById(req.params.id);
     if (!profile) {
@@ -366,11 +433,11 @@ router.post('/:id', upload.single('image'), async (req, res) => {
     await db.updateProfile(req.params.id, name, race, clazz, Number(level) || 1, bio, imagePath, lookingForArray, experience_level, timezone);
     res.redirect("/profiles/my");
   } catch (err) {
-    res.status(500).send(err.message);
+    next(err);
   }
 });
 
-router.post('/:id/delete', async (req, res) => {
+router.post('/:id/delete', async (req, res, next) => {
   const user_id = getUserId(req);
   if (!user_id) {
     return res.status(401).json({ error: 'Not authenticated' });
@@ -396,8 +463,9 @@ router.post('/:id/delete', async (req, res) => {
     await db.deleteProfile(req.params.id);
     res.redirect('/profiles/my');
   } catch (err) {
-    res.status(500).send(err.message);
+    next(err);
   }
 });
 
 module.exports = router;
+
