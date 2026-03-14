@@ -294,8 +294,12 @@ app.post("/login", async (req, res, next) => {
     const ok = await bcrypt.compare(pass, user.pass);
     if (!ok) return res.status(401).render("login", { error: "Invalid username or password" });
 
-    req.session.user = { user_id: user.user_id, name: user.name };
-    return res.redirect("/");
+    // Regenerate session to prevent session fixation attacks
+    req.session.regenerate((err) => {
+      if (err) return next(err);
+      req.session.user = { user_id: user.user_id, name: user.name };
+      return res.redirect("/");
+    });
   } catch (err) {
     next(err);
   }
