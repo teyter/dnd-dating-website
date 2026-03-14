@@ -16,6 +16,12 @@ const messageRateLimiter = rateLimit({
   message: { error: 'Too many messages. Please slow down.' },
   standardHeaders: true,
   legacyHeaders: false,
+  keyGenerator: (req) => {
+    // Use user ID if logged in, otherwise use IP (not from headers to prevent bypass)
+    const userId = req.session?.user?.user_id;
+    const ip = req.socket?.remoteAddress || req.ip;
+    return userId ? `user:${userId}` : `ip:${ip}`;
+  }
 });
 
 // Rate limiter for message requests
@@ -25,6 +31,12 @@ const messageRequestLimiter = rateLimit({
   message: { error: 'Too many requests. Please slow down.' },
   standardHeaders: true,
   legacyHeaders: false,
+  keyGenerator: (req) => {
+    // Use user ID if logged in, otherwise use IP (not from headers to prevent bypass)
+    const userId = req.session?.user?.user_id;
+    const ip = req.socket?.remoteAddress || req.ip;
+    return userId ? `user:${userId}` : `ip:${ip}`;
+  }
 });
 
 // The main messages page, it require VIEW_MESSAGES permission. users need to be logged in to access messages,
@@ -199,6 +211,12 @@ router.post('/request', messageRequestLimiter, upload.none(), async (req, res, n
   }
   
   try {
+    // Check if target user is admin, block requests to admin to avoid harassment
+    const receiver = await db.getUserById(toUserIdNum);
+    if (receiver && receiver.is_admin) {
+      return res.status(403).json({ error: 'Cannot send message requests to admin' });
+    }
+    
     // Create message request
     const result = await db.createMessageRequest(user_id, toUserIdNum);
     if (result.exists) {
