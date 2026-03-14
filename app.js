@@ -173,14 +173,15 @@ app.use(function(err, req, res, next) {
 
   // Determine the response format
   if (req.accepts('html') && !req.xhr) {
-    // Browser request – render your beautiful HTML error page
+    // Browser request, to render our custom HTML error page
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
     res.locals.statusCode = err.status || 500;
     res.status(err.status || 500);
     res.render('error');
   } else {
-    // API / XHR request – return JSON
+    // API request, respond with JSON error message, this is for API endpoints that expect JSON responses, 
+    // so we return a structured JSON error message instead of HTML.
     const status = err.status || 500;
     const response = {
       error: {
