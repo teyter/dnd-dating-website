@@ -20,7 +20,7 @@ function validateCsrfFromHeader(req) {
     (req.body && req.body._csrf);
 
   if (!submittedToken || submittedToken !== req.session.csrfToken) {
-    securityLog('CSRF_ATTACK', `Invalid CSRF token from IP: ${getClientIp(req)}`);
+    securityLog('input_validation_fail', { field: 'csrf_token', userid: req.session?.user?.user_id || 'anonymous', ip: getClientIp(req) });
     return false;
   }
 
@@ -55,6 +55,7 @@ function csrfMiddleware(req, res, next) {
 
   // For other POST requests, validate CSRF token
   if (!req.session || !req.session.csrfToken) {
+    console.log('CSRF ERROR: No session or csrfToken');
     return res.status(403).render('error', {
       message: 'Invalid CSRF token',
       error: {}
@@ -64,7 +65,8 @@ function csrfMiddleware(req, res, next) {
   const submittedToken = (req.body && req.body._csrf) || req.headers['x-csrf-token'];
   
   if (!submittedToken || submittedToken !== req.session.csrfToken) {
-    securityLog('CSRF_ATTACK', `Invalid CSRF token from IP: ${getClientIp(req)}`);
+    console.log('CSRF ERROR: Token mismatch', { submitted: submittedToken ? 'yes' : 'no', expected: req.session.csrfToken ? 'yes' : 'no' });
+    securityLog('input_validation_fail', `field=csrf_token, userid=${req.session?.user?.user_id || 'anonymous'}, ip=${getClientIp(req)}`);
     return res.status(403).render('error', {
       message: 'Invalid CSRF token',
       error: {}

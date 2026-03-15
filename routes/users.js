@@ -51,7 +51,8 @@ router.post('/new', upload.none(), async (req, res, next) => {
     // Hash the password before saving it
     const hashedPassword = await bcrypt.hash(pass, 10);
     await db.createUser(name, hashedPassword, userType || 'player');
-    securityLog('USER_CREATED', `Admin created user: ${name}`);
+    const adminUserId = req.session?.user?.user_id || 'unknown';
+    securityLog('user_created', { userid: adminUserId, newuserid: name, attributes: 'name,user_type' });
     res.redirect("/users");
   } catch (err) {
     next(err);
@@ -81,7 +82,8 @@ router.post('/:id', upload.none(), async (req, res, next) => {
       const hashedPassword = await bcrypt.hash(pass, 10);
       await db.updateUser(req.params.id, name, hashedPassword);
     }
-    securityLog('USER_UPDATED', `Admin updated user ID: ${req.params.id}`);
+    const adminUserId = req.session?.user?.user_id || 'unknown';
+    securityLog('user_updated', { userid: adminUserId, onuserid: req.params.id, attributes: 'name,pass' });
     res.redirect("/users");
   } catch (err) {
     next(err);
@@ -91,7 +93,8 @@ router.post('/:id', upload.none(), async (req, res, next) => {
 router.post('/:id/delete', upload.none(), async (req, res, next) => {
   try {
     await db.deleteUser(req.params.id);
-    securityLog('USER_DELETED', `Admin deleted user ID: ${req.params.id}`);
+    const adminUserId = req.session?.user?.user_id || 'unknown';
+    securityLog('user_deleted', { userid: adminUserId, onuserid: req.params.id });
     res.redirect('/users');
   } catch (err) {
     next(err);

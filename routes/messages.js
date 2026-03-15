@@ -15,13 +15,7 @@ const messageRateLimiter = rateLimit({
   max: 10, // 10 messages per minute
   message: { error: 'Too many messages. Please slow down.' },
   standardHeaders: true,
-  legacyHeaders: false,
-  keyGenerator: (req) => {
-    // Use user ID if logged in, otherwise use IP (not from headers to prevent bypass)
-    const userId = req.session?.user?.user_id;
-    const ip = req.socket?.remoteAddress || req.ip;
-    return userId ? `user:${userId}` : `ip:${ip}`;
-  }
+  legacyHeaders: false
 });
 
 // Rate limiter for message requests
@@ -30,13 +24,7 @@ const messageRequestLimiter = rateLimit({
   max: 5, // 5 requests per minute
   message: { error: 'Too many requests. Please slow down.' },
   standardHeaders: true,
-  legacyHeaders: false,
-  keyGenerator: (req) => {
-    // Use user ID if logged in, otherwise use IP (not from headers to prevent bypass)
-    const userId = req.session?.user?.user_id;
-    const ip = req.socket?.remoteAddress || req.ip;
-    return userId ? `user:${userId}` : `ip:${ip}`;
-  }
+  legacyHeaders: false
 });
 
 // The main messages page, it require VIEW_MESSAGES permission. users need to be logged in to access messages,
@@ -185,13 +173,15 @@ router.post('/send', messageRateLimiter, upload.none(), async (req, res, next) =
     if (!hasConnection) {
       return res.status(403).json({ error: 'Message request not accepted. Please send a request first.' });
     }
-    
+
+    // Send the message
     await db.createMessage(user_id, receiverIdNum, content.trim());
     log(`MESSAGE: Sent from user ${user_id} to user ${receiverIdNum}`);
     return res.json({ success: true });
   } catch (err) {
-    log(`MESSAGE: Error sending - ${err.message}`);
-    next(err);
+    console.error('Error sending message:', err);
+    log(`MESSAGE: Error sending - ${err.message}, stack: ${err.stack}`);
+    return res.status(500).json({ error: 'Failed to send message' });
   }
 });
 
