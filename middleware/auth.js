@@ -118,7 +118,7 @@ function requirePermission(permission) {
     // Deny by default, we check permission
     if (!hasPermission(user, permission)) {
       // Log unauthorized access attempt to security log
-      securityLog('PERMISSION_DENIED', `User: ${user ? user.name : 'anonymous'}, Permission: ${permission}, Path: ${req.path}, IP: ${getClientIp(req)}`);
+      securityLog('authz_fail', `userid=${user ? user.user_id : 'anonymous'}, resource=${req.path}, ip=${getClientIp(req)}`);
       
       return res.status(403).render('../views/error', { 
         statusCode: 403,

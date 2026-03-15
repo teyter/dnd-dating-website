@@ -4,18 +4,38 @@ const path = require("path");
 const logPath = path.join(__dirname, "app.log");
 const securityLogPath = path.join(__dirname, "security.log");
 
+// Sanitize user input to prevent log injection attacks (CWE-117)
+function sanitizeForLog(input) {
+  if (input === undefined || input === null) return '';
+  const str = String(input);
+  return str.replace(/[\r\n]/g, '_');
+}
+
 // Here we are implementing a simple logging mechanism. T
 // This is for when we want to log important events like errors or security events.
 function log(message) {
-  const line = `[${new Date().toISOString()}] ${message}\n`;
+  const sanitized = sanitizeForLog(message);
+  const line = `[${new Date().toISOString()}] ${sanitized}\n`;
   fs.appendFile(logPath, line, (err) => {
     if (err) console.error("Failed to write log:", err.message);
   });
 }
 
-// Security-focused logging, for example when we want to log failed logins or access denied
+// Security-focused logging, follows OWASP Logging Vocabulary
+// Format: event_name:param1,param2 or event_name[{param1,param2}]
 function securityLog(event, details) {
-  const line = `[${new Date().toISOString()}] [${event}] ${details}\n`;
+  let detailsStr;
+  if (typeof details === 'object' && details !== null) {
+    // Convert object to OWASP format: {key1,key2,key3}
+    const keys = Object.keys(details);
+    detailsStr = `[${keys.join(',')}]`;
+    // Add actual values (sanitized)
+    const values = Object.values(details).map(v => sanitizeForLog(v === undefined ? 'undefined' : v));
+    detailsStr += ` {${values.join(',')}}`;
+  } else {
+    detailsStr = sanitizeForLog(details);
+  }
+  const line = `[${new Date().toISOString()}] [${sanitizeForLog(event)}] ${detailsStr}\n`;
   fs.appendFile(securityLogPath, line, (err) => {
     if (err) console.error("Failed to write security log:", err.message);
   });

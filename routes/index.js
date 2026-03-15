@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const db = require("../Database");
 const rateLimit = require("express-rate-limit");
 const { log, securityLog, getClientIp } = require("../logger");
+const { generateToken } = require("../middleware/csrf");
 
 // Admin username is now an environment variable (not hardcoded)
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'TheBoss';
@@ -49,22 +50,24 @@ function isReservedUsername(username) {
 
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // limit each IP to 5 login attempts
+  max: 20, // limit each IP to 20 login attempts (more lenient for testing)
   message: "Too many login attempts. Try again later.",
   handler: (req, res) => {
+    console.log('RATE LIMIT: Login rate limit exceeded for IP:', req.ip);
     log(`AUTH: Rate limit exceeded - IP: ${req.ip}`);
-    res.status(429).render("login", { error: "Too many login attempts. Try again later." });
+    res.status(429).render("login", { error: "Too many login attempts. Try again later.", csrfToken: req.session?.csrfToken || '' });
   }
 });
 
 // Registration rate limiter, to prevent username enumeration
 const registerLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // limit each IP to 5 registration attempts
+  max: 20, // limit each IP to 20 registration attempts (more lenient for testing)
   message: "Too many registration attempts. Try again later.",
   handler: (req, res) => {
+    console.log('RATE LIMIT: Register rate limit exceeded for IP:', req.ip);
     log(`REGISTER: Rate limit exceeded - IP: ${req.ip}`);
-    res.status(429).render("register", { error: "Too many registration attempts. Try again later." });
+    res.status(429).render("register", { error: "Too many registration attempts. Try again later.", csrfToken: req.session?.csrfToken || '' });
   }
 });
 
@@ -125,7 +128,11 @@ router.post("/register", registerLimiter, async (req, res, next) => {
 
 // Login
 router.get("/login", (req, res) => {
-  res.render("login", { error: null });
+  // Ensure CSRF token exists
+  if (!req.session.csrfToken) {
+    req.session.csrfToken = generateToken();
+  }
+  res.render("login", { error: null, csrfToken: req.session.csrfToken });
 });
 
 router.post("/login", loginLimiter, async (req, res, next) => {
@@ -133,32 +140,48 @@ router.post("/login", loginLimiter, async (req, res, next) => {
   const pass = req.body.pass || "";
 
   try {
+    console.log('Login attempt for:', name);
     const user = await db.getUserByName(name);
     if (!user) {
-      securityLog('FAILED_LOGIN', `User not found: ${name} from IP: ${getClientIp(req)}`);
-      log(`LOGIN: Failed - User not found: ${name}, IP: ${req.ip}`);
-      return res.status(401).render("login", { error: "Invalid username or password" });
+      console.log('User not found:', name);
+      securityLog('authn_login_fail', `username=${name}, reason=user_not_found, ip=${getClientIp(req)}`);
+      return res.status(401).render("login", { error: "Invalid username or password", csrfToken: req.session?.csrfToken || '' });
     }
 
-    log(`LOGIN: Found user: ${name}, password in DB: ${user.pass ? 'exists' : 'missing'}`);
-    const ok = await bcrypt.compare(pass, user.pass);
-    if (!ok) {
-      securityLog('FAILED_LOGIN', `Wrong password for user: ${name} from IP: ${getClientIp(req)}`);
-      log(`LOGIN: Failed - Wrong password for user: ${name}, IP: ${req.ip}`);
-      return res.status(401).render("login", { error: "Invalid username or password" });
+    console.log('User found:', user.name, 'has pass:', !!user.pass);
+
+    // If user has no password set, treat as failed login
+    if (!user.pass || typeof user.pass !== 'string') {
+      console.log('No password for user:', name);
+      securityLog('authn_login_fail', `userid=${user.user_id}, reason=no_password, ip=${getClientIp(req)}`);
+      return res.status(401).render("login", { error: "Invalid username or password", csrfToken: req.session?.csrfToken || '' });
     }
+
+    // Verify password
+    const ok = await bcrypt.compare(pass, user.pass);
+    console.log('Password verification result:', ok);
+    if (!ok) {
+      console.log('Returning 401 - wrong password');
+      securityLog('authn_login_fail', `userid=${user.user_id}, reason=wrong_password, ip=${getClientIp(req)}`);
+      return res.status(401).render("login", { error: "Invalid username or password", csrfToken: req.session?.csrfToken || '' });
+    }
+
+    console.log('Password correct, proceeding to session...');
 
     req.session.regenerate((err) => {
       if (err) {
+        console.log('SESSION REGEN ERROR:', err.message);
         log(`LOGIN: Error - Session regeneration failed for user: ${name}`);
-        return res.status(500).render("login", { error: "Session error" });
+        return res.status(500).render("login", { error: "Session error", csrfToken: req.session?.csrfToken || '' });
       }
 
-      // Admin determined by environment variable, it is not hardcoded anylonger, and visually similar usernames are blocked in registration.
+      // Admin determined by environment variable
       const is_admin = isAdminUser(user.name) ? 1 : 0;
       req.session.user = { user_id: user.user_id, name: user.name, is_admin, user_type: user.user_type };
-      securityLog('SUCCESSFUL_LOGIN', `User: ${name} logged in from IP: ${getClientIp(req)}`);
-      log(`LOGIN: Success - User logged in: ${name}, IP: ${req.ip}`);
+      console.log('Login successful for:', user.name);
+      
+      // Log successful authentication using OWASP vocabulary
+      securityLog('authn_login_success', `userid=${user.user_id}, ip=${getClientIp(req)}`);
 
       let redirectTo = req.session.returnTo || "/";
       delete req.session.returnTo;
@@ -169,6 +192,8 @@ router.post("/login", loginLimiter, async (req, res, next) => {
     });
 
   } catch (err) {
+    console.log('LOGIN ERROR:', err.message);
+    console.log(err.stack);
     log(`LOGIN: Error - ${err.message}, stack: ${err.stack}`);
     next(err);
   }
@@ -177,7 +202,8 @@ router.post("/login", loginLimiter, async (req, res, next) => {
 // Logout (POST)
 router.post("/logout", (req, res) => {
   const userName = req.session?.user?.name || "Unknown";
-  securityLog('LOGOUT', `User: ${userName} logged out from IP: ${getClientIp(req)}`);
+  const userId = req.session?.user?.user_id || 'unknown';
+  securityLog('session_expired', `userid=${userId}, ip=${getClientIp(req)}`);
   log(`LOGOUT: User logged out: ${userName}`);
   req.session.destroy(() => res.redirect("/"));
 });

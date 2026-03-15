@@ -1,0 +1,55 @@
+[2026-02-25T14:38:21.879Z] [FAILED_LOGIN] Wrong password for user: TheBoss from IP: 127.0.0.1
+[2026-02-25T14:38:33.958Z] [SUCCESSFUL_LOGIN] User: TheBoss logged in from IP: 127.0.0.1
+[2026-02-25T21:12:38.271Z] [FAILED_LOGIN] Wrong password for user: TheBoss from IP: 127.0.0.1
+[2026-02-25T21:14:18.295Z] [SUCCESSFUL_LOGIN] User: TheBoss logged in from IP: 127.0.0.1
+[2026-02-25T21:17:44.516Z] [SUCCESSFUL_LOGIN] User: TheBoss logged in from IP: 127.0.0.1
+[2026-02-25T21:47:59.496Z] [SUCCESSFUL_LOGIN] User: TheBoss logged in from IP: 127.0.0.1
+[2026-02-25T21:57:53.062Z] [SUCCESSFUL_LOGIN] User: TheBoss logged in from IP: 127.0.0.1
+[2026-02-25T21:58:04.860Z] [USER_DELETED] Admin deleted user ID: 4
+[2026-02-25T21:58:19.919Z] [USER_CREATED] Admin created user: test
+[2026-02-25T21:58:33.188Z] [USER_DELETED] Admin deleted user ID: 9
+[2026-02-25T22:31:00.271Z] [SUCCESSFUL_LOGIN] User: TheBoss logged in from IP: 127.0.0.1
+[2026-02-25T23:47:14.470Z] [FAILED_LOGIN] Wrong password for user: testA from IP: 127.0.0.1
+[2026-02-25T23:47:59.854Z] [SUCCESSFUL_LOGIN] User: TheBoss logged in from IP: 127.0.0.1
+[2026-02-25T23:49:17.621Z] [LOGOUT] User: TheBoss logged out from IP: 127.0.0.1
+[2026-02-25T23:51:27.355Z] [SUCCESSFUL_LOGIN] User: testA logged in from IP: 127.0.0.1
+[2026-02-25T23:54:05.683Z] [LOGOUT] User: testA logged out from IP: 127.0.0.1
+[2026-02-25T23:55:03.411Z] [SUCCESSFUL_LOGIN] User: TheBoss logged in from IP: 127.0.0.1
+[2026-02-25T23:55:36.822Z] [USER_DELETED] Admin deleted user ID: 5
+[2026-02-25T23:55:51.075Z] [LOGOUT] User: TheBoss logged out from IP: 127.0.0.1
+[2026-02-26T01:33:13.212Z] [SUCCESSFUL_LOGIN] User: TheBoss logged in from IP: 127.0.0.1
+[2026-02-26T01:33:23.018Z] [LOGOUT] User: TheBoss logged out from IP: 127.0.0.1
+[2026-02-26T01:33:38.433Z] [SUCCESSFUL_LOGIN] User: testA logged in from IP: 127.0.0.1
+[2026-02-26T16:28:57.688Z] [SUCCESSFUL_LOGIN] User: testA logged in from IP: 127.0.0.1
+[2026-02-26T17:17:09.400Z] [LOGOUT] User: testA logged out from IP: 127.0.0.1
+[2026-02-26T17:17:21.241Z] [FAILED_LOGIN] Wrong password for user: tester94 from IP: 127.0.0.1
+[2026-02-26T17:18:01.709Z] [SUCCESSFUL_LOGIN] User: TheBoss logged in from IP: 127.0.0.1
+[2026-02-26T17:18:24.786Z] [USER_UPDATED] Admin updated user ID: 2
+[2026-02-26T17:18:29.339Z] [LOGOUT] User: TheBoss logged out from IP: 127.0.0.1
+[2026-02-26T17:18:42.663Z] [SUCCESSFUL_LOGIN] User: tester94 logged in from IP: 127.0.0.1
+[2026-02-26T17:25:50.805Z] [LOGOUT] User: tester94 logged out from IP: 127.0.0.1
+[2026-02-26T17:26:01.754Z] [SUCCESSFUL_LOGIN] User: testA logged in from IP: 127.0.0.1
+[2026-02-26T17:35:00.366Z] [LOGOUT] User: testA logged out from IP: 127.0.0.1
+[2026-02-26T17:35:16.038Z] [SUCCESSFUL_LOGIN] User: tester94 logged in from IP: 127.0.0.1
+[2026-02-26T17:35:28.206Z] [LOGOUT] User: tester94 logged out from IP: 127.0.0.1
+[2026-02-26T17:35:40.130Z] [SUCCESSFUL_LOGIN] User: testA logged in from IP: 127.0.0.1
+[2026-02-26T17:35:54.950Z] [LOGOUT] User: testA logged out from IP: 127.0.0.1
+[2026-02-26T17:36:08.641Z] [SUCCESSFUL_LOGIN] User: testA logged in from IP: 127.0.0.1
+[2026-02-26T17:36:28.958Z] [LOGOUT] User: testA logged out from IP: 127.0.0.1
+[2026-02-26T17:36:40.863Z] [SUCCESSFUL_LOGIN] User: TheBoss logged in from IP: 127.0.0.1
+[2026-03-02T19:15:48.232Z] [SUCCESSFUL_LOGIN] User: TheBoss logged in from IP: 127.0.0.1
+[2026-03-02T19:23:07.509Z] [LOGOUT] User: TheBoss logged out from IP: 127.0.0.1
+[2026-03-02T19:23:21.129Z] [SUCCESSFUL_LOGIN] User: tester94 logged in from IP: 127.0.0.1
+[2026-03-02T19:24:01.252Z] [PERMISSION_DENIED] User: tester94, Permission: view_all_users, Path: /, IP: 127.0.0.1
+[2026-03-02T19:24:24.431Z] [LOGOUT] User: tester94 logged out from IP: 127.0.0.1
+[2026-03-02T19:26:07.501Z] [SUCCESSFUL_LOGIN] User: tester94 logged in from IP: 127.0.0.1
+[2026-03-02T19:31:50.355Z] [CSRF_ATTACK] Invalid CSRF token from IP: 127.0.0.1
+[2026-03-02T19:34:50.856Z] [LOGOUT] User: tester94 logged out from IP: 127.0.0.1
+[2026-03-02T19:35:06.976Z] [FAILED_LOGIN] Wrong password for user: TheBoss from IP: 127.0.0.1
+[2026-03-02T19:35:22.838Z] [SUCCESSFUL_LOGIN] User: TheBoss logged in from IP: 127.0.0.1
+[2026-03-14T19:45:19.007Z] [SUCCESSFUL_LOGIN] User: testA logged in from IP: 127.0.0.1
+[2026-03-14T20:02:48.724Z] [CSRF_ATTACK] Invalid CSRF token from IP: 127.0.0.1
+[2026-03-14T20:03:57.870Z] [CSRF_ATTACK] Invalid CSRF token from IP: 127.0.0.1
+[2026-03-14T20:06:34.230Z] [CSRF_ATTACK] Invalid CSRF token from IP: 127.0.0.1
+[2026-03-14T20:10:39.810Z] [CSRF_ATTACK] Invalid CSRF token from IP: 127.0.0.1
+[2026-03-14T21:27:55.595Z] [SUCCESSFUL_LOGIN] User: testA logged in from IP: 127.0.0.1

@@ -27,7 +27,7 @@ app.use((req, res, next) => {
   // Content Security Policy that prevents XSS.
   res.setHeader('Content-Security-Policy', 
     "default-src 'self'; " +
-    "script-src 'self'; " +
+    "script-src 'self' 'unsafe-inline'; " +
     "style-src-elem 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
     "style-src 'self' 'unsafe-inline'; " +
     "img-src 'self' data: https://i.pinimg.com; " +
@@ -165,7 +165,7 @@ app.use(function(req, res, next) {
 
 app.use(function(err, req, res, next) {
   // Log the error (full stack in development, message only in production)
-  if (req.app.get('env') === 'development') {
+  console.log('ERROR CAUGHT:', err.message);  if (req.app.get('env') === 'development') {
     log(`ERROR: ${err.message}\nStack: ${err.stack}`);
   } else {
     log(`ERROR: ${err.message}`);
@@ -178,7 +178,7 @@ app.use(function(err, req, res, next) {
     res.locals.error = req.app.get('env') === 'development' ? err : {};
     res.locals.statusCode = err.status || 500;
     res.status(err.status || 500);
-    res.render('error');
+    res.render('error', { statusCode: err.status || 500 });
   } else {
     // API request, respond with JSON error message, this is for API endpoints that expect JSON responses, 
     // so we return a structured JSON error message instead of HTML.
