@@ -4,7 +4,7 @@ const path = require("path");
 const logPath = path.join(__dirname, "app.log");
 const securityLogPath = path.join(__dirname, "security.log");
 
-// Sanitize user input to prevent log injection attacks (CWE-117)
+// Sanitize user input to prevent log injection attacks, CWE-117 Improper Output Neutralization for Logs.
 function sanitizeForLog(input) {
   if (input === undefined || input === null) return '';
   const str = String(input);
