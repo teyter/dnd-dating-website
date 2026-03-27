@@ -62,7 +62,7 @@
         <div class="logout">
           <% if (locals.user) { %>
             <form method="POST" action="/logout">
-              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" name="_csrf" value="<%= customCsrfToken %>">
               <button type="submit">Logout (<%= locals.user.name %>)</button>
             </form>
           <% } else { %>
@@ -79,7 +79,7 @@
 
         <div class="edit-profile-container">
             <form method="POST" action="/profiles/<%= profile.profile_id %>" enctype="multipart/form-data">
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="hidden" name="_csrf" value="<%= customCsrfToken %>">
                 <input type="hidden" name="existing_image" value="<%= profile.image_path || '' %>" />
 
                 <div class="form-group">

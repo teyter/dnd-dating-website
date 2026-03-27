@@ -37,5 +37,5 @@ npm start / npm run dev
 The admin monitoring page is available at `/admin`.
 
 Credentials:
-- Username: `TheBoos`
+- Username: `TheBoss`
 - Password: `Hacker1.`

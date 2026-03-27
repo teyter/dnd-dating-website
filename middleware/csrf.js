@@ -14,14 +14,16 @@ function validateCsrfFromHeader(req) {
   if (!req.session || !req.session.csrfToken) {
     return false;
   }
-  
-  const submittedToken = req.headers['x-csrf-token'];
-  
+
+  const submittedToken =
+    req.headers['x-csrf-token'] ||
+    (req.body && req.body._csrf);
+
   if (!submittedToken || submittedToken !== req.session.csrfToken) {
     securityLog('input_validation_fail', { field: 'csrf_token', userid: req.session?.user?.user_id || 'anonymous', ip: getClientIp(req) });
     return false;
   }
-  
+
   return true;
 }
 

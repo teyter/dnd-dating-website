@@ -5,7 +5,6 @@ var morgan = require('morgan');
 const { log } = require('./logger');
 var session = require('express-session');
 const { requireLogin, requireAdmin } = require('./middleware/auth');
-const { csrfMiddleware } = require('./middleware/csrf');
 const db = require('./Database');
 
 function createError(status, message) {
@@ -69,10 +68,55 @@ app.use(session({
   cookie: {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: 'lax', // CSRF protection, which blocks cross-site POST requests
+    sameSite: 'lax', // baseline CSRF mitigation (blocks many cross-site cookie sends)
     maxAge: 1000 * 60 * 60 // 1 hour session timeout
   }
 }));
+
+// CSRF Token Middleware for anti-CSRF
+const csrf = require("csurf");
+const csrfProtection = csrf();
+
+app.use((req, res, next) => {
+  const contentType = req.headers['content-type'] || '';
+  const isMultipart = contentType.includes('multipart/form-data');
+
+  const skipCsurf =
+    req.method === 'POST' &&
+    isMultipart &&
+    req.path === '/profiles/my';
+
+  if (skipCsurf) {
+    return next();
+  }
+
+  return csrfProtection(req, res, next);
+});
+
+app.use((err, req, res, next) => {
+  if (err.code === "EBADCSRFTOKEN") {
+    return res.status(403).render("error", {
+      statusCode: 403,
+      message: "Invalid CSRF token"
+    });
+  }
+  next(err);
+});
+
+app.use((req, res, next) => {
+  if (!req.session.csrfToken) {
+    req.session.csrfToken = require('./middleware/csrf').generateToken();
+  }
+
+  try {
+    res.locals.csrfToken = req.csrfToken();
+  } catch (e) {
+    res.locals.csrfToken = null;
+  }
+
+  res.locals.customCsrfToken = req.session.csrfToken;
+  next();
+});
 
 // Protected uploads directory, requires authentication from session.
 // This middleware ensures that only authenticated users can access the /uploads directory and prevents unauthorized access to uploaded files
@@ -108,10 +152,6 @@ app.use(function(req, res, next) {
   next();
 });
 
-// we also use the CSRF protection middleware, so that all POST requests must include a valid CSRF token,
-//  which prevents cross-site request forgery attacks where an attacker tricks a user into submitting a form or
-//  making a request on their behalf without their knowledge.
-app.use(csrfMiddleware);
 
 // Page view analytics middleware, it is for the log page views for admin dashboard
 app.use(async (req, res, next) => {
