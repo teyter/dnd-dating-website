@@ -1,0 +1,2800 @@
+{
+  "label": "before-fix",
+  "results": [
+    {
+      "name": "bcrypt",
+      "version": "6.0.0",
+      "direct": true,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (1d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "browser-sync",
+      "version": "3.0.4",
+      "direct": true,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (360d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "cookie-parser",
+      "version": "1.4.7",
+      "direct": true,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (536d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "ejs",
+      "version": "4.0.1",
+      "direct": true,
+      "vulns": [
+        {
+          "severity": "critical",
+          "title": "ejs template injection vulnerability",
+          "url": "https://github.com/advisories/GHSA-phwq-j96m-2c2q",
+          "fix_available": true
+        },
+        {
+          "severity": "moderate",
+          "title": "ejs lacks certain pollution protection",
+          "url": "https://github.com/advisories/GHSA-ghr5-ch3p-vcr6",
+          "fix_available": true
+        }
+      ],
+      "max_sev": "critical",
+      "maint": "Active (23d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "express-generator",
+      "version": "4.16.1",
+      "direct": true,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (667d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "express-rate-limit",
+      "version": "8.2.1",
+      "direct": true,
+      "vulns": [
+        {
+          "severity": "high",
+          "title": "express-rate-limit: IPv4-mapped IPv6 addresses bypass per-client rate limiting on servers with dual-stack network",
+          "url": "https://github.com/advisories/GHSA-46wh-pxpv-q5gq",
+          "fix_available": true
+        }
+      ],
+      "max_sev": "high",
+      "maint": "Active (10d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "express-session",
+      "version": "1.19.0",
+      "direct": true,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (65d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "express",
+      "version": "5.2.1",
+      "direct": true,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (1d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "morgan",
+      "version": "1.10.1",
+      "direct": true,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (254d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "multer",
+      "version": "2.0.2",
+      "direct": true,
+      "vulns": [
+        {
+          "severity": "high",
+          "title": "Multer vulnerable to Denial of Service via incomplete cleanup",
+          "url": "https://github.com/advisories/GHSA-xf7r-hgr6-v32p",
+          "fix_available": true
+        },
+        {
+          "severity": "high",
+          "title": "Multer vulnerable to Denial of Service via resource exhaustion",
+          "url": "https://github.com/advisories/GHSA-v52c-386h-88mc",
+          "fix_available": true
+        },
+        {
+          "severity": "high",
+          "title": "Multer Vulnerable to Denial of Service via Uncontrolled Recursion",
+          "url": "https://github.com/advisories/GHSA-5528-5vmv-3xc2",
+          "fix_available": true
+        }
+      ],
+      "max_sev": "high",
+      "maint": "Active (24d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "nodemon",
+      "version": "3.1.11",
+      "direct": true,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (22d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "prettier",
+      "version": "3.8.1",
+      "direct": true,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (66d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "sqlite3",
+      "version": "5.1.7",
+      "direct": true,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (16d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "node-addon-api",
+      "version": "8.5.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (3d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "node-gyp-build",
+      "version": "4.8.4",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (494d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "browser-sync-client",
+      "version": "3.0.4",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (360d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "browser-sync-ui",
+      "version": "3.0.4",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (360d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "bs-recipes",
+      "version": "1.3.4",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1384d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "chalk",
+      "version": "4.1.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (150d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "chokidar",
+      "version": "3.6.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (123d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "connect-history-api-fallback",
+      "version": "1.6.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1370d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "connect",
+      "version": "3.6.6",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (872d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "dev-ip",
+      "version": "1.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1383d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "easy-extender",
+      "version": "2.3.4",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1382d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "eazy-logger",
+      "version": "4.1.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (360d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "etag",
+      "version": "1.8.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (318d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "fresh",
+      "version": "0.5.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (318d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "fs-extra",
+      "version": "3.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (25d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "http-proxy",
+      "version": "1.18.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (470d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "immutable",
+      "version": "3.8.2",
+      "direct": false,
+      "vulns": [
+        {
+          "severity": "high",
+          "title": "Immutable is vulnerable to Prototype Pollution",
+          "url": "https://github.com/advisories/GHSA-wf6x-7x77-mvgw",
+          "fix_available": true
+        }
+      ],
+      "max_sev": "high",
+      "maint": "Active (22d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "micromatch",
+      "version": "4.0.8",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (556d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "opn",
+      "version": "5.3.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1375d) [DEPRECATED]",
+      "trust": "Official npm"
+    },
+    {
+      "name": "portscanner",
+      "version": "2.2.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1373d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "raw-body",
+      "version": "2.5.3",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (53d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "resp-modifier",
+      "version": "6.0.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1371d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "rx",
+      "version": "4.1.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (872d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "send",
+      "version": "0.19.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (103d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "serve-index",
+      "version": "1.9.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (65d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "serve-static",
+      "version": "1.16.3",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (103d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "server-destroy",
+      "version": "1.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1371d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "socket.io",
+      "version": "4.8.3",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (95d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "ua-parser-js",
+      "version": "1.0.41",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (53d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "yargs",
+      "version": "17.7.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (305d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "cookie-signature",
+      "version": "1.0.6",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (515d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "cookie",
+      "version": "0.7.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (122d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "jake",
+      "version": "10.9.4",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (31d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "commander",
+      "version": "2.15.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (35d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "minimatch",
+      "version": "3.0.4",
+      "direct": false,
+      "vulns": [
+        {
+          "severity": "high",
+          "title": "minimatch ReDoS vulnerability",
+          "url": "https://github.com/advisories/GHSA-f8q6-p94x-37v3",
+          "fix_available": true
+        },
+        {
+          "severity": "high",
+          "title": "minimatch has a ReDoS via repeated wildcards with non-matching literal in pattern",
+          "url": "https://github.com/advisories/GHSA-3ppc-4f35-3m26",
+          "fix_available": true
+        },
+        {
+          "severity": "high",
+          "title": "minimatch has a ReDoS via repeated wildcards with non-matching literal in pattern",
+          "url": "https://github.com/advisories/GHSA-3ppc-4f35-3m26",
+          "fix_available": true
+        },
+        {
+          "severity": "high",
+          "title": "minimatch has ReDoS: matchOne() combinatorial backtracking via multiple non-adjacent GLOBSTAR segments",
+          "url": "https://github.com/advisories/GHSA-7r86-cg39-jmmj",
+          "fix_available": true
+        },
+        {
+          "severity": "high",
+          "title": "minimatch has ReDoS: matchOne() combinatorial backtracking via multiple non-adjacent GLOBSTAR segments",
+          "url": "https://github.com/advisories/GHSA-7r86-cg39-jmmj",
+          "fix_available": true
+        },
+        {
+          "severity": "high",
+          "title": "minimatch ReDoS: nested *() extglobs generate catastrophically backtracking regular expressions",
+          "url": "https://github.com/advisories/GHSA-23c5-xmqv-rm74",
+          "fix_available": true
+        },
+        {
+          "severity": "high",
+          "title": "minimatch ReDoS: nested *() extglobs generate catastrophically backtracking regular expressions",
+          "url": "https://github.com/advisories/GHSA-23c5-xmqv-rm74",
+          "fix_available": true
+        }
+      ],
+      "max_sev": "high",
+      "maint": "Active (30d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "mkdirp",
+      "version": "0.5.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (872d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "sorted-object",
+      "version": "2.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1371d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "ip-address",
+      "version": "10.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (140d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "debug",
+      "version": "2.6.9",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (196d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "depd",
+      "version": "2.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1383d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "on-headers",
+      "version": "1.1.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (254d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "parseurl",
+      "version": "1.3.3",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (318d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "safe-buffer",
+      "version": "5.2.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (992d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "uid-safe",
+      "version": "2.1.5",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (53d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "accepts",
+      "version": "2.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (318d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "body-parser",
+      "version": "2.2.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (80d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "content-disposition",
+      "version": "1.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (130d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "content-type",
+      "version": "1.0.5",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (318d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "encodeurl",
+      "version": "2.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (667d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "escape-html",
+      "version": "1.0.3",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (863d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "http-errors",
+      "version": "2.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (128d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "merge-descriptors",
+      "version": "2.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (862d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "mime-types",
+      "version": "3.0.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (128d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "on-finished",
+      "version": "2.4.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (318d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "once",
+      "version": "1.4.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (27d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "proxy-addr",
+      "version": "2.0.7",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (318d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "qs",
+      "version": "6.14.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (41d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "range-parser",
+      "version": "1.2.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (318d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "router",
+      "version": "2.2.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (367d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "statuses",
+      "version": "2.0.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (295d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "type-is",
+      "version": "2.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (367d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "vary",
+      "version": "1.1.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (318d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "basic-auth",
+      "version": "2.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (318d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "append-field",
+      "version": "1.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1385d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "busboy",
+      "version": "1.6.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1379d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "concat-stream",
+      "version": "2.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (990d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "object-assign",
+      "version": "4.1.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (405d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "xtend",
+      "version": "4.0.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (992d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "ignore-by-default",
+      "version": "1.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1379d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "pstree.remy",
+      "version": "1.1.8",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1415d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "semver",
+      "version": "7.7.4",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (9d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "simple-update-notifier",
+      "version": "2.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (930d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "touch",
+      "version": "3.1.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (683d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "undefsafe",
+      "version": "2.0.5",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1370d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "bindings",
+      "version": "1.5.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (992d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "node-gyp",
+      "version": "8.4.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (60d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "prebuild-install",
+      "version": "7.1.3",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (37d) [DEPRECATED]",
+      "trust": "Official npm"
+    },
+    {
+      "name": "tar",
+      "version": "6.2.1",
+      "direct": false,
+      "vulns": [
+        {
+          "severity": "high",
+          "title": "node-tar Vulnerable to Arbitrary File Creation/Overwrite via Hardlink Path Traversal",
+          "url": "https://github.com/advisories/GHSA-34x7-hfp2-rc4v",
+          "fix_available": true
+        },
+        {
+          "severity": "high",
+          "title": "node-tar is Vulnerable to Arbitrary File Overwrite and Symlink Poisoning via Insufficient Path Sanitization",
+          "url": "https://github.com/advisories/GHSA-8qq5-rm4j-mr97",
+          "fix_available": true
+        },
+        {
+          "severity": "high",
+          "title": "Arbitrary File Read/Write via Hardlink Target Escape Through Symlink Chain in node-tar Extraction",
+          "url": "https://github.com/advisories/GHSA-83g3-92jg-28cx",
+          "fix_available": true
+        },
+        {
+          "severity": "high",
+          "title": "tar has Hardlink Path Traversal via Drive-Relative Linkpath",
+          "url": "https://github.com/advisories/GHSA-qffp-2rhf-9h96",
+          "fix_available": true
+        },
+        {
+          "severity": "high",
+          "title": "node-tar Symlink Path Traversal via Drive-Relative Linkpath",
+          "url": "https://github.com/advisories/GHSA-9ppj-qmqm-q256",
+          "fix_available": true
+        },
+        {
+          "severity": "high",
+          "title": "Race Condition in node-tar Path Reservations via Unicode Ligature Collisions on macOS APFS",
+          "url": "https://github.com/advisories/GHSA-r6q2-hw4h-h46w",
+          "fix_available": true
+        }
+      ],
+      "max_sev": "high",
+      "maint": "Active (5d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "mitt",
+      "version": "1.2.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (166d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "async-each-series",
+      "version": "0.1.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1385d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "socket.io-client",
+      "version": "4.8.3",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (95d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "stream-throttle",
+      "version": "0.1.3",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1371d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "ansi-styles",
+      "version": "4.3.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (201d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "supports-color",
+      "version": "7.2.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (201d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "anymatch",
+      "version": "3.1.3",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (556d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "braces",
+      "version": "3.0.3",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (556d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "glob-parent",
+      "version": "5.1.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1010d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "is-binary-path",
+      "version": "2.1.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (697d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "is-glob",
+      "version": "4.0.3",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1010d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "normalize-path",
+      "version": "3.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1121d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "readdirp",
+      "version": "3.6.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (123d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "finalhandler",
+      "version": "1.1.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (117d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "utils-merge",
+      "version": "1.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1369d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "lodash",
+      "version": "4.17.23",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (0d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "graceful-fs",
+      "version": "4.2.11",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1023d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "jsonfile",
+      "version": "3.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (166d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "universalify",
+      "version": "0.1.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (878d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "eventemitter3",
+      "version": "4.0.7",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (68d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "follow-redirects",
+      "version": "1.15.11",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (240d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "requires-port",
+      "version": "1.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1371d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "picomatch",
+      "version": "2.3.1",
+      "direct": false,
+      "vulns": [
+        {
+          "severity": "moderate",
+          "title": "Picomatch: Method Injection in POSIX Character Classes causes incorrect Glob Matching",
+          "url": "https://github.com/advisories/GHSA-3v7f-55p6-f55p",
+          "fix_available": true
+        },
+        {
+          "severity": "high",
+          "title": "Picomatch has a ReDoS vulnerability via extglob quantifiers",
+          "url": "https://github.com/advisories/GHSA-c2c7-rcm5-vvqj",
+          "fix_available": true
+        }
+      ],
+      "max_sev": "high",
+      "maint": "Active (4d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "is-wsl",
+      "version": "1.1.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (41d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "is-number-like",
+      "version": "1.0.8",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1379d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "bytes",
+      "version": "3.1.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (990d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "unpipe",
+      "version": "1.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (53d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "destroy",
+      "version": "1.2.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (53d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "mime",
+      "version": "1.6.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (197d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "batch",
+      "version": "0.6.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1384d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "base64id",
+      "version": "2.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1384d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "cors",
+      "version": "2.8.6",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (65d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "engine.io",
+      "version": "6.6.5",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (18d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "socket.io-adapter",
+      "version": "2.5.6",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (95d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "socket.io-parser",
+      "version": "4.2.5",
+      "direct": false,
+      "vulns": [
+        {
+          "severity": "high",
+          "title": "socket.io allows an unbounded number of binary attachments",
+          "url": "https://github.com/advisories/GHSA-677m-j7p3-52f9",
+          "fix_available": true
+        }
+      ],
+      "max_sev": "high",
+      "maint": "Active (11d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "cliui",
+      "version": "8.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (377d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "escalade",
+      "version": "3.2.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (576d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "get-caller-file",
+      "version": "2.0.5",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (931d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "require-directory",
+      "version": "2.1.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1371d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "string-width",
+      "version": "4.2.3",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (38d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "y18n",
+      "version": "5.0.8",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (992d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "yargs-parser",
+      "version": "21.1.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (306d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "async",
+      "version": "3.2.6",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (508d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "filelist",
+      "version": "1.0.4",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (31d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "picocolors",
+      "version": "1.1.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (528d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "brace-expansion",
+      "version": "1.1.12",
+      "direct": false,
+      "vulns": [
+        {
+          "severity": "moderate",
+          "title": "brace-expansion: Zero-step sequence causes process hang and memory exhaustion",
+          "url": "https://github.com/advisories/GHSA-f886-m6hf-6m8v",
+          "fix_available": true
+        },
+        {
+          "severity": "moderate",
+          "title": "brace-expansion: Zero-step sequence causes process hang and memory exhaustion",
+          "url": "https://github.com/advisories/GHSA-f886-m6hf-6m8v",
+          "fix_available": true
+        }
+      ],
+      "max_sev": "moderate",
+      "maint": "Active (1d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "minimist",
+      "version": "0.0.8",
+      "direct": false,
+      "vulns": [
+        {
+          "severity": "moderate",
+          "title": "Prototype Pollution in minimist",
+          "url": "https://github.com/advisories/GHSA-vh95-rmgr-6w4m",
+          "fix_available": true
+        },
+        {
+          "severity": "critical",
+          "title": "Prototype Pollution in minimist",
+          "url": "https://github.com/advisories/GHSA-xvch-5gv4-984h",
+          "fix_available": true
+        }
+      ],
+      "max_sev": "critical",
+      "maint": "Active (22d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "ms",
+      "version": "2.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (201d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "random-bytes",
+      "version": "1.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (53d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "negotiator",
+      "version": "1.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (318d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "iconv-lite",
+      "version": "0.7.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (79d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "inherits",
+      "version": "2.0.4",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1023d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "setprototypeof",
+      "version": "1.2.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1371d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "toidentifier",
+      "version": "1.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1407d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "mime-db",
+      "version": "1.54.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (318d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "ee-first",
+      "version": "1.1.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1381d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "wrappy",
+      "version": "1.0.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1010d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "forwarded",
+      "version": "0.2.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (318d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "ipaddr.js",
+      "version": "1.9.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (120d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "side-channel",
+      "version": "1.1.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (472d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "is-promise",
+      "version": "4.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1023d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "path-to-regexp",
+      "version": "8.3.0",
+      "direct": false,
+      "vulns": [
+        {
+          "severity": "high",
+          "title": "path-to-regexp vulnerable to Denial of Service via sequential optional groups",
+          "url": "https://github.com/advisories/GHSA-j3q9-mxjg-w52f",
+          "fix_available": true
+        },
+        {
+          "severity": "moderate",
+          "title": "path-to-regexp vulnerable to Regular Expression Denial of Service via multiple wildcards",
+          "url": "https://github.com/advisories/GHSA-27v5-c462-wpq7",
+          "fix_available": true
+        }
+      ],
+      "max_sev": "high",
+      "maint": "Active (2d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "media-typer",
+      "version": "1.1.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (318d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "streamsearch",
+      "version": "1.1.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1371d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "buffer-from",
+      "version": "1.1.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1384d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "readable-stream",
+      "version": "3.6.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (445d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "typedarray",
+      "version": "0.0.6",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (990d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "file-uri-to-path",
+      "version": "1.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (992d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "env-paths",
+      "version": "2.2.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (63d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "glob",
+      "version": "7.2.3",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (37d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "make-fetch-happen",
+      "version": "9.1.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (9d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "nopt",
+      "version": "5.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (9d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "npmlog",
+      "version": "6.0.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (9d) [DEPRECATED]",
+      "trust": "Official npm"
+    },
+    {
+      "name": "rimraf",
+      "version": "3.0.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (41d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "which",
+      "version": "2.0.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (9d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "detect-libc",
+      "version": "2.1.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (174d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "expand-template",
+      "version": "2.0.3",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1380d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "github-from-package",
+      "version": "0.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1233d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "mkdirp-classic",
+      "version": "0.5.3",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1419d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "napi-build-utils",
+      "version": "2.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (436d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "node-abi",
+      "version": "3.87.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (13d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "pump",
+      "version": "3.0.3",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (28d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "rc",
+      "version": "1.2.8",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (400d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "simple-get",
+      "version": "4.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (989d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "tar-fs",
+      "version": "2.1.4",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (24d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "tunnel-agent",
+      "version": "0.6.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1370d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "chownr",
+      "version": "2.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (721d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "fs-minipass",
+      "version": "2.1.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (707d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "minizlib",
+      "version": "2.1.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (188d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "yallist",
+      "version": "4.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (718d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "component-emitter",
+      "version": "3.1.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (862d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "engine.io-client",
+      "version": "6.6.4",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (95d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "limiter",
+      "version": "1.1.5",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (428d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "color-convert",
+      "version": "2.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (134d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "has-flag",
+      "version": "4.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1076d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "fill-range",
+      "version": "7.1.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (676d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "binary-extensions",
+      "version": "2.3.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (328d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "is-extglob",
+      "version": "2.1.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1010d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "lodash.isfinite",
+      "version": "3.3.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1378d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "safer-buffer",
+      "version": "2.1.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1412d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "cors",
+      "version": "2.8.19",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (65d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "node",
+      "version": "25.2.3",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (4d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "engine.io-parser",
+      "version": "5.2.3",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (625d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "ws",
+      "version": "8.18.3",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (7d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "strip-ansi",
+      "version": "6.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (30d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "wrap-ansi",
+      "version": "7.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (36d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "emoji-regex",
+      "version": "8.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (166d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "is-fullwidth-code-point",
+      "version": "3.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (209d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "balanced-match",
+      "version": "1.0.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (34d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "concat-map",
+      "version": "0.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1010d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "es-errors",
+      "version": "1.3.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (782d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "object-inspect",
+      "version": "1.13.4",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (417d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "side-channel-list",
+      "version": "1.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (473d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "side-channel-map",
+      "version": "1.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (472d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "side-channel-weakmap",
+      "version": "1.0.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (472d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "string_decoder",
+      "version": "1.3.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (990d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "util-deprecate",
+      "version": "1.0.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1369d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "fs.realpath",
+      "version": "1.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1010d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "inflight",
+      "version": "1.0.6",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (675d) [DEPRECATED]",
+      "trust": "Official npm"
+    },
+    {
+      "name": "path-is-absolute",
+      "version": "1.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (981d) [DEPRECATED]",
+      "trust": "Official npm"
+    },
+    {
+      "name": "agentkeepalive",
+      "version": "4.6.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (455d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "cacache",
+      "version": "15.3.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (9d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "http-cache-semantics",
+      "version": "4.2.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (323d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "http-proxy-agent",
+      "version": "4.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (17d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "https-proxy-agent",
+      "version": "5.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (17d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "is-lambda",
+      "version": "1.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1379d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "lru-cache",
+      "version": "6.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (15d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "minipass-collect",
+      "version": "1.0.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (951d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "minipass-fetch",
+      "version": "1.4.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (9d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "minipass-flush",
+      "version": "1.0.5",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (2d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "minipass-pipeline",
+      "version": "1.2.4",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (3d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "minipass",
+      "version": "3.3.6",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (38d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "promise-retry",
+      "version": "2.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1373d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "socks-proxy-agent",
+      "version": "6.2.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (17d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "ssri",
+      "version": "8.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (9d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "abbrev",
+      "version": "1.1.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (9d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "are-we-there-yet",
+      "version": "3.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (9d) [DEPRECATED]",
+      "trust": "Official npm"
+    },
+    {
+      "name": "console-control-strings",
+      "version": "1.1.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1384d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "gauge",
+      "version": "4.0.4",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (9d) [DEPRECATED]",
+      "trust": "Official npm"
+    },
+    {
+      "name": "set-blocking",
+      "version": "2.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1371d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "isexe",
+      "version": "2.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (47d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "end-of-stream",
+      "version": "1.4.5",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (285d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "deep-extend",
+      "version": "0.6.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (992d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "ini",
+      "version": "1.3.8",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (9d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "strip-json-comments",
+      "version": "2.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (232d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "decompress-response",
+      "version": "6.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (166d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "simple-concat",
+      "version": "1.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1371d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "tar-stream",
+      "version": "2.2.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (28d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "xmlhttprequest-ssl",
+      "version": "2.1.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (315d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "color-name",
+      "version": "1.1.4",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (136d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "to-regex-range",
+      "version": "5.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1370d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "undici-types",
+      "version": "7.16.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (3d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "ansi-regex",
+      "version": "5.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (201d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "call-bound",
+      "version": "1.0.4",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (390d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "get-intrinsic",
+      "version": "1.3.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (179d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "humanize-ms",
+      "version": "1.2.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (471d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "fs",
+      "version": "1.1.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (992d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "move-file",
+      "version": "1.1.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (62d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "infer-owner",
+      "version": "1.0.4",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (707d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "p-map",
+      "version": "4.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (137d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "promise-inflight",
+      "version": "1.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1373d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "unique-filename",
+      "version": "1.1.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (9d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "once",
+      "version": "1.1.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (27d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "agent-base",
+      "version": "6.0.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (17d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "encoding",
+      "version": "0.1.13",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1035d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "minipass-sized",
+      "version": "1.0.3",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (80d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "err-code",
+      "version": "2.0.3",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1380d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "retry",
+      "version": "0.12.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1371d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "socks",
+      "version": "2.8.7",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (228d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "delegates",
+      "version": "1.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1383d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "aproba",
+      "version": "2.1.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Moderate (259d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "color-support",
+      "version": "1.1.3",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1082d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "has-unicode",
+      "version": "2.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1082d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "signal-exit",
+      "version": "3.0.7",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (973d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "wide-align",
+      "version": "1.1.5",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1369d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "mimic-response",
+      "version": "3.1.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1378d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "bl",
+      "version": "4.1.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (114d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "fs-constants",
+      "version": "1.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1426d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "is-number",
+      "version": "7.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1037d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "call-bind-apply-helpers",
+      "version": "1.0.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (409d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "es-define-property",
+      "version": "1.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (477d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "es-object-atoms",
+      "version": "1.1.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (438d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "function-bind",
+      "version": "1.1.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (898d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "get-proto",
+      "version": "1.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (450d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "gopd",
+      "version": "1.2.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (479d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "has-symbols",
+      "version": "1.1.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (481d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "hasown",
+      "version": "2.0.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (748d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "math-intrinsics",
+      "version": "1.1.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (464d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "promisify",
+      "version": "1.1.3",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1373d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "aggregate-error",
+      "version": "3.1.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (926d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "unique-slug",
+      "version": "2.0.2",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (9d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "smart-buffer",
+      "version": "4.2.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1371d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "buffer",
+      "version": "5.7.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (980d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "dunder-proto",
+      "version": "1.0.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (467d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "clean-stack",
+      "version": "2.2.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Active (144d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "indent-string",
+      "version": "4.0.0",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1016d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "imurmurhash",
+      "version": "0.1.4",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (1010d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "base64-js",
+      "version": "1.5.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (980d)",
+      "trust": "Official npm"
+    },
+    {
+      "name": "ieee754",
+      "version": "1.2.1",
+      "direct": false,
+      "vulns": [],
+      "max_sev": "none",
+      "maint": "Stale (980d)",
+      "trust": "Official npm"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "label": "20260328T041528Z",
+  "label": "20260329T040141Z",
   "results": [
     {
       "name": "bcrypt",
@@ -7,7 +7,7 @@
       "direct": true,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (0d)",
+      "maint": "Active (1d)",
       "trust": "Official npm"
     },
     {
@@ -16,7 +16,7 @@
       "direct": true,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (359d)",
+      "maint": "Moderate (360d)",
       "trust": "Official npm"
     },
     {
@@ -25,7 +25,7 @@
       "direct": true,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (535d)",
+      "maint": "Stale (536d)",
       "trust": "Official npm"
     },
     {
@@ -47,7 +47,7 @@
         }
       ],
       "max_sev": "critical",
-      "maint": "Active (22d)",
+      "maint": "Active (23d)",
       "trust": "Official npm"
     },
     {
@@ -56,7 +56,7 @@
       "direct": true,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (666d)",
+      "maint": "Stale (667d)",
       "trust": "Official npm"
     },
     {
@@ -72,7 +72,7 @@
         }
       ],
       "max_sev": "high",
-      "maint": "Active (9d)",
+      "maint": "Active (10d)",
       "trust": "Official npm"
     },
     {
@@ -81,7 +81,7 @@
       "direct": true,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (64d)",
+      "maint": "Active (65d)",
       "trust": "Official npm"
     },
     {
@@ -90,7 +90,7 @@
       "direct": true,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (0d)",
+      "maint": "Active (1d)",
       "trust": "Official npm"
     },
     {
@@ -99,7 +99,7 @@
       "direct": true,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (253d)",
+      "maint": "Moderate (254d)",
       "trust": "Official npm"
     },
     {
@@ -127,7 +127,7 @@
         }
       ],
       "max_sev": "high",
-      "maint": "Active (23d)",
+      "maint": "Active (24d)",
       "trust": "Official npm"
     },
     {
@@ -136,7 +136,7 @@
       "direct": true,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (21d)",
+      "maint": "Active (22d)",
       "trust": "Official npm"
     },
     {
@@ -145,7 +145,7 @@
       "direct": true,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (65d)",
+      "maint": "Active (66d)",
       "trust": "Official npm"
     },
     {
@@ -154,7 +154,7 @@
       "direct": true,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (15d)",
+      "maint": "Active (16d)",
       "trust": "Official npm"
     },
     {
@@ -163,7 +163,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (2d)",
+      "maint": "Active (3d)",
       "trust": "Official npm"
     },
     {
@@ -172,7 +172,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (493d)",
+      "maint": "Stale (494d)",
       "trust": "Official npm"
     },
     {
@@ -181,7 +181,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (359d)",
+      "maint": "Moderate (360d)",
       "trust": "Official npm"
     },
     {
@@ -190,7 +190,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (359d)",
+      "maint": "Moderate (360d)",
       "trust": "Official npm"
     },
     {
@@ -199,7 +199,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1383d)",
+      "maint": "Stale (1384d)",
       "trust": "Official npm"
     },
     {
@@ -208,7 +208,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (149d)",
+      "maint": "Active (150d)",
       "trust": "Official npm"
     },
     {
@@ -217,7 +217,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (122d)",
+      "maint": "Active (123d)",
       "trust": "Official npm"
     },
     {
@@ -226,7 +226,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1369d)",
+      "maint": "Stale (1370d)",
       "trust": "Official npm"
     },
     {
@@ -235,7 +235,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (871d)",
+      "maint": "Stale (872d)",
       "trust": "Official npm"
     },
     {
@@ -244,7 +244,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1382d)",
+      "maint": "Stale (1383d)",
       "trust": "Official npm"
     },
     {
@@ -253,7 +253,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1381d)",
+      "maint": "Stale (1382d)",
       "trust": "Official npm"
     },
     {
@@ -262,7 +262,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (359d)",
+      "maint": "Moderate (360d)",
       "trust": "Official npm"
     },
     {
@@ -271,7 +271,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (317d)",
+      "maint": "Moderate (318d)",
       "trust": "Official npm"
     },
     {
@@ -280,7 +280,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (317d)",
+      "maint": "Moderate (318d)",
       "trust": "Official npm"
     },
     {
@@ -289,7 +289,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (24d)",
+      "maint": "Active (25d)",
       "trust": "Official npm"
     },
     {
@@ -298,7 +298,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (469d)",
+      "maint": "Stale (470d)",
       "trust": "Official npm"
     },
     {
@@ -314,7 +314,7 @@
         }
       ],
       "max_sev": "high",
-      "maint": "Active (21d)",
+      "maint": "Active (22d)",
       "trust": "Official npm"
     },
     {
@@ -323,7 +323,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (555d)",
+      "maint": "Stale (556d)",
       "trust": "Official npm"
     },
     {
@@ -332,7 +332,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1374d) [DEPRECATED]",
+      "maint": "Stale (1375d) [DEPRECATED]",
       "trust": "Official npm"
     },
     {
@@ -341,7 +341,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1372d)",
+      "maint": "Stale (1373d)",
       "trust": "Official npm"
     },
     {
@@ -350,7 +350,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (52d)",
+      "maint": "Active (53d)",
       "trust": "Official npm"
     },
     {
@@ -359,7 +359,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1370d)",
+      "maint": "Stale (1371d)",
       "trust": "Official npm"
     },
     {
@@ -368,7 +368,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (871d)",
+      "maint": "Stale (872d)",
       "trust": "Official npm"
     },
     {
@@ -377,7 +377,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (102d)",
+      "maint": "Active (103d)",
       "trust": "Official npm"
     },
     {
@@ -386,7 +386,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (64d)",
+      "maint": "Active (65d)",
       "trust": "Official npm"
     },
     {
@@ -395,7 +395,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (102d)",
+      "maint": "Active (103d)",
       "trust": "Official npm"
     },
     {
@@ -404,7 +404,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1370d)",
+      "maint": "Stale (1371d)",
       "trust": "Official npm"
     },
     {
@@ -413,7 +413,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (94d)",
+      "maint": "Active (95d)",
       "trust": "Official npm"
     },
     {
@@ -422,7 +422,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (52d)",
+      "maint": "Active (53d)",
       "trust": "Official npm"
     },
     {
@@ -431,7 +431,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (304d)",
+      "maint": "Moderate (305d)",
       "trust": "Official npm"
     },
     {
@@ -440,7 +440,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (514d)",
+      "maint": "Stale (515d)",
       "trust": "Official npm"
     },
     {
@@ -449,7 +449,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (121d)",
+      "maint": "Active (122d)",
       "trust": "Official npm"
     },
     {
@@ -458,7 +458,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (30d)",
+      "maint": "Active (31d)",
       "trust": "Official npm"
     },
     {
@@ -467,7 +467,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (34d)",
+      "maint": "Active (35d)",
       "trust": "Official npm"
     },
     {
@@ -519,7 +519,7 @@
         }
       ],
       "max_sev": "high",
-      "maint": "Active (29d)",
+      "maint": "Active (30d)",
       "trust": "Official npm"
     },
     {
@@ -528,7 +528,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (871d)",
+      "maint": "Stale (872d)",
       "trust": "Official npm"
     },
     {
@@ -537,7 +537,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1370d)",
+      "maint": "Stale (1371d)",
       "trust": "Official npm"
     },
     {
@@ -546,7 +546,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (139d)",
+      "maint": "Active (140d)",
       "trust": "Official npm"
     },
     {
@@ -555,7 +555,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (195d)",
+      "maint": "Moderate (196d)",
       "trust": "Official npm"
     },
     {
@@ -564,7 +564,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1382d)",
+      "maint": "Stale (1383d)",
       "trust": "Official npm"
     },
     {
@@ -573,7 +573,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (253d)",
+      "maint": "Moderate (254d)",
       "trust": "Official npm"
     },
     {
@@ -582,7 +582,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (317d)",
+      "maint": "Moderate (318d)",
       "trust": "Official npm"
     },
     {
@@ -591,7 +591,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (991d)",
+      "maint": "Stale (992d)",
       "trust": "Official npm"
     },
     {
@@ -600,7 +600,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (52d)",
+      "maint": "Active (53d)",
       "trust": "Official npm"
     },
     {
@@ -609,7 +609,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (317d)",
+      "maint": "Moderate (318d)",
       "trust": "Official npm"
     },
     {
@@ -618,7 +618,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (79d)",
+      "maint": "Active (80d)",
       "trust": "Official npm"
     },
     {
@@ -627,7 +627,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (129d)",
+      "maint": "Active (130d)",
       "trust": "Official npm"
     },
     {
@@ -636,7 +636,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (317d)",
+      "maint": "Moderate (318d)",
       "trust": "Official npm"
     },
     {
@@ -645,7 +645,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (666d)",
+      "maint": "Stale (667d)",
       "trust": "Official npm"
     },
     {
@@ -654,7 +654,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (862d)",
+      "maint": "Stale (863d)",
       "trust": "Official npm"
     },
     {
@@ -663,7 +663,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (127d)",
+      "maint": "Active (128d)",
       "trust": "Official npm"
     },
     {
@@ -672,7 +672,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (861d)",
+      "maint": "Stale (862d)",
       "trust": "Official npm"
     },
     {
@@ -681,7 +681,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (127d)",
+      "maint": "Active (128d)",
       "trust": "Official npm"
     },
     {
@@ -690,7 +690,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (317d)",
+      "maint": "Moderate (318d)",
       "trust": "Official npm"
     },
     {
@@ -699,7 +699,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (26d)",
+      "maint": "Active (27d)",
       "trust": "Official npm"
     },
     {
@@ -708,7 +708,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (317d)",
+      "maint": "Moderate (318d)",
       "trust": "Official npm"
     },
     {
@@ -717,7 +717,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (40d)",
+      "maint": "Active (41d)",
       "trust": "Official npm"
     },
     {
@@ -726,7 +726,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (317d)",
+      "maint": "Moderate (318d)",
       "trust": "Official npm"
     },
     {
@@ -735,7 +735,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (366d)",
+      "maint": "Stale (367d)",
       "trust": "Official npm"
     },
     {
@@ -744,7 +744,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (294d)",
+      "maint": "Moderate (295d)",
       "trust": "Official npm"
     },
     {
@@ -753,7 +753,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (366d)",
+      "maint": "Stale (367d)",
       "trust": "Official npm"
     },
     {
@@ -762,7 +762,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (317d)",
+      "maint": "Moderate (318d)",
       "trust": "Official npm"
     },
     {
@@ -771,7 +771,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (317d)",
+      "maint": "Moderate (318d)",
       "trust": "Official npm"
     },
     {
@@ -780,7 +780,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1384d)",
+      "maint": "Stale (1385d)",
       "trust": "Official npm"
     },
     {
@@ -789,7 +789,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1378d)",
+      "maint": "Stale (1379d)",
       "trust": "Official npm"
     },
     {
@@ -798,7 +798,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (989d)",
+      "maint": "Stale (990d)",
       "trust": "Official npm"
     },
     {
@@ -807,7 +807,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (404d)",
+      "maint": "Stale (405d)",
       "trust": "Official npm"
     },
     {
@@ -816,7 +816,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (991d)",
+      "maint": "Stale (992d)",
       "trust": "Official npm"
     },
     {
@@ -825,7 +825,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1378d)",
+      "maint": "Stale (1379d)",
       "trust": "Official npm"
     },
     {
@@ -834,7 +834,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1414d)",
+      "maint": "Stale (1415d)",
       "trust": "Official npm"
     },
     {
@@ -843,7 +843,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (8d)",
+      "maint": "Active (9d)",
       "trust": "Official npm"
     },
     {
@@ -852,7 +852,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (929d)",
+      "maint": "Stale (930d)",
       "trust": "Official npm"
     },
     {
@@ -861,7 +861,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (682d)",
+      "maint": "Stale (683d)",
       "trust": "Official npm"
     },
     {
@@ -879,7 +879,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (991d)",
+      "maint": "Stale (992d)",
       "trust": "Official npm"
     },
     {
@@ -888,7 +888,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (59d)",
+      "maint": "Active (60d)",
       "trust": "Official npm"
     },
     {
@@ -897,7 +897,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (36d) [DEPRECATED]",
+      "maint": "Active (37d) [DEPRECATED]",
       "trust": "Official npm"
     },
     {
@@ -943,7 +943,7 @@
         }
       ],
       "max_sev": "high",
-      "maint": "Active (4d)",
+      "maint": "Active (5d)",
       "trust": "Official npm"
     },
     {
@@ -952,7 +952,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (165d)",
+      "maint": "Active (166d)",
       "trust": "Official npm"
     },
     {
@@ -961,7 +961,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1384d)",
+      "maint": "Stale (1385d)",
       "trust": "Official npm"
     },
     {
@@ -970,7 +970,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (94d)",
+      "maint": "Active (95d)",
       "trust": "Official npm"
     },
     {
@@ -979,7 +979,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1370d)",
+      "maint": "Stale (1371d)",
       "trust": "Official npm"
     },
     {
@@ -988,7 +988,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (200d)",
+      "maint": "Moderate (201d)",
       "trust": "Official npm"
     },
     {
@@ -997,7 +997,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (200d)",
+      "maint": "Moderate (201d)",
       "trust": "Official npm"
     },
     {
@@ -1006,7 +1006,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (555d)",
+      "maint": "Stale (556d)",
       "trust": "Official npm"
     },
     {
@@ -1015,7 +1015,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (555d)",
+      "maint": "Stale (556d)",
       "trust": "Official npm"
     },
     {
@@ -1024,7 +1024,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1009d)",
+      "maint": "Stale (1010d)",
       "trust": "Official npm"
     },
     {
@@ -1033,7 +1033,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (696d)",
+      "maint": "Stale (697d)",
       "trust": "Official npm"
     },
     {
@@ -1042,7 +1042,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1009d)",
+      "maint": "Stale (1010d)",
       "trust": "Official npm"
     },
     {
@@ -1060,7 +1060,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (122d)",
+      "maint": "Active (123d)",
       "trust": "Official npm"
     },
     {
@@ -1069,7 +1069,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (116d)",
+      "maint": "Active (117d)",
       "trust": "Official npm"
     },
     {
@@ -1078,7 +1078,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1368d)",
+      "maint": "Stale (1369d)",
       "trust": "Official npm"
     },
     {
@@ -1096,7 +1096,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1022d)",
+      "maint": "Stale (1023d)",
       "trust": "Official npm"
     },
     {
@@ -1105,7 +1105,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (165d)",
+      "maint": "Active (166d)",
       "trust": "Official npm"
     },
     {
@@ -1114,7 +1114,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (877d)",
+      "maint": "Stale (878d)",
       "trust": "Official npm"
     },
     {
@@ -1123,7 +1123,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (67d)",
+      "maint": "Active (68d)",
       "trust": "Official npm"
     },
     {
@@ -1132,7 +1132,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (239d)",
+      "maint": "Moderate (240d)",
       "trust": "Official npm"
     },
     {
@@ -1141,7 +1141,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1370d)",
+      "maint": "Stale (1371d)",
       "trust": "Official npm"
     },
     {
@@ -1163,7 +1163,7 @@
         }
       ],
       "max_sev": "high",
-      "maint": "Active (3d)",
+      "maint": "Active (4d)",
       "trust": "Official npm"
     },
     {
@@ -1172,7 +1172,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (40d)",
+      "maint": "Active (41d)",
       "trust": "Official npm"
     },
     {
@@ -1181,7 +1181,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1378d)",
+      "maint": "Stale (1379d)",
       "trust": "Official npm"
     },
     {
@@ -1190,7 +1190,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (989d)",
+      "maint": "Stale (990d)",
       "trust": "Official npm"
     },
     {
@@ -1217,7 +1217,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (196d)",
+      "maint": "Moderate (197d)",
       "trust": "Official npm"
     },
     {
@@ -1226,7 +1226,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1383d)",
+      "maint": "Stale (1384d)",
       "trust": "Official npm"
     },
     {
@@ -1235,7 +1235,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1383d)",
+      "maint": "Stale (1384d)",
       "trust": "Official npm"
     },
     {
@@ -1244,7 +1244,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (64d)",
+      "maint": "Active (65d)",
       "trust": "Official npm"
     },
     {
@@ -1253,7 +1253,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (17d)",
+      "maint": "Active (18d)",
       "trust": "Official npm"
     },
     {
@@ -1262,7 +1262,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (94d)",
+      "maint": "Active (95d)",
       "trust": "Official npm"
     },
     {
@@ -1278,7 +1278,7 @@
         }
       ],
       "max_sev": "high",
-      "maint": "Active (10d)",
+      "maint": "Active (11d)",
       "trust": "Official npm"
     },
     {
@@ -1287,7 +1287,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (376d)",
+      "maint": "Stale (377d)",
       "trust": "Official npm"
     },
     {
@@ -1296,7 +1296,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (575d)",
+      "maint": "Stale (576d)",
       "trust": "Official npm"
     },
     {
@@ -1305,7 +1305,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (930d)",
+      "maint": "Stale (931d)",
       "trust": "Official npm"
     },
     {
@@ -1314,7 +1314,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1370d)",
+      "maint": "Stale (1371d)",
       "trust": "Official npm"
     },
     {
@@ -1323,7 +1323,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (37d)",
+      "maint": "Active (38d)",
       "trust": "Official npm"
     },
     {
@@ -1332,7 +1332,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (991d)",
+      "maint": "Stale (992d)",
       "trust": "Official npm"
     },
     {
@@ -1341,7 +1341,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (305d)",
+      "maint": "Moderate (306d)",
       "trust": "Official npm"
     },
     {
@@ -1350,7 +1350,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (507d)",
+      "maint": "Stale (508d)",
       "trust": "Official npm"
     },
     {
@@ -1359,7 +1359,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (30d)",
+      "maint": "Active (31d)",
       "trust": "Official npm"
     },
     {
@@ -1368,7 +1368,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (527d)",
+      "maint": "Stale (528d)",
       "trust": "Official npm"
     },
     {
@@ -1390,7 +1390,7 @@
         }
       ],
       "max_sev": "moderate",
-      "maint": "Active (0d)",
+      "maint": "Active (1d)",
       "trust": "Official npm"
     },
     {
@@ -1412,7 +1412,7 @@
         }
       ],
       "max_sev": "critical",
-      "maint": "Active (21d)",
+      "maint": "Active (22d)",
       "trust": "Official npm"
     },
     {
@@ -1421,7 +1421,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (200d)",
+      "maint": "Moderate (201d)",
       "trust": "Official npm"
     },
     {
@@ -1439,7 +1439,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (317d)",
+      "maint": "Moderate (318d)",
       "trust": "Official npm"
     },
     {
@@ -1448,7 +1448,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (78d)",
+      "maint": "Active (79d)",
       "trust": "Official npm"
     },
     {
@@ -1457,7 +1457,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1022d)",
+      "maint": "Stale (1023d)",
       "trust": "Official npm"
     },
     {
@@ -1466,7 +1466,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1370d)",
+      "maint": "Stale (1371d)",
       "trust": "Official npm"
     },
     {
@@ -1475,7 +1475,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1406d)",
+      "maint": "Stale (1407d)",
       "trust": "Official npm"
     },
     {
@@ -1484,7 +1484,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (317d)",
+      "maint": "Moderate (318d)",
       "trust": "Official npm"
     },
     {
@@ -1493,7 +1493,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1380d)",
+      "maint": "Stale (1381d)",
       "trust": "Official npm"
     },
     {
@@ -1502,7 +1502,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1009d)",
+      "maint": "Stale (1010d)",
       "trust": "Official npm"
     },
     {
@@ -1511,7 +1511,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (317d)",
+      "maint": "Moderate (318d)",
       "trust": "Official npm"
     },
     {
@@ -1520,7 +1520,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (119d)",
+      "maint": "Active (120d)",
       "trust": "Official npm"
     },
     {
@@ -1529,7 +1529,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (471d)",
+      "maint": "Stale (472d)",
       "trust": "Official npm"
     },
     {
@@ -1538,7 +1538,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1022d)",
+      "maint": "Stale (1023d)",
       "trust": "Official npm"
     },
     {
@@ -1560,7 +1560,7 @@
         }
       ],
       "max_sev": "high",
-      "maint": "Active (1d)",
+      "maint": "Active (2d)",
       "trust": "Official npm"
     },
     {
@@ -1569,7 +1569,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (317d)",
+      "maint": "Moderate (318d)",
       "trust": "Official npm"
     },
     {
@@ -1578,7 +1578,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1370d)",
+      "maint": "Stale (1371d)",
       "trust": "Official npm"
     },
     {
@@ -1587,7 +1587,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1383d)",
+      "maint": "Stale (1384d)",
       "trust": "Official npm"
     },
     {
@@ -1596,7 +1596,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (444d)",
+      "maint": "Stale (445d)",
       "trust": "Official npm"
     },
     {
@@ -1605,7 +1605,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (989d)",
+      "maint": "Stale (990d)",
       "trust": "Official npm"
     },
     {
@@ -1614,7 +1614,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (991d)",
+      "maint": "Stale (992d)",
       "trust": "Official npm"
     },
     {
@@ -1623,7 +1623,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (62d)",
+      "maint": "Active (63d)",
       "trust": "Official npm"
     },
     {
@@ -1632,7 +1632,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (36d)",
+      "maint": "Active (37d)",
       "trust": "Official npm"
     },
     {
@@ -1641,7 +1641,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (8d)",
+      "maint": "Active (9d)",
       "trust": "Official npm"
     },
     {
@@ -1650,7 +1650,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (8d)",
+      "maint": "Active (9d)",
       "trust": "Official npm"
     },
     {
@@ -1659,7 +1659,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (8d) [DEPRECATED]",
+      "maint": "Active (9d) [DEPRECATED]",
       "trust": "Official npm"
     },
     {
@@ -1668,7 +1668,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (40d)",
+      "maint": "Active (41d)",
       "trust": "Official npm"
     },
     {
@@ -1677,7 +1677,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (8d)",
+      "maint": "Active (9d)",
       "trust": "Official npm"
     },
     {
@@ -1686,7 +1686,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (173d)",
+      "maint": "Active (174d)",
       "trust": "Official npm"
     },
     {
@@ -1695,7 +1695,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1379d)",
+      "maint": "Stale (1380d)",
       "trust": "Official npm"
     },
     {
@@ -1704,7 +1704,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1232d)",
+      "maint": "Stale (1233d)",
       "trust": "Official npm"
     },
     {
@@ -1713,7 +1713,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1418d)",
+      "maint": "Stale (1419d)",
       "trust": "Official npm"
     },
     {
@@ -1722,7 +1722,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (435d)",
+      "maint": "Stale (436d)",
       "trust": "Official npm"
     },
     {
@@ -1731,7 +1731,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (12d)",
+      "maint": "Active (13d)",
       "trust": "Official npm"
     },
     {
@@ -1740,7 +1740,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (27d)",
+      "maint": "Active (28d)",
       "trust": "Official npm"
     },
     {
@@ -1749,7 +1749,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (399d)",
+      "maint": "Stale (400d)",
       "trust": "Official npm"
     },
     {
@@ -1758,7 +1758,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (988d)",
+      "maint": "Stale (989d)",
       "trust": "Official npm"
     },
     {
@@ -1767,7 +1767,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (23d)",
+      "maint": "Active (24d)",
       "trust": "Official npm"
     },
     {
@@ -1776,7 +1776,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1369d)",
+      "maint": "Stale (1370d)",
       "trust": "Official npm"
     },
     {
@@ -1785,7 +1785,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (720d)",
+      "maint": "Stale (721d)",
       "trust": "Official npm"
     },
     {
@@ -1794,7 +1794,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (706d)",
+      "maint": "Stale (707d)",
       "trust": "Official npm"
     },
     {
@@ -1803,7 +1803,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (187d)",
+      "maint": "Moderate (188d)",
       "trust": "Official npm"
     },
     {
@@ -1812,7 +1812,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (717d)",
+      "maint": "Stale (718d)",
       "trust": "Official npm"
     },
     {
@@ -1821,7 +1821,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (861d)",
+      "maint": "Stale (862d)",
       "trust": "Official npm"
     },
     {
@@ -1830,7 +1830,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (94d)",
+      "maint": "Active (95d)",
       "trust": "Official npm"
     },
     {
@@ -1839,7 +1839,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (427d)",
+      "maint": "Stale (428d)",
       "trust": "Official npm"
     },
     {
@@ -1848,7 +1848,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (133d)",
+      "maint": "Active (134d)",
       "trust": "Official npm"
     },
     {
@@ -1857,7 +1857,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1075d)",
+      "maint": "Stale (1076d)",
       "trust": "Official npm"
     },
     {
@@ -1866,7 +1866,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (675d)",
+      "maint": "Stale (676d)",
       "trust": "Official npm"
     },
     {
@@ -1875,7 +1875,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (327d)",
+      "maint": "Moderate (328d)",
       "trust": "Official npm"
     },
     {
@@ -1884,7 +1884,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1009d)",
+      "maint": "Stale (1010d)",
       "trust": "Official npm"
     },
     {
@@ -1893,7 +1893,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1377d)",
+      "maint": "Stale (1378d)",
       "trust": "Official npm"
     },
     {
@@ -1902,7 +1902,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1411d)",
+      "maint": "Stale (1412d)",
       "trust": "Official npm"
     },
     {
@@ -1911,7 +1911,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (64d)",
+      "maint": "Active (65d)",
       "trust": "Official npm"
     },
     {
@@ -1920,7 +1920,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (3d)",
+      "maint": "Active (4d)",
       "trust": "Official npm"
     },
     {
@@ -1929,7 +1929,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (624d)",
+      "maint": "Stale (625d)",
       "trust": "Official npm"
     },
     {
@@ -1938,7 +1938,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (6d)",
+      "maint": "Active (7d)",
       "trust": "Official npm"
     },
     {
@@ -1947,7 +1947,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (29d)",
+      "maint": "Active (30d)",
       "trust": "Official npm"
     },
     {
@@ -1956,7 +1956,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (35d)",
+      "maint": "Active (36d)",
       "trust": "Official npm"
     },
     {
@@ -1965,7 +1965,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (165d)",
+      "maint": "Active (166d)",
       "trust": "Official npm"
     },
     {
@@ -1974,7 +1974,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (208d)",
+      "maint": "Moderate (209d)",
       "trust": "Official npm"
     },
     {
@@ -1983,7 +1983,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (33d)",
+      "maint": "Active (34d)",
       "trust": "Official npm"
     },
     {
@@ -1992,7 +1992,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1009d)",
+      "maint": "Stale (1010d)",
       "trust": "Official npm"
     },
     {
@@ -2001,7 +2001,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (781d)",
+      "maint": "Stale (782d)",
       "trust": "Official npm"
     },
     {
@@ -2010,7 +2010,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (416d)",
+      "maint": "Stale (417d)",
       "trust": "Official npm"
     },
     {
@@ -2019,7 +2019,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (472d)",
+      "maint": "Stale (473d)",
       "trust": "Official npm"
     },
     {
@@ -2028,7 +2028,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (471d)",
+      "maint": "Stale (472d)",
       "trust": "Official npm"
     },
     {
@@ -2037,7 +2037,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (471d)",
+      "maint": "Stale (472d)",
       "trust": "Official npm"
     },
     {
@@ -2046,7 +2046,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (989d)",
+      "maint": "Stale (990d)",
       "trust": "Official npm"
     },
     {
@@ -2055,7 +2055,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1368d)",
+      "maint": "Stale (1369d)",
       "trust": "Official npm"
     },
     {
@@ -2064,7 +2064,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1009d)",
+      "maint": "Stale (1010d)",
       "trust": "Official npm"
     },
     {
@@ -2073,7 +2073,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (674d) [DEPRECATED]",
+      "maint": "Stale (675d) [DEPRECATED]",
       "trust": "Official npm"
     },
     {
@@ -2082,7 +2082,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (980d) [DEPRECATED]",
+      "maint": "Stale (981d) [DEPRECATED]",
       "trust": "Official npm"
     },
     {
@@ -2091,7 +2091,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (454d)",
+      "maint": "Stale (455d)",
       "trust": "Official npm"
     },
     {
@@ -2100,7 +2100,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (8d)",
+      "maint": "Active (9d)",
       "trust": "Official npm"
     },
     {
@@ -2109,7 +2109,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (322d)",
+      "maint": "Moderate (323d)",
       "trust": "Official npm"
     },
     {
@@ -2118,7 +2118,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (16d)",
+      "maint": "Active (17d)",
       "trust": "Official npm"
     },
     {
@@ -2127,7 +2127,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (16d)",
+      "maint": "Active (17d)",
       "trust": "Official npm"
     },
     {
@@ -2136,7 +2136,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1378d)",
+      "maint": "Stale (1379d)",
       "trust": "Official npm"
     },
     {
@@ -2145,7 +2145,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (14d)",
+      "maint": "Active (15d)",
       "trust": "Official npm"
     },
     {
@@ -2154,7 +2154,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (950d)",
+      "maint": "Stale (951d)",
       "trust": "Official npm"
     },
     {
@@ -2163,7 +2163,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (8d)",
+      "maint": "Active (9d)",
       "trust": "Official npm"
     },
     {
@@ -2172,7 +2172,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (1d)",
+      "maint": "Active (2d)",
       "trust": "Official npm"
     },
     {
@@ -2181,7 +2181,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (2d)",
+      "maint": "Active (3d)",
       "trust": "Official npm"
     },
     {
@@ -2190,7 +2190,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (37d)",
+      "maint": "Active (38d)",
       "trust": "Official npm"
     },
     {
@@ -2199,7 +2199,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1372d)",
+      "maint": "Stale (1373d)",
       "trust": "Official npm"
     },
     {
@@ -2208,7 +2208,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (16d)",
+      "maint": "Active (17d)",
       "trust": "Official npm"
     },
     {
@@ -2217,7 +2217,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (8d)",
+      "maint": "Active (9d)",
       "trust": "Official npm"
     },
     {
@@ -2226,7 +2226,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (8d)",
+      "maint": "Active (9d)",
       "trust": "Official npm"
     },
     {
@@ -2235,7 +2235,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (8d) [DEPRECATED]",
+      "maint": "Active (9d) [DEPRECATED]",
       "trust": "Official npm"
     },
     {
@@ -2244,7 +2244,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1383d)",
+      "maint": "Stale (1384d)",
       "trust": "Official npm"
     },
     {
@@ -2253,7 +2253,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (8d) [DEPRECATED]",
+      "maint": "Active (9d) [DEPRECATED]",
       "trust": "Official npm"
     },
     {
@@ -2262,7 +2262,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1370d)",
+      "maint": "Stale (1371d)",
       "trust": "Official npm"
     },
     {
@@ -2271,7 +2271,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (46d)",
+      "maint": "Active (47d)",
       "trust": "Official npm"
     },
     {
@@ -2280,7 +2280,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (284d)",
+      "maint": "Moderate (285d)",
       "trust": "Official npm"
     },
     {
@@ -2289,7 +2289,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (991d)",
+      "maint": "Stale (992d)",
       "trust": "Official npm"
     },
     {
@@ -2298,7 +2298,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (8d)",
+      "maint": "Active (9d)",
       "trust": "Official npm"
     },
     {
@@ -2307,7 +2307,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (231d)",
+      "maint": "Moderate (232d)",
       "trust": "Official npm"
     },
     {
@@ -2316,7 +2316,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (165d)",
+      "maint": "Active (166d)",
       "trust": "Official npm"
     },
     {
@@ -2325,7 +2325,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1370d)",
+      "maint": "Stale (1371d)",
       "trust": "Official npm"
     },
     {
@@ -2334,7 +2334,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (27d)",
+      "maint": "Active (28d)",
       "trust": "Official npm"
     },
     {
@@ -2343,7 +2343,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (314d)",
+      "maint": "Moderate (315d)",
       "trust": "Official npm"
     },
     {
@@ -2352,7 +2352,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (135d)",
+      "maint": "Active (136d)",
       "trust": "Official npm"
     },
     {
@@ -2361,7 +2361,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1369d)",
+      "maint": "Stale (1370d)",
       "trust": "Official npm"
     },
     {
@@ -2370,7 +2370,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (2d)",
+      "maint": "Active (3d)",
       "trust": "Official npm"
     },
     {
@@ -2379,7 +2379,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (200d)",
+      "maint": "Moderate (201d)",
       "trust": "Official npm"
     },
     {
@@ -2388,7 +2388,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (389d)",
+      "maint": "Stale (390d)",
       "trust": "Official npm"
     },
     {
@@ -2397,7 +2397,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (178d)",
+      "maint": "Active (179d)",
       "trust": "Official npm"
     },
     {
@@ -2406,7 +2406,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (470d)",
+      "maint": "Stale (471d)",
       "trust": "Official npm"
     },
     {
@@ -2415,7 +2415,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (991d)",
+      "maint": "Stale (992d)",
       "trust": "Official npm"
     },
     {
@@ -2424,7 +2424,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (61d)",
+      "maint": "Active (62d)",
       "trust": "Official npm"
     },
     {
@@ -2433,7 +2433,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (706d)",
+      "maint": "Stale (707d)",
       "trust": "Official npm"
     },
     {
@@ -2442,7 +2442,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (136d)",
+      "maint": "Active (137d)",
       "trust": "Official npm"
     },
     {
@@ -2451,7 +2451,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1372d)",
+      "maint": "Stale (1373d)",
       "trust": "Official npm"
     },
     {
@@ -2460,7 +2460,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (8d)",
+      "maint": "Active (9d)",
       "trust": "Official npm"
     },
     {
@@ -2469,7 +2469,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (26d)",
+      "maint": "Active (27d)",
       "trust": "Official npm"
     },
     {
@@ -2478,7 +2478,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (16d)",
+      "maint": "Active (17d)",
       "trust": "Official npm"
     },
     {
@@ -2487,7 +2487,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1034d)",
+      "maint": "Stale (1035d)",
       "trust": "Official npm"
     },
     {
@@ -2496,7 +2496,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (79d)",
+      "maint": "Active (80d)",
       "trust": "Official npm"
     },
     {
@@ -2505,7 +2505,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1379d)",
+      "maint": "Stale (1380d)",
       "trust": "Official npm"
     },
     {
@@ -2514,7 +2514,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1370d)",
+      "maint": "Stale (1371d)",
       "trust": "Official npm"
     },
     {
@@ -2523,7 +2523,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (227d)",
+      "maint": "Moderate (228d)",
       "trust": "Official npm"
     },
     {
@@ -2532,7 +2532,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1382d)",
+      "maint": "Stale (1383d)",
       "trust": "Official npm"
     },
     {
@@ -2541,7 +2541,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Moderate (258d)",
+      "maint": "Moderate (259d)",
       "trust": "Official npm"
     },
     {
@@ -2550,7 +2550,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1081d)",
+      "maint": "Stale (1082d)",
       "trust": "Official npm"
     },
     {
@@ -2559,7 +2559,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1081d)",
+      "maint": "Stale (1082d)",
       "trust": "Official npm"
     },
     {
@@ -2568,7 +2568,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (972d)",
+      "maint": "Stale (973d)",
       "trust": "Official npm"
     },
     {
@@ -2577,7 +2577,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1368d)",
+      "maint": "Stale (1369d)",
       "trust": "Official npm"
     },
     {
@@ -2586,7 +2586,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1377d)",
+      "maint": "Stale (1378d)",
       "trust": "Official npm"
     },
     {
@@ -2595,7 +2595,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (113d)",
+      "maint": "Active (114d)",
       "trust": "Official npm"
     },
     {
@@ -2604,7 +2604,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1425d)",
+      "maint": "Stale (1426d)",
       "trust": "Official npm"
     },
     {
@@ -2613,7 +2613,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1036d)",
+      "maint": "Stale (1037d)",
       "trust": "Official npm"
     },
     {
@@ -2622,7 +2622,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (408d)",
+      "maint": "Stale (409d)",
       "trust": "Official npm"
     },
     {
@@ -2631,7 +2631,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (476d)",
+      "maint": "Stale (477d)",
       "trust": "Official npm"
     },
     {
@@ -2640,7 +2640,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (437d)",
+      "maint": "Stale (438d)",
       "trust": "Official npm"
     },
     {
@@ -2649,7 +2649,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (897d)",
+      "maint": "Stale (898d)",
       "trust": "Official npm"
     },
     {
@@ -2658,7 +2658,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (449d)",
+      "maint": "Stale (450d)",
       "trust": "Official npm"
     },
     {
@@ -2667,7 +2667,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (478d)",
+      "maint": "Stale (479d)",
       "trust": "Official npm"
     },
     {
@@ -2676,7 +2676,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (480d)",
+      "maint": "Stale (481d)",
       "trust": "Official npm"
     },
     {
@@ -2685,7 +2685,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (747d)",
+      "maint": "Stale (748d)",
       "trust": "Official npm"
     },
     {
@@ -2694,7 +2694,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (463d)",
+      "maint": "Stale (464d)",
       "trust": "Official npm"
     },
     {
@@ -2703,7 +2703,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1372d)",
+      "maint": "Stale (1373d)",
       "trust": "Official npm"
     },
     {
@@ -2712,7 +2712,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (925d)",
+      "maint": "Stale (926d)",
       "trust": "Official npm"
     },
     {
@@ -2721,7 +2721,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (8d)",
+      "maint": "Active (9d)",
       "trust": "Official npm"
     },
     {
@@ -2730,7 +2730,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1370d)",
+      "maint": "Stale (1371d)",
       "trust": "Official npm"
     },
     {
@@ -2739,7 +2739,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (979d)",
+      "maint": "Stale (980d)",
       "trust": "Official npm"
     },
     {
@@ -2748,7 +2748,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (466d)",
+      "maint": "Stale (467d)",
       "trust": "Official npm"
     },
     {
@@ -2757,7 +2757,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Active (143d)",
+      "maint": "Active (144d)",
       "trust": "Official npm"
     },
     {
@@ -2766,7 +2766,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1015d)",
+      "maint": "Stale (1016d)",
       "trust": "Official npm"
     },
     {
@@ -2775,7 +2775,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (1009d)",
+      "maint": "Stale (1010d)",
       "trust": "Official npm"
     },
     {
@@ -2784,7 +2784,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (979d)",
+      "maint": "Stale (980d)",
       "trust": "Official npm"
     },
     {
@@ -2793,7 +2793,7 @@
       "direct": false,
       "vulns": [],
       "max_sev": "none",
-      "maint": "Stale (979d)",
+      "maint": "Stale (980d)",
       "trust": "Official npm"
     }
   ]
