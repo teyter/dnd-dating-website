@@ -64,6 +64,10 @@
               <% } %>
             </div>
           </div>
+          <div class="chat-actions">
+            <button class="unmatch-btn" onclick="unmatchUser(<%= selectedUserId %>)">Unmatch</button>
+            <button class="block-btn" onclick="blockUser(<%= selectedUserId %>)">Block</button>
+          </div>
         </div>
 
         <div class="messages-list" id="messagesList">
@@ -105,46 +109,6 @@
     </div>
   </div>
 
-  <script>
-    const messagesList = document.getElementById('messagesList');
-    if (messagesList) {
-      messagesList.scrollTop = messagesList.scrollHeight;
-    }
-
-    // Here we are using a standard form submission for sending messages, but you could enhance this with AJAX for a experience. 
-    const form = document.getElementById('sendMessageForm');
-    if (form) {
-      form.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        
-        const formData = new FormData(form);
-        const content = formData.get('content');
-        
-        if (!content.trim()) return;
-
-        try {
-          const response = await fetch('/messages/send', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-              'X-CSRF-Token': formData.get('_csrf')
-            },
-            body: 'receiverId=' + encodeURIComponent(formData.get('receiverId')) + '&content=' + encodeURIComponent(content)
-          });
-          
-          const result = await response.json();
-          
-          if (result.success) {
-            window.location.reload();
-          } else {
-            alert('Failed to send message: ' + result.error);
-          }
-        } catch (err) {
-          console.error('Error sending message:', err);
-          alert('Failed to send message');
-        }
-      });
-    }
-  </script>
+  <script src="/js/messages.js"></script>
 </body>
 </html>

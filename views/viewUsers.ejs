@@ -40,7 +40,6 @@
                 <tr>
                     <th>User ID</th>
                     <th>Username</th>
-                    <th>Password</th>
                     <th>User Type</th>
                     <th>Actions</th>
                 </tr>
@@ -48,7 +47,6 @@
                     <tr>
                         <td><%= user.user_id %></td>
                         <td><%= user.name %></td>
-                        <td><%= user.pass %></td>
                         <td><%= user.is_admin ? 'admin' : (user.user_type || 'player') %></td>
                         <td>
                             <a href="/users/<%= user.user_id %>/edit" class="button">Edit</a>

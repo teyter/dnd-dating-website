@@ -6,42 +6,7 @@
     <title>Edit Profile</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel='stylesheet' href='/stylesheets/editProfile.css' />
-    <script>
-        // Here we add an CSRF token header for multipart form submissions, this is so that we can handle the 
-        // form submission via AJAX and still have CSRF protection in place.
-        document.addEventListener('DOMContentLoaded', function() {
-            const multipartForms = document.querySelectorAll('form[enctype="multipart/form-data"]');
-            multipartForms.forEach(form => {
-                form.addEventListener('submit', function(e) {
-                    const csrfInput = form.querySelector('input[name="_csrf"]');
-                    if (!csrfInput) return;
-                    
-                    const csrfToken = csrfInput.value;
-                    e.preventDefault();
-                    
-                    fetch(form.action, {
-                        method: 'POST',
-                        body: new FormData(form),
-                        headers: {
-                            'X-CSRF-Token': csrfToken
-                        }
-                    }).then(response => {
-                        if (response.redirected) {
-                            window.location.href = response.url;
-                        } else if (response.ok) {
-                            window.location.reload();
-                        } else {
-                            response.text().then(text => {
-                                alert('Error: ' + text);
-                            });
-                        }
-                    }).catch(err => {
-                        alert('Error: ' + err.message);
-                    });
-                });
-            });
-        });
-    </script>
+    <script src="/js/editProfile.js"></script>
 </head>
 <body>
     <nav class="main-menu">

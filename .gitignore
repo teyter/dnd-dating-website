@@ -48,3 +48,9 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
+
+# SSL certificates (generated locally, never commit)
+*.key
+*.crt
+*.pem
+/etc/nginx/ssl/

@@ -15,12 +15,15 @@ function validateCsrfFromHeader(req) {
     return false;
   }
 
-  const submittedToken =
-    req.headers['x-csrf-token'] ||
-    (req.body && req.body._csrf);
+  // Check both header and body for CSRF token
+  const submittedToken = req.headers['x-csrf-token'] || (req.body && req.body._csrf);
 
   if (!submittedToken || submittedToken !== req.session.csrfToken) {
-    securityLog('input_validation_fail', { field: 'csrf_token', userid: req.session?.user?.user_id || 'anonymous', ip: getClientIp(req) });
+    securityLog('input_validation_fail', {
+      field: 'csrf_token',
+      userid: req.session?.user?.user_id || 'anonymous',
+      ip: getClientIp(req),
+    });
     return false;
   }
 
@@ -28,12 +31,15 @@ function validateCsrfFromHeader(req) {
 }
 
 function csrfMiddleware(req, res, next) {
+  console.log('CSRF Middleware:', req.method, req.path, 'hasToken:', !!req.session?.csrfToken);
+
   // Skip CSRF validation for GET requests
   if (req.method === 'GET') {
     // Ensure session exists
     if (req.session) {
       if (!req.session.csrfToken) {
         req.session.csrfToken = generateToken();
+        console.log('CSRF: Generated new token for GET');
       }
       res.locals.csrfToken = req.session.csrfToken;
     }
@@ -42,7 +48,11 @@ function csrfMiddleware(req, res, next) {
 
   // For POST requests with multipart/form-data, we'll validate CSRF in the route handler
   // because multer processes the body first and we need to check after multer
-  if (req.method === 'POST' && req.headers['content-type'] && req.headers['content-type'].includes('multipart/form-data')) {
+  if (
+    req.method === 'POST' &&
+    req.headers['content-type'] &&
+    req.headers['content-type'].includes('multipart/form-data')
+  ) {
     // Ensure session exists and token is set for the form
     if (req.session) {
       if (!req.session.csrfToken) {
@@ -58,18 +68,24 @@ function csrfMiddleware(req, res, next) {
     console.log('CSRF ERROR: No session or csrfToken');
     return res.status(403).render('error', {
       message: 'Invalid CSRF token',
-      error: {}
+      error: {},
     });
   }
 
   const submittedToken = (req.body && req.body._csrf) || req.headers['x-csrf-token'];
-  
+
   if (!submittedToken || submittedToken !== req.session.csrfToken) {
-    console.log('CSRF ERROR: Token mismatch', { submitted: submittedToken ? 'yes' : 'no', expected: req.session.csrfToken ? 'yes' : 'no' });
-    securityLog('input_validation_fail', `field=csrf_token, userid=${req.session?.user?.user_id || 'anonymous'}, ip=${getClientIp(req)}`);
+    console.log('CSRF ERROR: Token mismatch', {
+      submitted: submittedToken ? 'yes' : 'no',
+      expected: req.session.csrfToken ? 'yes' : 'no',
+    });
+    securityLog(
+      'input_validation_fail',
+      `field=csrf_token, userid=${req.session?.user?.user_id || 'anonymous'}, ip=${getClientIp(req)}`,
+    );
     return res.status(403).render('error', {
       message: 'Invalid CSRF token',
-      error: {}
+      error: {},
     });
   }
   // we make sure to always rotate token, to keep the same token for the session to prevent frontend mismatch issues
@@ -81,13 +97,13 @@ function validateCsrf(req, res, next) {
   if (!req.session || !req.session.csrfToken) {
     return res.status(403).json({ error: 'Invalid CSRF token' });
   }
-  
+
   const submittedToken = (req.body && req.body._csrf) || req.headers['x-csrf-token'];
-  
+
   if (!submittedToken || submittedToken !== req.session.csrfToken) {
     return res.status(403).json({ error: 'Invalid CSRF token' });
   }
-  
+
   next();
 }
 
