@@ -12,7 +12,7 @@ db.serialize(() => {
 
 function run(sql, params = []) {
   return new Promise((resolve, reject) => {
-    db.run(sql, params, function(err) {
+    db.run(sql, params, function (err) {
       if (err) reject(err);
       else resolve(this);
     });
@@ -53,7 +53,7 @@ db.serialize(() => {
   db.run(`
     CREATE TABLE IF NOT EXISTS profiles (
       profile_id INTEGER PRIMARY KEY AUTOINCREMENT,
-      user_id INTEGER DEFAULT 0,
+      user_id INTEGER DEFAULT 0 REFERENCES users(user_id) ON DELETE CASCADE,
       name TEXT NOT NULL,
       race TEXT NOT NULL,
       class TEXT NOT NULL,
@@ -69,8 +69,8 @@ db.serialize(() => {
   db.run(`
     CREATE TABLE IF NOT EXISTS messages (
       message_id INTEGER PRIMARY KEY AUTOINCREMENT,
-      sender_id INTEGER NOT NULL,
-      receiver_id INTEGER NOT NULL,
+      sender_id INTEGER NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+      receiver_id INTEGER NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
       content TEXT NOT NULL,
       timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
       is_read INTEGER DEFAULT 0
@@ -80,10 +80,20 @@ db.serialize(() => {
   db.run(`
     CREATE TABLE IF NOT EXISTS message_requests (
       request_id INTEGER PRIMARY KEY AUTOINCREMENT,
-      from_user_id INTEGER NOT NULL,
-      to_user_id INTEGER NOT NULL,
+      from_user_id INTEGER NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+      to_user_id INTEGER NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
       status TEXT DEFAULT 'pending',
       timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+
+  db.run(`
+    CREATE TABLE IF NOT EXISTS blocked_users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      blocker_id INTEGER NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+      blocked_id INTEGER NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      UNIQUE(blocker_id, blocked_id)
     );
   `);
 
@@ -92,7 +102,7 @@ db.serialize(() => {
     CREATE TABLE IF NOT EXISTS page_views (
       view_id INTEGER PRIMARY KEY AUTOINCREMENT,
       page_name TEXT NOT NULL,
-      user_id INTEGER,
+      user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
       viewed_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
   `);
@@ -102,17 +112,17 @@ db.serialize(() => {
     // Only allow alphanumeric characters and underscores
     const safeTableName = table.replace(/[^a-zA-Z0-9_]/g, '');
     const safeColumnName = column.replace(/[^a-zA-Z0-9_]/g, '');
-    
+
     // here we add additional validation, were we only allow known tables and columns
     const allowedTables = ['users', 'profiles'];
     if (!allowedTables.includes(safeTableName)) {
       console.error('Invalid table name:', safeTableName);
       return;
     }
-    
+
     db.all(`PRAGMA table_info(${safeTableName});`, (err, rows) => {
       if (err) return console.error(err);
-      const exists = rows.some(r => r.name === safeColumnName);
+      const exists = rows.some((r) => r.name === safeColumnName);
       if (!exists) {
         db.run(`ALTER TABLE ${safeTableName} ADD COLUMN ${safeColumnName} ${definition};`, (e) => {
           if (e) console.error('Database migration error:', e);
@@ -130,6 +140,9 @@ db.serialize(() => {
   addColumnIfMissing('profiles', 'level', 'INTEGER DEFAULT 1');
   addColumnIfMissing('users', 'is_admin', 'INTEGER DEFAULT 0');
   addColumnIfMissing('users', 'user_type', 'TEXT DEFAULT "player"');
+  addColumnIfMissing('users', 'failed_login_attempts', 'INTEGER DEFAULT 0');
+  addColumnIfMissing('users', 'locked_until', 'DATETIME');
+  addColumnIfMissing('users', 'last_failed_login', 'DATETIME');
 
   db.get('SELECT COUNT(*) as count FROM profiles;', (err, row) => {
     if (err) {
@@ -137,19 +150,22 @@ db.serialize(() => {
       return;
     }
     if (row.count === 0) {
-      db.run(`
+      db.run(
+        `
         INSERT INTO profiles (name, race, class, level, bio, looking_for, experience_level, timezone)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?);
-      `, [
-        "Astarion",
-        "Elf",
-        "Rogue",
-        5,
-        "Charming, dangerous, and absolutely not here to bite… probably.",
-        "Romance/RP relationship,Campaign buddies",
-        "Expert",
-        "UTC-5 (Eastern Time)"
-      ]);
+      `,
+        [
+          'Astarion',
+          'Elf',
+          'Rogue',
+          5,
+          'Charming, dangerous, and absolutely not here to bite… probably.',
+          'Romance/RP relationship,Campaign buddies',
+          'Expert',
+          'UTC-5 (Eastern Time)',
+        ],
+      );
     }
   });
 });
@@ -180,7 +196,11 @@ async function getUserById(user_id) {
 }
 
 async function createUser(name, pass, userType = 'player') {
-  const result = await run('INSERT INTO users (name, pass, user_type) VALUES (?, ?, ?);', [name, pass, userType]);
+  const result = await run('INSERT INTO users (name, pass, user_type) VALUES (?, ?, ?);', [
+    name,
+    pass,
+    userType,
+  ]);
   return result.lastID;
 }
 
@@ -202,6 +222,64 @@ async function deleteUser(user_id) {
   await run('DELETE FROM users WHERE user_id = ?;', [user_id]);
 }
 
+async function incrementFailedLogins(user_id) {
+  await run(
+    `
+    UPDATE users 
+    SET failed_login_attempts = failed_login_attempts + 1, 
+        last_failed_login = datetime('now')
+    WHERE user_id = ?;
+  `,
+    [user_id],
+  );
+}
+
+async function getFailedLogins(user_id) {
+  const row = await get('SELECT failed_login_attempts FROM users WHERE user_id = ?;', [user_id]);
+  return row ? row.failed_login_attempts : 0;
+}
+
+async function getUserLockStatus(user_id) {
+  const row = await get('SELECT locked_until FROM users WHERE user_id = ?;', [user_id]);
+  return row ? row.locked_until : null;
+}
+
+async function lockAccount(user_id, durationMinutes = 30) {
+  await run(
+    `
+    UPDATE users 
+    SET locked_until = datetime('now', '+' || ? || ' minutes')
+    WHERE user_id = ?;
+  `,
+    [durationMinutes, user_id],
+  );
+}
+
+async function unlockAccount(user_id) {
+  await run(
+    `
+    UPDATE users 
+    SET failed_login_attempts = 0, 
+        locked_until = NULL,
+        last_failed_login = NULL
+    WHERE user_id = ?;
+  `,
+    [user_id],
+  );
+}
+
+async function resetFailedLogins(user_id) {
+  await run(
+    `
+    UPDATE users 
+    SET failed_login_attempts = 0, 
+        last_failed_login = NULL
+    WHERE user_id = ?;
+  `,
+    [user_id],
+  );
+}
+
 async function getAllProfiles() {
   const rows = await all('SELECT * FROM profiles ORDER BY profile_id DESC;');
   return rows;
@@ -217,18 +295,46 @@ async function getProfileByUserId(user_id) {
   return row;
 }
 
-async function createProfile(name, race, clazz, level, bio, imagePath, lookingFor, experienceLevel, timezone, user_id) {
-  const result = await run(`
+async function createProfile(
+  name,
+  race,
+  clazz,
+  level,
+  bio,
+  imagePath,
+  lookingFor,
+  experienceLevel,
+  timezone,
+  user_id,
+) {
+  const result = await run(
+    `
     INSERT INTO profiles (name, race, class, level, bio, image_path, looking_for, experience_level, timezone, user_id)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
-  `, [name, race, clazz, level, bio, imagePath, lookingFor, experienceLevel, timezone, user_id]);
+  `,
+    [name, race, clazz, level, bio, imagePath, lookingFor, experienceLevel, timezone, user_id],
+  );
   return result.lastID;
 }
 
-async function updateProfile(profile_id, name, race, clazz, level, bio, imagePath, lookingFor, experienceLevel, timezone) {
-  await run(`
+async function updateProfile(
+  profile_id,
+  name,
+  race,
+  clazz,
+  level,
+  bio,
+  imagePath,
+  lookingFor,
+  experienceLevel,
+  timezone,
+) {
+  await run(
+    `
     UPDATE profiles SET name = ?, race = ?, class = ?, level = ?, bio = ?, image_path = ?, looking_for = ?, experience_level = ?, timezone = ? WHERE profile_id = ?;
-  `, [name, race, clazz, level, bio, imagePath, lookingFor, experienceLevel, timezone, profile_id]);
+  `,
+    [name, race, clazz, level, bio, imagePath, lookingFor, experienceLevel, timezone, profile_id],
+  );
 }
 
 async function deleteProfile(profile_id) {
@@ -239,23 +345,27 @@ async function deleteProfile(profile_id) {
 async function createMessage(senderId, receiverId, content) {
   const result = await run(
     'INSERT INTO messages (sender_id, receiver_id, content) VALUES (?, ?, ?);',
-    [senderId, receiverId, content]
+    [senderId, receiverId, content],
   );
   return result.lastID;
 }
 
 async function getConversation(userId1, userId2) {
-  const rows = await all(`
+  const rows = await all(
+    `
     SELECT * FROM messages 
     WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?)
     ORDER BY timestamp ASC;
-  `, [userId1, userId2, userId2, userId1]);
+  `,
+    [userId1, userId2, userId2, userId1],
+  );
   return rows;
 }
 
 async function getConversations(userId) {
   // get conversations from messages
-  const messageConvs = await all(`
+  const messageConvs = await all(
+    `
     SELECT DISTINCT 
       CASE 
         WHEN sender_id = ? THEN receiver_id 
@@ -272,10 +382,13 @@ async function getConversations(userId) {
     FROM messages
     WHERE sender_id = ? OR receiver_id = ?
     ORDER BY last_timestamp DESC;
-  `, [userId, userId, userId, userId, userId, userId, userId, userId, userId, userId, userId]);
-  
+  `,
+    [userId, userId, userId, userId, userId, userId, userId, userId, userId, userId, userId],
+  );
+
   // Get connections from accepted requests that don't have messages yet
-  const requestConvs = await all(`
+  const requestConvs = await all(
+    `
     SELECT 
       CASE 
         WHEN from_user_id = ? THEN to_user_id 
@@ -286,12 +399,16 @@ async function getConversations(userId) {
     FROM message_requests
     WHERE (from_user_id = ? OR to_user_id = ?)
     AND status = 'accepted'
-  `, [userId, userId, userId]);
-  
+  `,
+    [userId, userId, userId],
+  );
+
   // Filter out requestConvs that already have messages, to avoid duplicates.
-  const userIdsWithMessages = new Set(messageConvs.map(c => c.other_user_id));
-  const filteredRequestConvs = requestConvs.filter(c => !userIdsWithMessages.has(c.other_user_id));
-  
+  const userIdsWithMessages = new Set(messageConvs.map((c) => c.other_user_id));
+  const filteredRequestConvs = requestConvs.filter(
+    (c) => !userIdsWithMessages.has(c.other_user_id),
+  );
+
   // Combine and sort by last_timestamp.
   const allConvs = [...messageConvs, ...filteredRequestConvs];
   allConvs.sort((a, b) => {
@@ -299,73 +416,94 @@ async function getConversations(userId) {
     if (!b.last_timestamp) return -1;
     return new Date(b.last_timestamp) - new Date(a.last_timestamp);
   });
-  
+
   return allConvs;
 }
 
 async function getUnreadCount(userId, otherUserId) {
-  const row = await get(`
+  const row = await get(
+    `
     SELECT COUNT(*) as count FROM messages 
     WHERE sender_id = ? AND receiver_id = ? AND is_read = 0;
-  `, [otherUserId, userId]);
+  `,
+    [otherUserId, userId],
+  );
   return row ? row.count : 0;
 }
 
 async function markMessagesAsRead(senderId, receiverId) {
-  await run(`
+  await run(
+    `
     UPDATE messages SET is_read = 1 WHERE sender_id = ? AND receiver_id = ?;
-  `, [senderId, receiverId]);
+  `,
+    [senderId, receiverId],
+  );
 }
 
 // Message request functions
 async function createMessageRequest(fromUserId, toUserId) {
   // Check if request already exists
-  const existing = await get(`
+  const existing = await get(
+    `
     SELECT * FROM message_requests 
     WHERE from_user_id = ? AND to_user_id = ?
-  `, [fromUserId, toUserId]);
-  
+  `,
+    [fromUserId, toUserId],
+  );
+
   if (existing) {
     return { exists: true, request: existing };
   }
-  
+
   const result = await run(
     'INSERT INTO message_requests (from_user_id, to_user_id) VALUES (?, ?);',
-    [fromUserId, toUserId]
+    [fromUserId, toUserId],
   );
   return { exists: false, requestId: result.lastID };
 }
 
 async function getMessageRequests(userId) {
-  const rows = await all(`
+  const rows = await all(
+    `
     SELECT mr.*, u.name as from_user_name, p.name as from_profile_name, p.image_path as from_profile_image
     FROM message_requests mr
     LEFT JOIN users u ON mr.from_user_id = u.user_id
     LEFT JOIN profiles p ON mr.from_user_id = p.user_id
     WHERE mr.to_user_id = ? AND mr.status = 'pending'
     ORDER BY mr.timestamp DESC;
-  `, [userId]);
+  `,
+    [userId],
+  );
   return rows;
 }
 
 async function acceptMessageRequest(requestId, userId) {
-  await run(`
+  await run(
+    `
     UPDATE message_requests SET status = 'accepted' WHERE request_id = ? AND to_user_id = ?;
-  `, [requestId, userId]);
+  `,
+    [requestId, userId],
+  );
 }
 
 async function declineMessageRequest(requestId, userId) {
-  await run(`
+  await run(
+    `
     UPDATE message_requests SET status = 'declined' WHERE request_id = ? AND to_user_id = ?;
-  `, [requestId, userId]);
+  `,
+    [requestId, userId],
+  );
 }
 
 async function getMessageConnection(userId1, userId2) {
-  const row = await get(`
+  const row = await get(
+    `
     SELECT * FROM message_requests 
     WHERE ((from_user_id = ? AND to_user_id = ?) OR (from_user_id = ? AND to_user_id = ?))
     AND status = 'accepted'
-  `, [userId1, userId2, userId2, userId1]);
+  `,
+    [userId1, userId2, userId2, userId1],
+  );
   return row;
 }
 
@@ -402,7 +540,95 @@ async function hasMessageConnection(userId1, userId2) {
   return connection !== undefined;
 }
 
+// Analytics functions
+async function getTotalMessages() {
+  const result = await get('SELECT COUNT(*) as count FROM messages;');
+  return result ? result.count : 0;
+}
+
+async function getTodayMessages() {
+  const today = new Date().toISOString().split('T')[0];
+  const result = await get('SELECT COUNT(*) as count FROM messages WHERE DATE(timestamp) = ?;', [
+    today,
+  ]);
+  return result ? result.count : 0;
+}
+
+async function getTotalPageViews() {
+  const result = await get('SELECT COUNT(*) as count FROM page_views;');
+  return result ? result.count : 0;
+}
+
+async function getTodayPageViews() {
+  const today = new Date().toISOString().split('T')[0];
+  const result = await get('SELECT COUNT(*) as count FROM page_views WHERE DATE(viewed_at) = ?;', [
+    today,
+  ]);
+  return result ? result.count : 0;
+}
+
+async function logPageView(pageName, userId = null) {
+  await run('INSERT INTO page_views (page_name, user_id) VALUES (?, ?);', [pageName, userId]);
+}
+
+async function getTotalActiveUsers() {
+  const result = await get(
+    'SELECT COUNT(DISTINCT user_id) as count FROM page_views WHERE viewed_at > datetime("now", "-24 hours");',
+  );
+  return result ? result.count : 0;
+}
+
+async function getRecentActivity(limit = 20) {
+  const rows = await all(
+    `
+    SELECT pv.*, u.name as user_name 
+    FROM page_views pv 
+    LEFT JOIN users u ON pv.user_id = u.user_id 
+    ORDER BY pv.viewed_at DESC 
+    LIMIT ?;
+  `,
+    [limit],
+  );
+  return rows;
+}
+
+async function unblockUser(blockerId, blockedId) {
+  await run('DELETE FROM blocked_users WHERE blocker_id = ? AND blocked_id = ?;', [
+    blockerId,
+    blockedId,
+  ]);
+}
+
+async function blockUser(blockerId, blockedId) {
+  await run('INSERT INTO blocked_users (blocker_id, blocked_id) VALUES (?, ?);', [
+    blockerId,
+    blockedId,
+  ]);
+}
+
+async function deleteMessage(messageId, userId) {
+  await run('DELETE FROM messages WHERE message_id = ? AND sender_id = ?;', [messageId, userId]);
+}
+
+async function deleteConversation(userId1, userId2) {
+  await run(
+    'DELETE FROM messages WHERE (sender_id = ? AND receiver_id = ?) OR (sender_id = ? AND receiver_id = ?);',
+    [userId1, userId2, userId2, userId1],
+  );
+}
+
+async function isBlocked(userId1, userId2) {
+  const row = await get('SELECT 1 FROM blocked_users WHERE blocker_id = ? AND blocked_id = ?;', [
+    userId1,
+    userId2,
+  ]);
+  return !!row;
+}
+
 module.exports = {
+  get,
+  all,
+  run,
   getAllUsers,
   getUsersWithProfiles,
   getUserById,
@@ -411,6 +637,12 @@ module.exports = {
   updateUser,
   updateUserType,
   deleteUser,
+  incrementFailedLogins,
+  getFailedLogins,
+  getUserLockStatus,
+  lockAccount,
+  unlockAccount,
+  resetFailedLogins,
   getAllProfiles,
   getProfileById,
   getProfileByUserId,
@@ -437,48 +669,10 @@ module.exports = {
   getTodayPageViews,
   logPageView,
   getTotalActiveUsers,
-  getRecentActivity
+  getRecentActivity,
+  blockUser,
+  unblockUser,
+  isBlocked,
+  deleteMessage,
+  deleteConversation,
 };
-
-// Analytics functions
-async function getTotalMessages() {
-  const result = await get('SELECT COUNT(*) as count FROM messages;');
-  return result ? result.count : 0;
-}
-
-async function getTodayMessages() {
-  const today = new Date().toISOString().split('T')[0];
-  const result = await get('SELECT COUNT(*) as count FROM messages WHERE DATE(timestamp) = ?;', [today]);
-  return result ? result.count : 0;
-}
-
-async function getTotalPageViews() {
-  const result = await get('SELECT COUNT(*) as count FROM page_views;');
-  return result ? result.count : 0;
-}
-
-async function getTodayPageViews() {
-  const today = new Date().toISOString().split('T')[0];
-  const result = await get('SELECT COUNT(*) as count FROM page_views WHERE DATE(viewed_at) = ?;', [today]);
-  return result ? result.count : 0;
-}
-
-async function logPageView(pageName, userId = null) {
-  await run('INSERT INTO page_views (page_name, user_id) VALUES (?, ?);', [pageName, userId]);
-}
-
-async function getTotalActiveUsers() {
-  const result = await get('SELECT COUNT(DISTINCT user_id) as count FROM page_views WHERE viewed_at > datetime("now", "-24 hours");');
-  return result ? result.count : 0;
-}
-
-async function getRecentActivity(limit = 20) {
-  const rows = await all(`
-    SELECT pv.*, u.name as user_name 
-    FROM page_views pv 
-    LEFT JOIN users u ON pv.user_id = u.user_id 
-    ORDER BY pv.viewed_at DESC 
-    LIMIT ?;
-  `, [limit]);
-  return rows;
-}

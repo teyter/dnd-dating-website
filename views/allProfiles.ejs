@@ -6,37 +6,7 @@
     <title>All Profiles - D&D Dating</title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel='stylesheet' href='/stylesheets/allProfiles.css' />
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // we add CSRF token header to all POST forms, so that we can handle form submissions via AJAX and still have CSRF protection in place.
-            document.querySelectorAll('form[method="POST"]').forEach(form => {
-                form.addEventListener('submit', function(e) {
-                    const csrfInput = form.querySelector('input[name="_csrf"]');
-                    if (csrfInput) {
-                        e.preventDefault();
-                        const formData = new FormData(form);
-                        const csrfToken = csrfInput.value;
-                        
-                        fetch(form.action, {
-                            method: 'POST',
-                            body: formData,
-                            headers: {
-                                'X-CSRF-Token': csrfToken
-                            }
-                        }).then(response => {
-                            if (response.ok || response.redirected) {
-                                window.location.reload();
-                            } else {
-                                alert('Error: ' + response.statusText);
-                            }
-                        }).catch(err => {
-                            alert('Error: ' + err.message);
-                        });
-                    }
-                });
-            });
-        });
-    </script>
+    <script src="/js/profiles.js"></script>
 </head>
 
 <body>

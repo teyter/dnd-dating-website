@@ -126,18 +126,14 @@
             <!-- Security Log -->
             <div class="admin-panel">
                 <h3>Security Log</h3>
-                <div class="log-panel">
-                    <%- securityLogTail.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>') %>
-                </div>
+                <pre class="log-panel"><%= securityLogTail %></pre>
             </div>
         </div>
 
         <!-- Recent Log -->
         <div class="admin-panel admin-panel-margin-top-sm">
             <h3>Recent Log</h3>
-            <div class="log-panel">
-                <%- logTail.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>') %>
-            </div>
+            <pre class="log-panel"><%= logTail %></pre>
         </div>
     </div>
 </body>

@@ -85,7 +85,20 @@ router.get("/", async (req, res, next) => {
 
 router.post("/log", (req, res, next) => {
   try {
-    const msg = (req.body.message || "").trim();
+    let msg = (req.body.message || "").trim();
+    
+    // Sanitize input to prevent log injection attacks
+    // Remove newlines and carriage returns to prevent multi-line log injection
+    msg = msg.replace(/[\r\n]/g, ' ');
+    
+    // Remove HTML tags to prevent any HTML injection in logs
+    msg = msg.replace(/<[^>]*>/g, '');
+    
+    // Limit length to prevent abuse
+    if (msg.length > 500) {
+      msg = msg.substring(0, 500);
+    }
+    
     if (msg.length > 0) log(`ADMIN_NOTE: ${msg}`);
     res.redirect("/admin");
   } catch (err) {
