@@ -8,7 +8,7 @@ const helmet = require('helmet');
 const { requireLogin, requireAdmin } = require('./middleware/auth');
 const db = require('./Database');
 
-// Production configuration
+// Production configuration, so we can have different settings for development and production environments.
 const isProduction = process.env.NODE_ENV === 'production';
 
 function createError(status, message) {
@@ -34,7 +34,12 @@ app.disable('x-powered-by');
 app.use(express.json({ limit: '1mb' }));
 app.use(express.urlencoded({ extended: false, limit: '1mb' }));
 
-// Helmet for security headers - configure for production
+// Here we have set up Helmet for security headers, it is configure for production.
+// Helmet is a collection of middleware that helps secure Express apps by setting various HTTP headers.
+// In our configuration, we have set a strict Content Security Policy (CSP) to only allow
+// resources from our own domain and trusted sources, enabled HSTS for production to enforce HTTPS,
+// set a strict referrer policy, and enabled other security headers like frameguard and noSniff. 
+// This helps protect against common web vulnerabilities such as XSS, clickjacking, and MIME type sniffing.
 app.use(
   helmet({
     contentSecurityPolicy: {
@@ -55,6 +60,7 @@ app.use(
     hidePoweredBy: true,
   }),
 );
+
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
