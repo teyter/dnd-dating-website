@@ -179,7 +179,8 @@ router.post('/login', loginLimiter, validate(loginSchema), async (req, res, next
       await db.incrementFailedLogins(user.user_id);
       const attempts = await db.getFailedLogins(user.user_id);
 
-      // Lock account after 10 failed attempts
+      // Lock account after 10 failed attempts and the account is locked for 30 minutes.
+      // we record the failed login attempts.
       if (attempts >= 10) {
         await db.lockAccount(user.user_id, 30);
         securityLog(

@@ -8,7 +8,9 @@
 # Create SSL directory
 mkdir -p /etc/nginx/ssl
 
-# Generate self-signed EC certificate, P-256 curve
+# Here we generating a self-signed EC certificate, with P-256 curve, a elliptic curve that is used for SSL/TLS certificates.
+# A mathematical formula that generates the encryption keys used to secure connections.
+# The certificate is valid for 365 days.
 openssl req -x509 -nodes -days 365 -newkey ec \
   -pkeyopt ec_paramgen_curve:P-256 \
   -keyout /etc/nginx/ssl/selfsigned.key \
