@@ -50,6 +50,11 @@ const storage = multer.diskStorage({
   },
 });
 
+// Here we have implemented file upload handling using multer.
+// We store uploaded files in the /uploads directory and we generate unique filenames to prevent collisions. 
+// We also validate the file type to allow only certain image formats and we set a file size limit. 
+// Additionally, we check for duplicate files by comparing the contents of the uploaded file with existing files in the uploads directory, 
+// if a duplicate is found, we reuse the existing file instead of saving a new one, to savestorage space and prevents unnecessary duplicates.
 const upload = multer({
   storage: storage,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB max file size

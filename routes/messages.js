@@ -11,7 +11,9 @@ const { validateCsrfFromHeader, generateToken } = require('../middleware/csrf');
 const { log, securityLog, getClientIp } = require('../logger');
 const { requirePermission, PERMISSIONS, isOwner, getUserId } = require('../middleware/auth');
 
-// Rate limiter for sending messages,to prevent spam
+// Rate limiter for sending messages,to prevent spam, 
+// so attackers cant crash our service by sending too many messages in a short period of time. 
+// We set a limit of 10 messages per minute per user.
 const messageRateLimiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute
   max: 10, // 10 messages per minute
